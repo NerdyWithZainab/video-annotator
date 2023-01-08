@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, test } from "@jest/globals";
-import CreateAccount from ".";
+import CreateAccount from "../pages/create-account";
 
 describe("Account creation", () => {
   test("is successful with valid inputs", () => {
