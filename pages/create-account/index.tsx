@@ -33,7 +33,7 @@ export default function CreateAccount() {
       <TextField
         error={confirmPasswordInvalid}
         variant="filled"
-        label="Password"
+        label="Confirm Password"
         required
         fullWidth
         helperText={confirmPasswordInvalid ? "Passwords must be identical" : ""}
