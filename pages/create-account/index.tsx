@@ -1,6 +1,8 @@
-import { Fragment, useState } from "react";
+import { Fragment, ReactFragment, useState } from "react";
 import { TextField } from "@mui/material";
 import { Card } from "@mui/material";
+
+import { isValidEmail } from "../../utilities/validators";
 
 export default function CreateAccount() {
   const [emailInvalid, setEmailInvalid] = useState(false);
@@ -8,11 +10,17 @@ export default function CreateAccount() {
   const [confirmPasswordInvalid, setConfirmPasswordInvalid] = useState(false);
   const [userNameInvalid, setUserNameInvalid] = useState(false);
 
+  const handleEmailChange = (event: React.FormEvent) => {
+    const email: string = event.target.value;
+    console.log("deleteMe email is: " + email);
+    setEmailInvalid(isValidEmail(email));
+  };
+
   return (
     <Card style={{ marginTop: "16vh" }}>
       <h1>Create an Account</h1>
       <TextField
-        data-testid={"testing"}
+        data-testid={"emailInput"}
         error={emailInvalid}
         variant="filled"
         label="Email Address"
@@ -20,6 +28,7 @@ export default function CreateAccount() {
         // fullWidth
         helperText={emailInvalid ? "Must be a valid email address" : ""}
         style={{ marginBottom: 10 }}
+        onChange={handleEmailChange}
       ></TextField>
       <TextField
         error={passwordInvalid}
