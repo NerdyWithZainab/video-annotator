@@ -14,3 +14,18 @@ export function isValidEmail(email: string): boolean {
     return false;
   }
 }
+
+export function isValidPassword(password: string): boolean {
+  if (password) {
+    console.log("deleteMe password is: " + password);
+    const re: RegExp = new RegExp(
+      "^(?=.*[A-Za-z])(?=.*d)[A-Za-zd@$!%*#?&]{7,}$"
+    );
+    const deleteMeResultsOfTest = re.test(password.toLowerCase());
+    console.log("deleteMe deleteMeResultsOfTest are: " + deleteMeResultsOfTest);
+    return re.test(password.toLowerCase());
+    // return password.length > 6;
+  } else {
+    return false;
+  }
+}
