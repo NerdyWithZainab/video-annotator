@@ -1,6 +1,7 @@
-import React, { Fragment, ReactFragment, useState } from "react";
+import React, { Fragment, ReactFragment, useState, useEffect } from "react";
 import { TextField } from "@mui/material";
 import { Paper } from "@mui/material";
+import { Button } from "@mui/material";
 
 import {
   isValidEmail,
@@ -18,6 +19,30 @@ const CreateAccount: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [userNameInvalid, setUserNameInvalid] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
+  const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      isValidEmail(email) &&
+      isValidPassword(password) &&
+      confirmPassword === password &&
+      isValidUsername(username)
+    ) {
+      console.log("deleteMe setting all valid to true");
+      setAllRequiredValid(true);
+    } else {
+      setAllRequiredValid(false);
+    }
+  }, [
+    emailInvalid,
+    passwordInvalid,
+    confirmPasswordInvalid,
+    userNameInvalid,
+    email,
+    password,
+    confirmPassword,
+    username,
+  ]);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail: string = event?.currentTarget?.value;
@@ -41,6 +66,7 @@ const CreateAccount: React.FC = () => {
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentUsername = event?.currentTarget?.value;
+    console.log("deleteMe currentUsername is: " + currentUsername);
     setUsername(currentUsername);
     setUserNameInvalid(!isValidUsername(currentUsername));
     console.log("userNameInvalid is now: " + userNameInvalid);
@@ -50,15 +76,16 @@ const CreateAccount: React.FC = () => {
     <Paper
       elevation={8}
       style={{
+        margin: "auto",
         marginTop: "10vh",
         paddingBottom: "10vh",
         paddingTop: "3vh",
         paddingLeft: "3vw",
         paddingRight: "3vw",
-        alignItems: "center",
+        maxWidth: 400,
       }}
     >
-      <h1 style={{ textAlign: "center" }}>Create an Account</h1>
+      <h1>Create an Account</h1>
       <div>
         <TextField
           fullWidth
@@ -123,6 +150,13 @@ const CreateAccount: React.FC = () => {
           value={username}
         ></TextField>
       </div>
+      <Button
+        data-testid={"submit-button"}
+        variant="contained"
+        disabled={!allRequiredValid}
+      >
+        Create Account
+      </Button>
     </Paper>
   );
 };

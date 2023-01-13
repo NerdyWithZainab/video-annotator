@@ -27,8 +27,5 @@ export function isValidPassword(password: string): boolean {
 }
 
 export function isValidUsername(username: string): boolean {
-  // console.log("deleteMe username is: ");
-  // console.log(username === "");
-  // console.log(Boolean(username));
   return Boolean(username);
 }

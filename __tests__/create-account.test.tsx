@@ -119,7 +119,9 @@ describe("In account creation,", () => {
       .queryByTestId("passwordInput")
       ?.querySelector("input");
     if (passwordInputEl) {
-      fireEvent.change(passwordInputEl, { target: { value: "testing123" } });
+      fireEvent.change(passwordInputEl, {
+        target: { value: "testing123" },
+      });
       expect(isValidPassword(passwordInputEl.value)).toBeTruthy();
       const passwordErrorEl: HTMLElement | null | undefined =
         screen.queryByText(
@@ -139,7 +141,9 @@ describe("In account creation,", () => {
       .queryByTestId("confirmPasswordInput")
       ?.querySelector("input");
     if (passwordInputEl && confirmPasswordInputEl) {
-      fireEvent.change(passwordInputEl, { target: { value: "testing123" } });
+      fireEvent.change(passwordInputEl, {
+        target: { value: "testing123" },
+      });
       fireEvent.change(confirmPasswordInputEl, {
         target: { value: "testing456" },
       });
@@ -159,7 +163,9 @@ describe("In account creation,", () => {
       .queryByTestId("confirmPasswordInput")
       ?.querySelector("input");
     if (passwordInputEl && confirmPasswordInputEl) {
-      fireEvent.change(passwordInputEl, { target: { value: "testing123" } });
+      fireEvent.change(passwordInputEl, {
+        target: { value: "testing123" },
+      });
       fireEvent.change(confirmPasswordInputEl, {
         target: { value: "testing123" },
       });
@@ -193,8 +199,6 @@ describe("In account creation,", () => {
       ?.querySelector("input");
     if (userNameInputEl) {
       fireEvent.change(userNameInputEl, { target: { value: "a" } });
-      console.log("deleteMe userNameInputEl?.value is: ");
-      console.log(userNameInputEl.value);
       expect(isValidUsername(userNameInputEl?.value)).toBeTruthy();
       const usernameErrorEl: HTMLElement | null | undefined =
         screen.queryByText("Username is required");
@@ -202,5 +206,25 @@ describe("In account creation,", () => {
     } else {
       expect(true).toBeFalsy();
     }
+  });
+  test("the submit button is disabled until all required fields have truthy values", () => {
+    render(<CreateAccount />);
+    const emailAddressEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("emailInput")
+      ?.querySelector("input");
+    const passwordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("passwordInput")
+      ?.querySelector("input");
+    const confirmPasswordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("confirmPasswordInput")
+      ?.querySelector("input");
+    const userNameInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("usernameInput")
+      ?.querySelector("input");
+    const submitButton: HTMLElement | null | undefined =
+      screen.queryByTestId("submit-button");
+    expect(submitButton).not.toBeNull();
+
+    expect(submitButton).toBeDisabled();
   });
 });
