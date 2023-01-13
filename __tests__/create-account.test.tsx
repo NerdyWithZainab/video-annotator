@@ -176,9 +176,9 @@ describe("In account creation,", () => {
       .queryByTestId("usernameInput")
       ?.querySelector("input");
     if (userNameInputEl) {
-      fireEvent.change(userNameInputEl, { targe: { value: "a" } });
-      fireEvent.change(userNameInputEl, { targe: { value: "" } });
-      expect(isValidUsername(userNameInputEl.value)).toBeFalsy();
+      fireEvent.change(userNameInputEl, { target: { value: "a" } });
+      fireEvent.change(userNameInputEl, { target: { value: "" } });
+      expect(isValidUsername(userNameInputEl?.value)).toBeFalsy();
       const usernameErrorEl: HTMLElement | null | undefined =
         screen.queryByText("Username is required");
       expect(usernameErrorEl).not.toBeNull();
@@ -192,8 +192,10 @@ describe("In account creation,", () => {
       .queryByTestId("usernameInput")
       ?.querySelector("input");
     if (userNameInputEl) {
-      fireEvent.change(userNameInputEl, { targe: { value: "a" } });
-      expect(isValidUsername(userNameInputEl.value)).toBeTruthy();
+      fireEvent.change(userNameInputEl, { target: { value: "a" } });
+      console.log("deleteMe userNameInputEl?.value is: ");
+      console.log(userNameInputEl.value);
+      expect(isValidUsername(userNameInputEl?.value)).toBeTruthy();
       const usernameErrorEl: HTMLElement | null | undefined =
         screen.queryByText("Username is required");
       expect(usernameErrorEl).toBeNull();

@@ -68,7 +68,7 @@ const CreateAccount: React.FC = () => {
           label="Email Address"
           required
           helperText={emailInvalid ? "Must be a valid email address" : ""}
-          style={{ marginBottom: 10, maxWidth: 500 }}
+          style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleEmailChange}
           value={email}
         ></TextField>
@@ -87,7 +87,7 @@ const CreateAccount: React.FC = () => {
               : ""
           }
           onChange={handlePasswordChange}
-          style={{ marginBottom: 10, maxWidth: 500 }}
+          style={{ marginBottom: 10, maxWidth: 400 }}
           value={password}
         ></TextField>
       </div>
@@ -102,7 +102,7 @@ const CreateAccount: React.FC = () => {
           helperText={
             confirmPasswordInvalid ? "Passwords must be identical" : ""
           }
-          style={{ marginBottom: 10, maxWidth: 500 }}
+          style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleConfirmPasswordChange}
           value={confirmPassword}
         ></TextField>
@@ -118,7 +118,7 @@ const CreateAccount: React.FC = () => {
           helperText={
             userNameInvalid ? "Username is required" : "" // TODO already exists; try another username
           }
-          style={{ marginBottom: 10, maxWidth: 500 }}
+          style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleUsernameChange}
           value={username}
         ></TextField>
