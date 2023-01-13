@@ -1,6 +1,10 @@
 import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 import CreateAccount from "../pages/create-account";
-import { isValidEmail, isValidPassword } from "../utilities/validators";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidUsername,
+} from "../utilities/validators";
 
 afterEach(cleanup);
 
@@ -79,6 +83,11 @@ describe("In account creation,", () => {
     if (passwordInputEl) {
       fireEvent.change(passwordInputEl, { target: { value: "test12" } });
       expect(isValidPassword(passwordInputEl.value)).toBeFalsy();
+      const passwordErrorEl: HTMLElement | null | undefined =
+        screen.queryByText(
+          "Password must be seven characters long and contain both letters and numbers"
+        );
+      expect(passwordErrorEl).not.toBeNull();
     } else {
       expect(true).toBeFalsy();
     }
@@ -90,11 +99,16 @@ describe("In account creation,", () => {
   test("when password input is touched and does not contain letters and numbers, there should be error text", () => {
     render(<CreateAccount />);
     const passwordInputEl: HTMLInputElement | null | undefined = screen
-      .getByTestId("passwordInput")
+      .queryByTestId("passwordInput")
       ?.querySelector("input");
     if (passwordInputEl) {
       fireEvent.change(passwordInputEl, { target: { value: "testing" } });
       expect(isValidPassword(passwordInputEl.value)).toBeFalsy();
+      const passwordErrorEl: HTMLElement | null | undefined =
+        screen.queryByText(
+          "Password must be seven characters long and contain both letters and numbers"
+        );
+      expect(passwordErrorEl).not.toBeNull();
     } else {
       expect(true).toBeFalsy();
     }
@@ -102,15 +116,16 @@ describe("In account creation,", () => {
   test("when password input is touched and contains number and letters and is of sufficient length, there should be no error text", () => {
     render(<CreateAccount />);
     const passwordInputEl: HTMLInputElement | null | undefined = screen
-      .getByTestId("passwordInput")
+      .queryByTestId("passwordInput")
       ?.querySelector("input");
     if (passwordInputEl) {
       fireEvent.change(passwordInputEl, { target: { value: "testing123" } });
-      console.log(
-        "deleteMe LEFT OFF HERE passwordInputEl.value is currently: " +
-          passwordInputEl.value
-      );
       expect(isValidPassword(passwordInputEl.value)).toBeTruthy();
+      const passwordErrorEl: HTMLElement | null | undefined =
+        screen.queryByText(
+          "Password must be seven characters long and contain both letters and numbers"
+        );
+      expect(passwordErrorEl).toBeNull();
     } else {
       expect(true).toBeFalsy();
     }
@@ -118,10 +133,10 @@ describe("In account creation,", () => {
   test("when confirm password is touched and does not match password, which is valid, there should be error text", () => {
     render(<CreateAccount />);
     const passwordInputEl: HTMLInputElement | null | undefined = screen
-      .getByTestId("passwordInput")
+      .queryByTestId("passwordInput")
       ?.querySelector("input");
     const confirmPasswordInputEl: HTMLInputElement | null | undefined = screen
-      .getByTestId("confirmPasswordInput")
+      .queryByTestId("confirmPasswordInput")
       ?.querySelector("input");
     if (passwordInputEl && confirmPasswordInputEl) {
       fireEvent.change(passwordInputEl, { target: { value: "testing123" } });
@@ -135,5 +150,55 @@ describe("In account creation,", () => {
       expect(true).toBeFalsy();
     }
   });
-  // test("when confirm password is touched and does match password, which is valid, there should be no error text", () => {}); //TODO flesh out
+  test("when confirm password is touched and does match password, which is valid, there should be no error text", () => {
+    render(<CreateAccount />);
+    const passwordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("passwordInput")
+      ?.querySelector("input");
+    const confirmPasswordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("confirmPasswordInput")
+      ?.querySelector("input");
+    if (passwordInputEl && confirmPasswordInputEl) {
+      fireEvent.change(passwordInputEl, { target: { value: "testing123" } });
+      fireEvent.change(confirmPasswordInputEl, {
+        target: { value: "testing123" },
+      });
+      const confirmPasswordErrorEl: HTMLElement | null | undefined =
+        screen.queryByText("Passwords must be identical");
+      expect(confirmPasswordErrorEl).toBeNull();
+    } else {
+      expect(true).toBeFalsy();
+    }
+  });
+  test("when username is touched and contains nothing, there should be error text", () => {
+    render(<CreateAccount />);
+    const userNameInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("usernameInput")
+      ?.querySelector("input");
+    if (userNameInputEl) {
+      fireEvent.change(userNameInputEl, { targe: { value: "a" } });
+      fireEvent.change(userNameInputEl, { targe: { value: "" } });
+      expect(isValidUsername(userNameInputEl.value)).toBeFalsy();
+      const usernameErrorEl: HTMLElement | null | undefined =
+        screen.queryByText("Username is required");
+      expect(usernameErrorEl).not.toBeNull();
+    } else {
+      expect(true).toBeFalsy();
+    }
+  });
+  test("when username is touched and contains somthing, there should be no error text", () => {
+    render(<CreateAccount />);
+    const userNameInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("usernameInput")
+      ?.querySelector("input");
+    if (userNameInputEl) {
+      fireEvent.change(userNameInputEl, { targe: { value: "a" } });
+      expect(isValidUsername(userNameInputEl.value)).toBeTruthy();
+      const usernameErrorEl: HTMLElement | null | undefined =
+        screen.queryByText("Username is required");
+      expect(usernameErrorEl).toBeNull();
+    } else {
+      expect(true).toBeFalsy();
+    }
+  });
 });
