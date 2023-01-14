@@ -12,7 +12,7 @@ import {
 } from "../../utilities/validators";
 
 const CreateAccount: React.FC = () => {
-  const intl = useIntl(); //TODO what type is this??
+  const intl = useIntl(); // @TODO what type is this??
 
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
@@ -86,7 +86,12 @@ const CreateAccount: React.FC = () => {
         maxWidth: 400,
       }}
     >
-      <h1>Create an Account</h1>
+      <h1>
+        <FormattedMessage
+          id="CREATE_AN_ACCOUNT"
+          defaultMessage="Create an Account"
+        />
+      </h1>
       <div>
         <TextField
           fullWidth
@@ -123,7 +128,11 @@ const CreateAccount: React.FC = () => {
           required
           helperText={
             passwordInvalid
-              ? "Password must be seven characters long and contain both letters and numbers"
+              ? intl.formatMessage({
+                  id: "PASSWORD_MUST_CONTAIN",
+                  defaultMessage:
+                    "Password must be seven characters long and contain both letters and numbers",
+                })
               : ""
           }
           onChange={handlePasswordChange}
@@ -137,10 +146,20 @@ const CreateAccount: React.FC = () => {
           data-testid={"confirmPasswordInput"}
           error={confirmPasswordInvalid}
           variant="filled"
-          label="Confirm Password"
+          label={
+            <FormattedMessage
+              id="CONFIRM_PASSWORD"
+              defaultMessage="Confirm Passsword"
+            />
+          }
           required
           helperText={
-            confirmPasswordInvalid ? "Passwords must be identical" : ""
+            confirmPasswordInvalid
+              ? intl.formatMessage({
+                  id: "PASSWORDS_MUST_BE_IDENTICAL",
+                  defaultMessage: "Passwords must be identical",
+                })
+              : ""
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleConfirmPasswordChange}
@@ -153,10 +172,15 @@ const CreateAccount: React.FC = () => {
           data-testid={"usernameInput"}
           error={userNameInvalid}
           variant="filled"
-          label="Username"
+          label={<FormattedMessage id="USERNAME" defaultMessage="Username" />}
           required
           helperText={
-            userNameInvalid ? "Username is required" : "" // TODO already exists; try another username
+            userNameInvalid
+              ? intl.formatMessage({
+                  id: "USERNAME_IS_REQUIRED",
+                  defaultMessage: "Username is required",
+                })
+              : "" // @TODO already exists; try another username
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleUsernameChange}
@@ -168,7 +192,7 @@ const CreateAccount: React.FC = () => {
         variant="contained"
         disabled={!allRequiredValid}
       >
-        Create Account
+        <FormattedMessage id="CREATE_ACCOUNT" defaultMessage="Create Account" />
       </Button>
     </Paper>
   );

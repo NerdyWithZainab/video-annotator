@@ -1,6 +1,12 @@
 {
+  "CREATE_AN_ACCOUNT": "Create an Account",
   "EMAIL_ADDRESS": "Email Address",
   "MUST_BE_VALID_EMAIL": "Must be a valid email address",
   "PASSWORD": "Password",
-  "PASSWORD_MUST_CONTAIN": "Password must be seven characters long and contain both letters and numbers"
+  "PASSWORD_MUST_CONTAIN": "Password must be seven characters long and contain both letters and numbers",
+  "CONFIRM_PASSWORD": "Confirm Password",
+  "PASSWORDS_MUST_BE_IDENTICAL": "Passwords must be identical",
+  "USERNAME": "Username",
+  "USERNAME_IS_REQUIRED": "Username is required",
+  "CREATE_ACCOUNT": "Create Account"
 }
