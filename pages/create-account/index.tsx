@@ -28,7 +28,6 @@ const CreateAccount: React.FC = () => {
       confirmPassword === password &&
       isValidUsername(username)
     ) {
-      console.log("deleteMe setting all valid to true");
       setAllRequiredValid(true);
     } else {
       setAllRequiredValid(false);
@@ -66,7 +65,6 @@ const CreateAccount: React.FC = () => {
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentUsername = event?.currentTarget?.value;
-    console.log("deleteMe currentUsername is: " + currentUsername);
     setUsername(currentUsername);
     setUserNameInvalid(!isValidUsername(currentUsername));
     console.log("userNameInvalid is now: " + userNameInvalid);
