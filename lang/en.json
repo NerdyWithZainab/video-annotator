@@ -1,0 +1,6 @@
+{
+  "EMAIL_ADDRESS": "Email Address",
+  "MUST_BE_VALID_EMAIL": "Must be a valid email address",
+  "PASSWORD": "Password",
+  "PASSWORD_MUST_CONTAIN": "Password must be seven characters long and contain both letters and numbers"
+}

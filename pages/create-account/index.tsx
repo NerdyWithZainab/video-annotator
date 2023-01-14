@@ -1,4 +1,6 @@
 import React, { Fragment, ReactFragment, useState, useEffect } from "react";
+
+import { FormattedMessage, useIntl } from "react-intl";
 import { TextField } from "@mui/material";
 import { Paper } from "@mui/material";
 import { Button } from "@mui/material";
@@ -10,6 +12,8 @@ import {
 } from "../../utilities/validators";
 
 const CreateAccount: React.FC = () => {
+  const intl = useIntl(); //TODO what type is this??
+
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
   const [confirmPasswordInvalid, setConfirmPasswordInvalid] =
@@ -67,7 +71,6 @@ const CreateAccount: React.FC = () => {
     const currentUsername = event?.currentTarget?.value;
     setUsername(currentUsername);
     setUserNameInvalid(!isValidUsername(currentUsername));
-    console.log("userNameInvalid is now: " + userNameInvalid);
   };
 
   return (
@@ -90,9 +93,21 @@ const CreateAccount: React.FC = () => {
           data-testid={"emailInput"}
           error={emailInvalid}
           variant="filled"
-          label="Email Address"
+          label={
+            <FormattedMessage
+              id="EMAIL_ADDRESS"
+              defaultMessage="Email Address"
+            />
+          }
           required
-          helperText={emailInvalid ? "Must be a valid email address" : ""}
+          helperText={
+            emailInvalid
+              ? intl.formatMessage({
+                  id: "MUST_BE_VALID_EMAIL",
+                  defaultMessage: "Must be a valid email address",
+                })
+              : ""
+          }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleEmailChange}
           value={email}
@@ -104,7 +119,7 @@ const CreateAccount: React.FC = () => {
           data-testid={"passwordInput"}
           error={passwordInvalid}
           variant="filled"
-          label="Password"
+          label={<FormattedMessage id="PASSWORD" defaultMessage="Password" />}
           required
           helperText={
             passwordInvalid
