@@ -225,7 +225,7 @@ describe("In account creation,", () => {
   });
   test("the submit button is disabled until all required fields have truthy values", () => {
     renderWithReactIntl(locale, messages, <CreateAccount />);
-    const emailAddressEl: HTMLInputElement | null | undefined = screen
+    const emailAddressInputEl: HTMLInputElement | null | undefined = screen
       .queryByTestId("emailInput")
       ?.querySelector("input");
     const passwordInputEl: HTMLInputElement | null | undefined = screen
@@ -243,6 +243,25 @@ describe("In account creation,", () => {
 
     expect(submitButton).toBeDisabled();
 
-    // @TODO now flesh out with the positive control
+    if (
+      emailAddressInputEl &&
+      passwordInputEl &&
+      confirmPasswordInputEl &&
+      userNameInputEl
+    ) {
+      fireEvent.change(emailAddressInputEl, {
+        target: { value: "test@example.com" },
+      });
+      fireEvent.change(passwordInputEl, { target: { value: "test123" } });
+      fireEvent.change(confirmPasswordInputEl, {
+        target: { value: "test123" },
+      });
+      fireEvent.change(userNameInputEl, { target: { value: "testUser" } });
+
+      expect(submitButton).not.toBeNull();
+      expect(submitButton).not.toBeDisabled();
+    } else {
+      expect(true).toBeFalsy();
+    }
   });
 });
