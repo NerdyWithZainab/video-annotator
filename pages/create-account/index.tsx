@@ -1,10 +1,17 @@
 import React, { Fragment, ReactFragment, useState, useEffect } from "react";
 
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useRouter } from "next/router";
 import { TextField } from "@mui/material";
 import { Paper } from "@mui/material";
 import { Button } from "@mui/material";
 
+import CustomError from "../../components/Error/index";
 import {
   isValidEmail,
   isValidPassword,
@@ -13,6 +20,7 @@ import {
 
 const CreateAccount: React.FC = () => {
   const intl = useIntl(); // @TODO what type is this??
+  const router = useRouter(); // @TODO what type is this??
 
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
@@ -24,6 +32,7 @@ const CreateAccount: React.FC = () => {
   const [userNameInvalid, setUserNameInvalid] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -71,6 +80,34 @@ const CreateAccount: React.FC = () => {
     const currentUsername = event?.currentTarget?.value;
     setUsername(currentUsername);
     setUserNameInvalid(!isValidUsername(currentUsername));
+  };
+
+  const handleAccountCreation = async () => {
+    const auth = getAuth();
+    try {
+      const userInfo = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const userToken = await userInfo?.user?.getIdToken();
+      if (userToken && auth?.currentUser) {
+        const verificationEmailSender = await sendEmailVerification(
+          auth.currentUser
+        );
+        console.log("deleteMe verificationEmailSender info is: ");
+        console.log(verificationEmailSender);
+        router.push("email-verification");
+      } else {
+        router.push("error");
+      }
+    } catch (error: any) {
+      console.log("deleteMe error is: ");
+      console.log(error?.message);
+      setError(error?.message);
+      // return <CustomError errorMsg={error?.message} />;
+      // router.push("error");
+    }
   };
 
   return (
@@ -191,9 +228,11 @@ const CreateAccount: React.FC = () => {
         data-testid={"submit-button"}
         variant="contained"
         disabled={!allRequiredValid}
+        onClick={handleAccountCreation}
       >
         <FormattedMessage id="CREATE_ACCOUNT" defaultMessage="Create Account" />
       </Button>
+      {error && <CustomError errorMsg={error} />}
     </Paper>
   );
 };
