@@ -4,6 +4,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  Auth,
 } from "firebase/auth";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
@@ -83,7 +84,7 @@ const CreateAccount: React.FC = () => {
   };
 
   const handleAccountCreation = async () => {
-    const auth = getAuth();
+    const auth: Auth = getAuth();
     try {
       const userInfo = await createUserWithEmailAndPassword(
         auth,
@@ -92,11 +93,11 @@ const CreateAccount: React.FC = () => {
       );
       const userToken = await userInfo?.user?.getIdToken();
       if (userToken && auth?.currentUser) {
-        const verificationEmailSender = await sendEmailVerification(
-          auth.currentUser
-        );
-        console.log("deleteMe verificationEmailSender info is: ");
-        console.log(verificationEmailSender);
+        // const verificationEmailSender = await sendEmailVerification(
+        //   auth.currentUser
+        // );
+        // console.log("deleteMe verificationEmailSender info is: ");
+        // console.log(verificationEmailSender);
         router.push("email-verification");
       } else {
         router.push("error");
