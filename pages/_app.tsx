@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import * as englishMessages from "../lang/en.json";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { firebaseConfig } from "../keys";
+// import { firebaseConfig } from "../keys";
 
 export default function App({ Component, pageProps }: AppProps) {
   const messageMap = {
