@@ -1,6 +1,7 @@
 import { Button, Paper } from "@mui/material";
 import { FormattedMessage } from "react-intl";
-import { getAuth, Auth, User, sendEmailVerification } from "firebase/auth";
+// import { auth } from "../firebase";
+import { User, sendEmailVerification, Auth, getAuth } from "firebase/auth";
 
 const EmailVerification: React.FC = () => {
   const auth: Auth = getAuth();

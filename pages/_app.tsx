@@ -5,7 +5,10 @@ import { IntlProvider } from "react-intl";
 import * as englishMessages from "../lang/en.json";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// import { firebaseConfig } from "../keys";
+
+import { firebaseConfig } from "../firebase";
+
+// import { app, auth } from "../firebase";
 
 export default function App({ Component, pageProps }: AppProps) {
   const messageMap = {
@@ -13,43 +16,42 @@ export default function App({ Component, pageProps }: AppProps) {
   };
   const locale = "en";
 
-  // const app = initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
+  // const auth = getAuth(app);
+  // export const app = initializeApp(firebaseConfig);
+  // export const auth = getAuth(app);
 
-  // const configData: {
-  //   apiKey: string;
-  //   authDomain: string;
-  //   projectId: string;
-  //   storageBucket: string;
-  //   messagingSenderId: string;
-  //   appId: string;
-  //   measurementId: string;
-  // } = firebaseConfig;
-  const configData:
-    | {
-        apiKey: string;
-        authDomain: string;
-        projectId: string;
-        storageBucket: string;
-        messagingSenderId: string;
-        appId: string;
-        measurementId: string;
-      }
-    | undefined = {
-    apiKey: process?.env?.apiKey || "",
-    authDomain: process?.env?.authDomain || "",
-    projectId: process?.env?.projectId || "",
-    storageBucket: process?.env?.storageBucket || "",
-    messagingSenderId: process?.env?.messagingSenderId || "",
-    appId: process?.env?.appId || "",
-    measurementId: process?.env?.measurementId || "",
-  };
-  if (configData?.apiKey) {
-    // @TODO flesh out with a more robust checker of non-emptiness
-    const app = initializeApp(configData);
-    if (app.name && typeof window !== "undefined") {
-      const analytics = getAnalytics(app);
-    }
+  // const isLocalDeploy: boolean = false;
+
+  // let configData:
+  //   | {
+  //       apiKey: string;
+  //       authDomain: string;
+  //       projectId: string;
+  //       storageBucket: string;
+  //       messagingSenderId: string;
+  //       appId: string;
+  //       measurementId: string;
+  //     }
+  //   | undefined = {
+  //   apiKey: process?.env?.apiKey || "",
+  //   authDomain: process?.env?.authDomain || "",
+  //   projectId: process?.env?.projectId || "",
+  //   storageBucket: process?.env?.storageBucket || "",
+  //   messagingSenderId: process?.env?.messagingSenderId || "",
+  //   appId: process?.env?.appId || "",
+  //   measurementId: process?.env?.measurementId || "",
+  // };
+  // if (isLocalDeploy) {
+  //   // configData = firebaseConfig;
+  // }
+  // if (configData?.apiKey) {
+  // @TODO flesh out with a more robust checker of non-emptiness
+  // const app = initializeApp(configData);
+  if (app.name && typeof window !== "undefined") {
+    const analytics = getAnalytics(app);
   }
+  // }
 
   return (
     <IntlProvider

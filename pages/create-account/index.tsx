@@ -1,14 +1,9 @@
 import React, { Fragment, ReactFragment, useState, useEffect } from "react";
-
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  Auth,
-} from "firebase/auth";
-import { FormattedMessage, useIntl } from "react-intl";
+// import { auth } from "../firebase";
 import { useRouter } from "next/router";
+
 import { TextField } from "@mui/material";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Paper } from "@mui/material";
 import { Button } from "@mui/material";
 
@@ -18,6 +13,8 @@ import {
   isValidPassword,
   isValidUsername,
 } from "../../utilities/validators";
+
+import { getAuth, createUserWithEmailAndPassword, Auth } from "firebase/auth";
 
 const CreateAccount: React.FC = () => {
   const intl = useIntl(); // @TODO what type is this??
