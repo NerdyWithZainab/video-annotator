@@ -1,5 +1,6 @@
-// import { initializeApp } from "firebase/app";
-// import { getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { Auth, getAuth } from "firebase/auth";
+import { Analytics, getAnalytics } from "firebase/analytics";
 
 // import Firebase from "Firebase/app";
 // import 'Firebase/auth';
@@ -34,5 +35,10 @@ export const firebaseConfig = {
 // if(!Firebase.apps.length){
 //   Firebase.initializeApp(firebaseConfig);
 // }
-// export const app = initializeApp(firebaseConfig);
-// export const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+// initializeApp(firebaseConfig);
+export let analytics: Analytics | null = null;
+if (app.name && typeof window !== "undefined") {
+  analytics = getAnalytics(app);
+}
+export const auth: Auth | null = getAuth(app) || null;

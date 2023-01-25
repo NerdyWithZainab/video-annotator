@@ -11,8 +11,11 @@ const customJestConfig = {
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you soon)
     "^@/components/(.*)$": "<rootDir>/components/$1",
-
     "^@/pages/(.*)$": "<rootDir>/pages/$1",
+    // "^firebase/app$": "<rootDir>/node_modules/firebase/lib/app/index.js",
+    // "^firebase/auth$": "<rootDir>/node_modules/firebase/lib/auth/index.js",
+    // "^firebase/app$": "<rootDir>/node_modules/firebase/firebase-app.js",
+    // "^firebase/auth$": "<rootDir>/node_modules/firebase/firebase-auth.js",
   },
   testEnvironment: "jest-environment-jsdom",
 };

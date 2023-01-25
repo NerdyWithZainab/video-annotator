@@ -3,13 +3,13 @@ import type { AppProps } from "next/app";
 import { Container } from "@mui/material";
 import { IntlProvider } from "react-intl";
 import * as englishMessages from "../lang/en.json";
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, Auth } from "firebase/auth";
 import { AuthContext } from "./contexts/authContext";
-// import { app, auth } from "../firebase";
+import { auth } from "../firebase";
 
 export default function App({ Component, pageProps }: AppProps) {
   const messageMap = {
@@ -18,8 +18,10 @@ export default function App({ Component, pageProps }: AppProps) {
   const locale = "en";
 
   let loading: boolean = true;
-  const app = initializeApp(firebaseConfig);
-  const auth: Auth | null = getAuth(app); // @TODO if wonky, maybe don't use type on this?
+  console.log("deleteMe auth in the app component is: ");
+  console.log(auth);
+  // const app = initializeApp(firebaseConfig);
+  // const auth: Auth | null = getAuth(app); // @TODO if wonky, maybe don't use type on this?
   loading = false; // @TODO??
 
   // const AuthContext = createContext({ auth: auth, loading: true }); // @TODO decide if the default should be null instead
@@ -56,13 +58,13 @@ export default function App({ Component, pageProps }: AppProps) {
   // if (configData?.apiKey) {
   // @TODO flesh out with a more robust checker of non-emptiness
   // const app = initializeApp(configData);
-  if (app.name && typeof window !== "undefined") {
-    const analytics = getAnalytics(app);
-  }
+  // if (app.name && typeof window !== "undefined") {
+  //   const analytics = getAnalytics(app);
+  // }
   // }
 
   return (
-    <AuthContext.Provider value={{ auth: auth, loading: loading }}>
+    <AuthContext.Provider value={{ auth, loading }}>
       <IntlProvider
         messages={messageMap[locale]}
         locale={locale}

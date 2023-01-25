@@ -1,6 +1,7 @@
 import React, { Fragment, ReactFragment, useState, useEffect } from "react";
 // import { auth } from "../firebase";
 import { useRouter } from "next/router";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import { TextField } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -15,8 +16,6 @@ import {
   isValidPassword,
   isValidUsername,
 } from "../../utilities/validators";
-
-// import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const CreateAccount: React.FC = () => {
   const intl = useIntl(); // @TODO what type is this??
@@ -90,24 +89,24 @@ const CreateAccount: React.FC = () => {
   const handleAccountCreation = async () => {
     try {
       if (auth) {
-        // const userInfo = await createUserWithEmailAndPassword(
-        //   auth,
-        //   email,
-        //   password
-        // );
-        // const userToken: string | null =
-        //   (await userInfo?.user?.getIdToken()) || null;
-        // if (userToken) {
-        //   //  && auth.currentUser
-        //   // const verificationEmailSender = await sendEmailVerification(
-        //   //   auth.currentUser
-        //   // );
-        //   // console.log("deleteMe verificationEmailSender info is: ");
-        //   // console.log(verificationEmailSender);
-        //   router.push("email-verification");
-        // } else {
-        //   router.push("error");
-        // }
+        const userInfo = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const userToken: string | null =
+          (await userInfo?.user?.getIdToken()) || null;
+        if (userToken) {
+          //  && auth.currentUser
+          // const verificationEmailSender = await sendEmailVerification(
+          //   auth.currentUser
+          // );
+          // console.log("deleteMe verificationEmailSender info is: ");
+          // console.log(verificationEmailSender);
+          router.push("email-verification");
+        } else {
+          router.push("error");
+        }
       } else {
         router.push("error");
       }

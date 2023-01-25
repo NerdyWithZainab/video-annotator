@@ -30,6 +30,8 @@ const renderWithReactIntl = (
 
 afterEach(cleanup);
 
+jest.mock("next/router", () => require("next-router-mock"));
+
 describe("In account creation,", () => {
   test("when email address input is untouched, there should be no error text about the email address", () => {
     renderWithReactIntl(locale, messages, <CreateAccount />);
