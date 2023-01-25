@@ -6,6 +6,8 @@ import { TextField } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Paper } from "@mui/material";
 import { Button } from "@mui/material";
+import { AuthContext } from "../contexts/authContext";
+import { useContext } from "react";
 
 import CustomError from "../../components/Error/index";
 import {
@@ -14,12 +16,17 @@ import {
   isValidUsername,
 } from "../../utilities/validators";
 
-import { getAuth, createUserWithEmailAndPassword, Auth } from "firebase/auth";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const CreateAccount: React.FC = () => {
   const intl = useIntl(); // @TODO what type is this??
   const router = useRouter(); // @TODO what type is this??
 
+  const { auth, loading } = useContext(AuthContext);
+  console.log("deleteMe auth is currently: ");
+  console.log(auth);
+  console.log("deleteMe loading is currently: ");
+  console.log(loading);
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
   const [confirmPasswordInvalid, setConfirmPasswordInvalid] =
@@ -81,21 +88,26 @@ const CreateAccount: React.FC = () => {
   };
 
   const handleAccountCreation = async () => {
-    const auth: Auth = getAuth();
     try {
-      const userInfo = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userToken = await userInfo?.user?.getIdToken();
-      if (userToken && auth?.currentUser) {
-        // const verificationEmailSender = await sendEmailVerification(
-        //   auth.currentUser
+      if (auth) {
+        // const userInfo = await createUserWithEmailAndPassword(
+        //   auth,
+        //   email,
+        //   password
         // );
-        // console.log("deleteMe verificationEmailSender info is: ");
-        // console.log(verificationEmailSender);
-        router.push("email-verification");
+        // const userToken: string | null =
+        //   (await userInfo?.user?.getIdToken()) || null;
+        // if (userToken) {
+        //   //  && auth.currentUser
+        //   // const verificationEmailSender = await sendEmailVerification(
+        //   //   auth.currentUser
+        //   // );
+        //   // console.log("deleteMe verificationEmailSender info is: ");
+        //   // console.log(verificationEmailSender);
+        //   router.push("email-verification");
+        // } else {
+        //   router.push("error");
+        // }
       } else {
         router.push("error");
       }

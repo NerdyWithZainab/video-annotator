@@ -1,5 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+// import { initializeApp } from "firebase/app";
+// import { getAuth } from "firebase/auth";
+
+// import Firebase from "Firebase/app";
+// import 'Firebase/auth';
 
 // Local
 
@@ -28,5 +31,8 @@ export const firebaseConfig = {
 // };
 
 // Initialize Firebase
+// if(!Firebase.apps.length){
+//   Firebase.initializeApp(firebaseConfig);
+// }
 // export const app = initializeApp(firebaseConfig);
 // export const auth = getAuth(app);
