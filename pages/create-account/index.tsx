@@ -1,6 +1,6 @@
 import React, { Fragment, ReactFragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-// import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth";
 
 // TODO delete this after you are satisfied that the wrapper thing is not the way to go
 // import { wrapper } from "../../firebase";
@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import { TextField } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Paper } from "@mui/material";
-import { Button } from "@mui/material";
 import { AuthContext } from "../contexts/authContext";
+import { Button } from "@mui/material";
 import { useContext } from "react";
 
 import CustomError from "../../components/Error/index";
@@ -91,24 +91,24 @@ const CreateAccount: React.FC = () => {
   const handleAccountCreation = async () => {
     try {
       if (auth) {
-        const userInfo = await wrapper.createUserWithEmailAndPassword(
+        const userInfo: UserCredential = await createUserWithEmailAndPassword(
           auth,
           email,
           password
         );
-        const userToken: string | null =
-          (await userInfo?.user?.getIdToken()) || null;
-        if (userToken) {
-          //  && auth.currentUser
-          // const verificationEmailSender = await sendEmailVerification(
-          //   auth.currentUser
-          // );
-          // console.log("deleteMe verificationEmailSender info is: ");
-          // console.log(verificationEmailSender);
-          router.push("email-verification");
-        } else {
-          router.push("error");
-        }
+        // const userToken: string | null =
+        //   (await userInfo?.user?.getIdToken()) || null;
+        // if (userToken) {
+        //   //  && auth.currentUser
+        //   // const verificationEmailSender = await sendEmailVerification(
+        //   //   auth.currentUser
+        //   // );
+        //   // console.log("deleteMe verificationEmailSender info is: ");
+        //   // console.log(verificationEmailSender);
+        //   router.push("email-verification");
+        // } else {
+        //   router.push("error");
+        // }
       } else {
         router.push("error");
       }
