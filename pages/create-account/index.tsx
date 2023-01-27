@@ -1,7 +1,9 @@
 import React, { Fragment, ReactFragment, useState, useEffect } from "react";
-// import { auth } from "../firebase";
 import { useRouter } from "next/router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
+
+// TODO delete this after you are satisfied that the wrapper thing is not the way to go
+// import { wrapper } from "../../firebase";
 
 import { TextField } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -89,7 +91,7 @@ const CreateAccount: React.FC = () => {
   const handleAccountCreation = async () => {
     try {
       if (auth) {
-        const userInfo = await createUserWithEmailAndPassword(
+        const userInfo = await wrapper.createUserWithEmailAndPassword(
           auth,
           email,
           password
