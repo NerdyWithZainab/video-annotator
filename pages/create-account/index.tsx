@@ -96,19 +96,19 @@ const CreateAccount: React.FC = () => {
           email,
           password
         );
-        // const userToken: string | null =
-        //   (await userInfo?.user?.getIdToken()) || null;
-        // if (userToken) {
-        //   //  && auth.currentUser
-        //   // const verificationEmailSender = await sendEmailVerification(
-        //   //   auth.currentUser
-        //   // );
-        //   // console.log("deleteMe verificationEmailSender info is: ");
-        //   // console.log(verificationEmailSender);
-        //   router.push("email-verification");
-        // } else {
-        //   router.push("error");
-        // }
+        const userToken: string | null =
+          (await userInfo?.user?.getIdToken()) || null;
+        if (userToken) {
+          //  && auth.currentUser
+          // const verificationEmailSender = await sendEmailVerification(
+          //   auth.currentUser
+          // );
+          // console.log("deleteMe verificationEmailSender info is: ");
+          // console.log(verificationEmailSender);
+          router.push("email-verification");
+        } else {
+          router.push("error");
+        }
       } else {
         router.push("error");
       }
