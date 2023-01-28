@@ -8,7 +8,7 @@ import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth";
 import { TextField } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Paper } from "@mui/material";
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../../contexts/authContext";
 import { Button } from "@mui/material";
 import { useContext } from "react";
 

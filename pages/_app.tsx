@@ -8,7 +8,7 @@ import { getAnalytics } from "firebase/analytics";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, Auth } from "firebase/auth";
-import { AuthContext } from "./contexts/authContext";
+import { AuthContext } from "../contexts/authContext";
 // import { wrapper } from "../firebase";
 
 export default function App({ Component, pageProps }: AppProps) {
