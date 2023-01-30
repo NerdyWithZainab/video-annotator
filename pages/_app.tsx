@@ -9,6 +9,7 @@ import { getAnalytics } from "firebase/analytics";
 import { firebaseConfig } from "../firebase";
 import { getAuth, Auth } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
+import Navbar from "../components/Navbar";
 // import { wrapper } from "../firebase";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -35,6 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
         defaultLocale="en"
       >
         <Container>
+          <Navbar></Navbar>
           <Component {...pageProps} />
         </Container>
       </IntlProvider>
