@@ -1,10 +1,12 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Container } from "@mui/material";
 import { IntlProvider } from "react-intl";
 import * as englishMessages from "../lang/en.json";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { Container } from "@mui/material";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { themeOptions } from "../styles/materialTheme";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, Auth } from "firebase/auth";
@@ -17,6 +19,27 @@ export default function App({ Component, pageProps }: AppProps) {
     en: englishMessages,
   };
   const locale = "en";
+  // const theme = createTheme(themeOptions);
+  const theme = createTheme({
+    palette: {
+      // mode: "light",
+      primary: {
+        main: "#004d40",
+      },
+      secondary: {
+        main: "#26a69a",
+      },
+    },
+    overrides: {
+      MuiAppBar: {
+        colorPrimary: {
+          backgroundColor: "#662E9B",
+        },
+      },
+    },
+  });
+  console.log("deleteMe theme primary in app.tsx is: ");
+  console.log(theme.palette.primary.main);
 
   let loading: boolean = true;
   const app = initializeApp(firebaseConfig);
@@ -30,16 +53,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AuthContext.Provider value={{ auth, loading }}>
-      <IntlProvider
-        messages={messageMap[locale]}
-        locale={locale}
-        defaultLocale="en"
-      >
-        <Container>
-          <Navbar></Navbar>
-          <Component {...pageProps} />
-        </Container>
-      </IntlProvider>
+      <ThemeProvider theme={theme}>
+        <IntlProvider
+          messages={messageMap[locale]}
+          locale={locale}
+          defaultLocale="en"
+        >
+          <Container>
+            <Navbar></Navbar>
+            <Component {...pageProps} />
+          </Container>
+        </IntlProvider>
+      </ThemeProvider>
     </AuthContext.Provider>
   );
 }
