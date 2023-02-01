@@ -24,10 +24,10 @@ const CreateAccount: React.FC = () => {
   const router = useRouter(); // @TODO what type is this??
 
   const { auth, loading } = useContext(AuthContext);
-  console.log("deleteMe auth is currently: ");
-  console.log(auth);
-  console.log("deleteMe loading is currently: ");
-  console.log(loading);
+  // console.log("deleteMe auth is currently: ");
+  // console.log(auth);
+  // console.log("deleteMe loading is currently: ");
+  // console.log(loading);
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
   const [confirmPasswordInvalid, setConfirmPasswordInvalid] =

@@ -3,8 +3,8 @@ import { Paper, Alert } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 const CustomError: React.FC<{ errorMsg?: string }> = (props) => {
-  console.log("deleteMe got here and props are: ");
-  console.log(props);
+  // console.log("deleteMe got here and props are: ");
+  // console.log(props);
   return (
     <Paper
       elevation={8}
