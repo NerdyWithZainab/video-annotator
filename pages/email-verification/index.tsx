@@ -8,15 +8,15 @@ const EmailVerification: React.FC = () => {
   const currentUser: User | null = auth.currentUser;
   if (currentUser) {
     // @TODO deleteMe
-    console.log("deleteMe currentUser is: ");
-    console.log(currentUser);
+    // console.log("deleteMe currentUser is: ");
+    // console.log(currentUser);
   }
 
   const handleVerificationEmailSendoff = async () => {
     if (currentUser) {
       const verificationEmailSender = await sendEmailVerification(currentUser);
-      console.log("deleteMe verificationEmailSender info is: ");
-      console.log(verificationEmailSender);
+      // console.log("deleteMe verificationEmailSender info is: ");
+      // console.log(verificationEmailSender);
     }
   };
 
