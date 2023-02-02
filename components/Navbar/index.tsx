@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from "../../contexts/authContext";
 import { useContext } from "react";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 
 const Navbar: React.FC = () => {
   const { auth, loading } = useContext(AuthContext);
@@ -26,6 +26,7 @@ const Navbar: React.FC = () => {
     <AppBar
       position="sticky"
       style={{ backgroundColor: theme.palette.primary.main }}
+      // color="primary"
     >
       <Toolbar>
         <IconButton size="large" edge="start" aria-label="menu" sx={{ mr: 2 }}>

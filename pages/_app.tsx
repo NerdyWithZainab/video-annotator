@@ -5,13 +5,21 @@ import * as englishMessages from "../lang/en.json";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { Container } from "@mui/material";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme } from "@mui/material/styles";
 import { themeOptions } from "../styles/materialTheme";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, Auth } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 import Navbar from "../components/Navbar";
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+
 // import { wrapper } from "../firebase";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -20,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
   };
   const locale = "en";
   // const theme = createTheme(themeOptions);
-  const theme = createTheme({
+  const theme = createTheme(adaptV4Theme({
     palette: {
       // mode: "light",
       primary: {
@@ -37,7 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
         },
       },
     },
-  });
+  }));
   console.log("deleteMe theme primary in app.tsx is: ");
   console.log(theme.palette.primary.main);
 
@@ -53,18 +61,20 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AuthContext.Provider value={{ auth, loading }}>
-      <ThemeProvider theme={theme}>
-        <IntlProvider
-          messages={messageMap[locale]}
-          locale={locale}
-          defaultLocale="en"
-        >
-          <Container>
-            <Navbar></Navbar>
-            <Component {...pageProps} />
-          </Container>
-        </IntlProvider>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <IntlProvider
+            messages={messageMap[locale]}
+            locale={locale}
+            defaultLocale="en"
+          >
+            <Container>
+              <Navbar></Navbar>
+              <Component {...pageProps} />
+            </Container>
+          </IntlProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </AuthContext.Provider>
   );
 }
