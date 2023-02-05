@@ -5,7 +5,7 @@ import * as englishMessages from "../lang/en.json";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { Container } from "@mui/material";
-import { createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme } from "@mui/material/styles";
+import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
 import { themeOptions } from "../styles/materialTheme";
 
 import { firebaseConfig } from "../firebase";
@@ -13,12 +13,10 @@ import { getAuth, Auth } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 import Navbar from "../components/Navbar";
 
-
-declare module '@mui/styles/defaultTheme' {
+declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
-
 
 // import { wrapper } from "../firebase";
 
@@ -28,9 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
   };
   const locale = "en";
   // const theme = createTheme(themeOptions);
-  const theme = createTheme(adaptV4Theme({
+  const theme = createTheme({
     palette: {
-      // mode: "light",
       primary: {
         main: "#004d40",
       },
@@ -38,16 +35,14 @@ export default function App({ Component, pageProps }: AppProps) {
         main: "#26a69a",
       },
     },
-    overrides: {
-      MuiAppBar: {
-        colorPrimary: {
-          backgroundColor: "#662E9B",
-        },
-      },
-    },
-  }));
-  console.log("deleteMe theme primary in app.tsx is: ");
-  console.log(theme.palette.primary.main);
+    // overrides: {
+    //   MuiAppBar: {
+    //     colorPrimary: {
+    //       backgroundColor: "#662E9B",
+    //     },
+    //   },
+    // },
+  });
 
   let loading: boolean = true;
   const app = initializeApp(firebaseConfig);
@@ -61,20 +56,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AuthContext.Provider value={{ auth, loading }}>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <IntlProvider
-            messages={messageMap[locale]}
-            locale={locale}
-            defaultLocale="en"
-          >
-            <Container>
-              <Navbar></Navbar>
-              <Component {...pageProps} />
-            </Container>
-          </IntlProvider>
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <ThemeProvider theme={theme}>
+        <IntlProvider
+          messages={messageMap[locale]}
+          locale={locale}
+          defaultLocale="en"
+        >
+          <Container>
+            <Navbar />
+            <Component {...pageProps} />
+          </Container>
+        </IntlProvider>
+      </ThemeProvider>
     </AuthContext.Provider>
   );
 }

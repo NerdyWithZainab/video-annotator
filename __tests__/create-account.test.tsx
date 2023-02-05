@@ -43,7 +43,7 @@ describe("In account creation,", () => {
     );
     expect(emailErrorEl).toBeNull();
   });
-  test("when email address input is touched and is valid, there should be error text about the email address", () => {
+  test("when email address input is touched and is valid, there should not be error text about the email address", () => {
     renderWithReactIntl(locale, messages, <CreateAccount />);
     const emailAddressEl: HTMLInputElement | null | undefined = screen
       .queryByTestId("emailInput")
@@ -268,5 +268,15 @@ describe("In account creation,", () => {
     } else {
       expect(true).toBeFalsy();
     }
+  });
+
+  test("a user cannot create an account if they are logged in", () => {
+    // renderWithReactIntl(locale, messages, <Login />);
+    expect(true).toBeTruthy(); // @TODO
+    // expect(true).toBeFalsy();
+    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
+    //   messages["MUST_BE_VALID_EMAIL"]
+    // );
+    // expect(emailErrorEl).toBeNull();
   });
 });

@@ -11,5 +11,6 @@
   "CREATE_ACCOUNT": "Create Account",
   "VERIFY_EMAIL_ADDRESS": "Verify Your Email Address",
   "404_ERROR": "Whoops. Something didn't work.",
-  "SEND_VERIFICATION_EMAIL": "Resend verification email"
+  "SEND_VERIFICATION_EMAIL": "Resend verification email",
+  "LOGIN": "Login"
 }

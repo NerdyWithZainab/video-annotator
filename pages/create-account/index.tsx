@@ -1,16 +1,20 @@
-import React, { Fragment, ReactFragment, useState, useEffect } from "react";
+import React, {
+  Fragment,
+  ReactFragment,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import { useRouter } from "next/router";
-import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth";
+import useFirebaseAuth from "../../hooks/useFirebaseAuth";
+import { UserCredential } from "firebase/auth";
 
 // TODO delete this after you are satisfied that the wrapper thing is not the way to go
 // import { wrapper } from "../../firebase";
 
-import { TextField } from "@mui/material";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Paper } from "@mui/material";
+import { TextField, Paper, Button } from "@mui/material";
+import { FormattedMessage, useIntl, IntlShape } from "react-intl";
 import { AuthContext } from "../../contexts/authContext";
-import { Button } from "@mui/material";
-import { useContext } from "react";
 
 import CustomError from "../../components/Error/index";
 import {
@@ -20,10 +24,18 @@ import {
 } from "../../utilities/validators";
 
 const CreateAccount: React.FC = () => {
-  const intl = useIntl(); // @TODO what type is this??
+  const intl: IntlShape = useIntl(); // @TODO what type is this??
   const router = useRouter(); // @TODO what type is this??
 
   const { auth, loading } = useContext(AuthContext);
+
+  const {
+    authUser,
+    loading: firebaseLoading,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+  } = useFirebaseAuth();
   // console.log("deleteMe auth is currently: ");
   // console.log(auth);
   // console.log("deleteMe loading is currently: ");
