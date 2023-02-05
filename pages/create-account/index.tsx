@@ -8,6 +8,8 @@ import React, {
 import { useRouter } from "next/router";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 import { UserCredential } from "firebase/auth";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import InputAdornment from "@mui/material/InputAdornment";
 
 // TODO delete this after you are satisfied that the wrapper thing is not the way to go
 // import { wrapper } from "../../firebase";
@@ -29,13 +31,8 @@ const CreateAccount: React.FC = () => {
 
   const { auth, loading } = useContext(AuthContext);
 
-  const {
-    authUser,
-    loading: firebaseLoading,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    signOut,
-  } = useFirebaseAuth();
+  const { loading: firebaseLoading, createUserWithEmailAndPassword } =
+    useFirebaseAuth();
   // console.log("deleteMe auth is currently: ");
   // console.log(auth);
   // console.log("deleteMe loading is currently: ");
@@ -51,6 +48,8 @@ const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [passwordFieldType, setPasswordFieldType] =
+    useState<string>("password");
 
   useEffect(() => {
     if (
@@ -98,6 +97,14 @@ const CreateAccount: React.FC = () => {
     const currentUsername = event?.currentTarget?.value;
     setUsername(currentUsername);
     setUserNameInvalid(!isValidUsername(currentUsername));
+  };
+
+  const handlePasswordVisibility = () => {
+    if (passwordFieldType === "password") {
+      setPasswordFieldType("text");
+    } else {
+      setPasswordFieldType("password");
+    }
   };
 
   const handleAccountCreation = async () => {
@@ -180,6 +187,7 @@ const CreateAccount: React.FC = () => {
       </div>
       <div>
         <TextField
+          type={passwordFieldType}
           fullWidth
           data-testid={"passwordInput"}
           error={passwordInvalid}
@@ -198,6 +206,13 @@ const CreateAccount: React.FC = () => {
           onChange={handlePasswordChange}
           style={{ marginBottom: 10, maxWidth: 400 }}
           value={password}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end" onClick={handlePasswordVisibility}>
+                <RemoveRedEyeIcon />
+              </InputAdornment>
+            ),
+          }}
         ></TextField>
       </div>
       <div>

@@ -13,13 +13,7 @@ import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 
 const Navbar: React.FC = () => {
   // const { auth, loading } = useContext(AuthContext);
-  const {
-    authUser,
-    loading: firebaseLoading,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    signOut,
-  } = useFirebaseAuth();
+  const { authUser, loading: firebaseLoading, signOut } = useFirebaseAuth();
   const currentUser = authUser?.currentUser;
   console.log("deleteMe currentUser is: ");
   console.log(currentUser);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Auth } from "firebase/auth";
+import { Auth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 
 export default function useFirebaseAuth() {
@@ -25,12 +25,28 @@ export default function useFirebaseAuth() {
   const { auth, loading: contextLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(authStateChanged);
-    return () => unsubscribe();
+    console.log("deleteMe got here c1 auth changed: ");
+    console.log(authStateChanged);
+    if (authStateChanged) {
+      const unsubscribe = auth.onAuthStateChanged(authStateChanged);
+      return () => unsubscribe();
+    }
+    return;
   }, []);
 
-  const signInWithEmailAndPassword = (email: string, password: string) =>
-    auth.signInWithEmailAndPassword(email, password);
+  const login = (email: string, password: string) => {
+    console.log("deleteMe got here b1 and auth is: ");
+    console.log(auth);
+    // return signInWithEmailAndPassword(auth, email, password);
+    signInWithEmailAndPassword(auth, email, password).then((res) => {
+      console.log("deleteMe e1 and res is: ");
+      console.log(res);
+      // @TODO left off here trying to figure out how to update the context from here
+    });
+    // if (!authUser) {
+    //   signInWithEmailAndPassword(auth, email, password);
+    // }
+  };
 
   const createUserWithEmailAndPassword = (email: string, password: string) =>
     auth.createUserWithEmailAndPassword(email, password);
@@ -40,7 +56,7 @@ export default function useFirebaseAuth() {
   return {
     authUser,
     loading,
-    signInWithEmailAndPassword,
+    login,
     createUserWithEmailAndPassword,
     signOut,
   };

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { Paper, TextField, Button } from "@mui/material";
-import Icon from "@mui/material/Icon";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { FormattedMessage, useIntl, IntlShape } from "react-intl";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import { isValidEmail } from "../../utilities/validators";
@@ -12,7 +11,7 @@ import { setUserProperties } from "firebase/analytics";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 
 const Login: React.FC = () => {
-  const intl: IntlShape = useIntl(); // @TODO what type is this??
+  const intl: IntlShape = useIntl();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
@@ -24,7 +23,7 @@ const Login: React.FC = () => {
   const {
     authUser,
     loading: firebaseLoading,
-    signInWithEmailAndPassword,
+    login,
     createUserWithEmailAndPassword,
     signOut,
   } = useFirebaseAuth();
@@ -41,17 +40,41 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = async () => {
+    console.log(
+      "deleteMe handleLogin entered. Email is: " +
+        email +
+        " and password is: " +
+        password
+    );
     try {
-      if (authUser) {
-        signInWithEmailAndPassword(email, password);
+      // signOut(); // @TODO delete this
+      console.log("deleteMe got here a1 and authUser is: ");
+      console.log(authUser);
+      if (!authUser) {
+        console.log("deleteMe got here a2 authUser before login is: ");
+        console.log(authUser);
+        // const signedIn = await login(email, password);
+        login(email, password).then((res) => {
+          console.log("deleteMe got here d1 and res is: ");
+          console.log(res);
+        });
+        // console.log("deleteMe signedIn is: ");
+        // console.log(signedIn);
+        console.log("deleteMe authUser after login is: ");
+        console.log(authUser);
       }
     } catch (error: any) {
+      console.log("deleteMe got here a2");
       setError(error?.message);
     }
   };
 
   const handlePasswordVisibility = () => {
-    console.log("deleteMe clicked!");
+    if (passwordFieldType === "password") {
+      setPasswordFieldType("text");
+    } else {
+      setPasswordFieldType("password");
+    }
   };
 
   useEffect(() => {
