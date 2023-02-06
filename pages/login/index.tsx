@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-
-import { Paper, TextField, Button } from "@mui/material";
+import { useRouter, NextRouter } from "next/router";
+import { Paper, TextField, Button, Link } from "@mui/material";
 import { FormattedMessage, useIntl, IntlShape } from "react-intl";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -9,8 +9,11 @@ import { isValidEmail } from "../../utilities/validators";
 import CustomError from "../../components/Error/index";
 import { setUserProperties } from "firebase/analytics";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
+import { FirebaseError } from "firebase/app";
+import useOnEnter from "../../hooks/useOnEnter";
 
 const Login: React.FC = () => {
+  const router: NextRouter = useRouter();
   const intl: IntlShape = useIntl();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -21,11 +24,12 @@ const Login: React.FC = () => {
     useState<string>("password");
 
   const {
-    authUser,
+    user,
     loading: firebaseLoading,
     login,
-    createUserWithEmailAndPassword,
+    createUser,
     signOut,
+    authError,
   } = useFirebaseAuth();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,27 +52,25 @@ const Login: React.FC = () => {
     );
     try {
       // signOut(); // @TODO delete this
-      console.log("deleteMe got here a1 and authUser is: ");
-      console.log(authUser);
-      if (!authUser) {
-        console.log("deleteMe got here a2 authUser before login is: ");
-        console.log(authUser);
-        // const signedIn = await login(email, password);
-        login(email, password).then((res) => {
-          console.log("deleteMe got here d1 and res is: ");
-          console.log(res);
-        });
-        // console.log("deleteMe signedIn is: ");
-        // console.log(signedIn);
-        console.log("deleteMe authUser after login is: ");
-        console.log(authUser);
+      console.log("deleteMe got here a1 and user is: ");
+      console.log(user);
+      if (!user) {
+        console.log("deleteMe got here a2 user before login is: ");
+        console.log(user);
+        await login(email, password);
+        console.log("deleteMe user after login is: ");
+        console.log(user);
       }
     } catch (error: any) {
-      console.log("deleteMe got here a2");
       setError(error?.message);
     }
   };
 
+  useOnEnter(() => {
+    if (allRequiredValid) {
+      handleLogin();
+    }
+  });
   const handlePasswordVisibility = () => {
     if (passwordFieldType === "password") {
       setPasswordFieldType("text");
@@ -76,6 +78,10 @@ const Login: React.FC = () => {
       setPasswordFieldType("password");
     }
   };
+
+  useEffect(() => {
+    if (user) router.replace("/");
+  }, [user, router]);
 
   useEffect(() => {
     if (isValidEmail(email)) {
@@ -148,6 +154,7 @@ const Login: React.FC = () => {
         ></TextField>
       </div>
       <Button
+        style={{ marginBottom: 10 }}
         data-testid={"submit-button"}
         variant="contained"
         disabled={!allRequiredValid}
@@ -155,7 +162,34 @@ const Login: React.FC = () => {
       >
         <FormattedMessage id="LOGIN" defaultMessage="Login" />
       </Button>
-      {error && <CustomError errorMsg={error} />}
+      <div style={{ marginBottom: 10 }}>
+        <Link href="/forgot-password">
+          <FormattedMessage
+            id="FORGOT_PASSWORD"
+            defaultMessage="Forgot Password?"
+          />
+        </Link>
+      </div>
+      <div>
+        <Button variant="contained" href="/create-account">
+          <FormattedMessage
+            id="CREATE_ACCOUNT"
+            defaultMessage="Create Account"
+          ></FormattedMessage>
+        </Button>
+      </div>
+      {(error || authError) && (
+        <CustomError
+          errorMsg={
+            error ||
+            authError ||
+            intl.formatMessage({
+              id: "GENERIC_ERROR",
+              defaultMessage: "Unknown Error",
+            })
+          }
+        />
+      )}
     </Paper>
   );
 };

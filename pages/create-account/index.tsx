@@ -5,11 +5,12 @@ import React, {
   useEffect,
   useContext,
 } from "react";
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 import { UserCredential } from "firebase/auth";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import InputAdornment from "@mui/material/InputAdornment";
+import useOnEnter from "../../hooks/useOnEnter";
 
 // TODO delete this after you are satisfied that the wrapper thing is not the way to go
 // import { wrapper } from "../../firebase";
@@ -26,13 +27,13 @@ import {
 } from "../../utilities/validators";
 
 const CreateAccount: React.FC = () => {
-  const intl: IntlShape = useIntl(); // @TODO what type is this??
-  const router = useRouter(); // @TODO what type is this??
+  const intl: IntlShape = useIntl();
+  const router: NextRouter = useRouter(); // @TODO what type is this??
 
-  const { auth, loading } = useContext(AuthContext);
+  // const { auth, loading } = useContext(AuthContext);
+  const { auth, user } = useFirebaseAuth();
 
-  const { loading: firebaseLoading, createUserWithEmailAndPassword } =
-    useFirebaseAuth();
+  const { loading: firebaseLoading, createUser, authError } = useFirebaseAuth();
   // console.log("deleteMe auth is currently: ");
   // console.log(auth);
   // console.log("deleteMe loading is currently: ");
@@ -50,6 +51,14 @@ const CreateAccount: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [passwordFieldType, setPasswordFieldType] =
     useState<string>("password");
+  const [confirmPasswordFieldType, setConfirmPasswordFieldType] =
+    useState<string>("password");
+
+  useOnEnter(() => {
+    if (allRequiredValid) {
+      handleAccountCreation();
+    }
+  });
 
   useEffect(() => {
     if (
@@ -107,10 +116,22 @@ const CreateAccount: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) router.replace("/must-log-out-first");
+  }, [user, router]);
+
+  const handleConfirmPasswordVisibility = () => {
+    if (confirmPasswordFieldType === "password") {
+      setConfirmPasswordFieldType("text");
+    } else {
+      setConfirmPasswordFieldType("password");
+    }
+  };
+
   const handleAccountCreation = async () => {
     try {
       if (auth) {
-        const userInfo: UserCredential = await createUserWithEmailAndPassword(
+        const userInfo: UserCredential = await createUser(
           auth,
           email,
           password
@@ -217,6 +238,7 @@ const CreateAccount: React.FC = () => {
       </div>
       <div>
         <TextField
+          type={confirmPasswordFieldType}
           fullWidth
           data-testid={"confirmPasswordInput"}
           error={confirmPasswordInvalid}
@@ -239,6 +261,16 @@ const CreateAccount: React.FC = () => {
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleConfirmPasswordChange}
           value={confirmPassword}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end"
+                onClick={handleConfirmPasswordVisibility}
+              >
+                <RemoveRedEyeIcon />
+              </InputAdornment>
+            ),
+          }}
         ></TextField>
       </div>
       <div>
@@ -270,7 +302,7 @@ const CreateAccount: React.FC = () => {
       >
         <FormattedMessage id="CREATE_ACCOUNT" defaultMessage="Create Account" />
       </Button>
-      {error && <CustomError errorMsg={error} />}
+      {(error || authError) && <CustomError errorMsg={error || authError} />}
     </Paper>
   );
 };

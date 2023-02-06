@@ -1,1 +1,1 @@
-export const pathsToHideLoginBtnFrom: string[] = ["/create-account", "/login"];
+export const pathsToHideLoginBtnFrom: string[] = ["/login"]; //"/create-account",

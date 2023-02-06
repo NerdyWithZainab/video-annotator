@@ -10,21 +10,23 @@ import { useTheme } from "@mui/material/styles";
 import { useRouter, NextRouter } from "next/router";
 import { pathsToHideLoginBtnFrom } from "../../utilities/doNotShowLoginBtn";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
+import { FormattedMessage } from "react-intl";
 
 const Navbar: React.FC = () => {
   // const { auth, loading } = useContext(AuthContext);
-  const { authUser, loading: firebaseLoading, signOut } = useFirebaseAuth();
-  const currentUser = authUser?.currentUser;
-  console.log("deleteMe currentUser is: ");
-  console.log(currentUser);
+  const { user, loading: firebaseLoading, signOut } = useFirebaseAuth();
+  const displayName = user?.displayName || user?.email;
+  // const user = user?.user;
+  console.log("deleteMe user is: ");
+  console.log(user);
   const router: NextRouter = useRouter();
   console.log("deleteMe route is: ");
   console.log(router.pathname);
   const hideLoginBtn: boolean = pathsToHideLoginBtnFrom.includes(
     router.pathname
   );
-  const showLogin: boolean = !currentUser && !hideLoginBtn;
-  const showLogout: boolean = Boolean(currentUser);
+  const showLogin: boolean = !user && !hideLoginBtn;
+  const showLogout: boolean = Boolean(user);
 
   // const theme = useTheme();
 
@@ -46,17 +48,38 @@ const Navbar: React.FC = () => {
           Tmp
           {/* <MenuIcon /> */}
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News
-        </Typography>
+        {displayName && (
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <FormattedMessage
+              id="WELCOME_USER"
+              values={{ username: displayName }}
+            />
+          </Typography>
+        )}
+        {!displayName && (
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          ></Typography>
+        )}
         {showLogin && (
-          <Button variant="contained" color="secondary" href="/login">
-            Login
+          <Button
+            variant="contained"
+            color="secondary"
+            href="/login"
+            style={{ textAlign: "right" }}
+          >
+            <FormattedMessage id="LOGIN" defaultMessage="Login" />
           </Button>
         )}
         {showLogout && (
-          <Button variant="contained" onClick={handleLogout}>
-            Logout
+          <Button
+            variant="contained"
+            onClick={handleLogout}
+            style={{ justifyContent: "right" }}
+          >
+            <FormattedMessage id="LOGOUT" defaultMessage="Logout" />
           </Button>
         )}
       </Toolbar>

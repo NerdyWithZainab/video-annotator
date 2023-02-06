@@ -7,9 +7,10 @@ import { getAnalytics } from "firebase/analytics";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
 import { themeOptions } from "../styles/materialTheme";
+import { useState, useEffect } from "react";
 
 import { firebaseConfig } from "../firebase";
-import { getAuth, Auth } from "firebase/auth";
+import { getAuth, User } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 import Navbar from "../components/Navbar";
 
@@ -24,7 +25,16 @@ export default function App({ Component, pageProps }: AppProps) {
   const messageMap = {
     en: englishMessages,
   };
+  const [user, setUser] = useState<User | null>(null);
   const locale = "en";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  let loading: boolean = true;
+
+  useEffect(() => {
+    setUser(getAuth(app)?.currentUser);
+  }, [auth]);
   // const theme = createTheme(themeOptions);
   const theme = createTheme({
     palette: {
@@ -44,9 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
     // },
   });
 
-  let loading: boolean = true;
-  const app = initializeApp(firebaseConfig);
-  const auth: Auth | null = getAuth(app); // @TODO if wonky, improve the TypeScript here
+  // const auth: Auth | null = getAuth(app); // @TODO if wonky, improve the TypeScript here
   loading = false; // @TODO improve??
 
   if (app.name && typeof window !== "undefined") {
@@ -55,7 +63,7 @@ export default function App({ Component, pageProps }: AppProps) {
   // const auth: Auth = wrapper.auth;
 
   return (
-    <AuthContext.Provider value={{ auth, loading }}>
+    <AuthContext.Provider value={{ auth, user, loading, setUser }}>
       <ThemeProvider theme={theme}>
         <IntlProvider
           messages={messageMap[locale]}
