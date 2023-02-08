@@ -1,4 +1,4 @@
-import { Button, Paper } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 // import { auth } from "../firebase";
 import { User, sendEmailVerification, Auth, getAuth } from "firebase/auth";
@@ -33,12 +33,23 @@ const EmailVerification: React.FC = () => {
         maxWidth: 400,
       }}
     >
-      <h1 style={{ textAlign: "center" }}>
+      <Typography
+        variant="h4"
+        style={{ textAlign: "center", marginBottom: 10 }}
+      >
         <FormattedMessage
           id="VERIFY_EMAIL_ADDRESS"
           defaultMessage="Verify Your Email Address"
         />
-      </h1>
+      </Typography>
+      <Typography
+        variant="body1"
+        component="div"
+        sx={{ flexGrow: 1 }}
+        style={{ marginBottom: 10 }}
+      >
+        <FormattedMessage id="EMAIL_VERIFICATION_DESCRIPTION" />
+      </Typography>
       <Button variant="contained" onClick={handleVerificationEmailSendoff}>
         <FormattedMessage
           id="SEND_VERIFICATION_EMAIL"

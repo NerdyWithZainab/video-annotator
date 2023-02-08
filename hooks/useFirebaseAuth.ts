@@ -17,6 +17,7 @@ export default function useFirebaseAuth() {
   //   const [authUser, setAuthUser] = useState<Auth | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [emailVerified, setEmailVerified] = useState<boolean>(false);
 
   //   const authStateChanged = async (authState: Auth | null) => {
   //     if (!authState) {
@@ -40,6 +41,7 @@ export default function useFirebaseAuth() {
         console.log(user);
         //   setUser(auth.currentUser);
         setUser(user);
+        setEmailVerified(user?.emailVerified || false);
       });
     }
     // if (authStateChanged) {
@@ -91,5 +93,6 @@ export default function useFirebaseAuth() {
     createUser,
     signOut,
     authError,
+    emailVerified,
   };
 }
