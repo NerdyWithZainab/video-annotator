@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from "../../contexts/authContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useRouter, NextRouter } from "next/router";
 import { pathsToHideLoginBtnFrom } from "../../utilities/doNotShowLoginBtn";
@@ -25,8 +25,16 @@ const Navbar: React.FC = () => {
   const hideLoginBtn: boolean = pathsToHideLoginBtnFrom.includes(
     router.pathname
   );
-  const showLogin: boolean = !user && !hideLoginBtn;
-  const showLogout: boolean = Boolean(user);
+
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [showLogout, setShowLogout] = useState<boolean>(false);
+  // const showLogin: boolean = !user && !hideLoginBtn;
+  // const showLogout: boolean = Boolean(user);
+
+  useEffect(() => {
+    setShowLogin(!user && !hideLoginBtn);
+    setShowLogout(Boolean(user));
+  }, [user]);
 
   // const theme = useTheme();
 
@@ -68,6 +76,7 @@ const Navbar: React.FC = () => {
             variant="contained"
             color="secondary"
             href="/login"
+            data-testid="login-button"
             style={{ textAlign: "right" }}
           >
             <FormattedMessage id="LOGIN" defaultMessage="Login" />
@@ -76,6 +85,7 @@ const Navbar: React.FC = () => {
         {showLogout && (
           <Button
             variant="contained"
+            data-testid="logout-button"
             onClick={handleLogout}
             style={{ justifyContent: "right" }}
           >

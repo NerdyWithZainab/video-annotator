@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 
 import Login from "../pages/login";
+import Navbar from "../components/Navbar";
 import * as englishMessages from "../lang/en.json";
 
 import { IntlProvider } from "react-intl";
@@ -137,13 +138,18 @@ describe("When logging in,", () => {
   });
 
   test("a user doesn't see the login button on the login page", () => {
-    renderWithReactIntl(locale, messages, <Login />);
-    expect(true).toBeTruthy();
+    renderWithReactIntl(
+      locale,
+      messages,
+      <>
+        <Navbar />
+        {/* <Login /> */}
+      </>
+    );
+    const loginButtonEl: HTMLButtonElement | null =
+      screen.queryByTestId("login-button");
     // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
+    expect(loginButtonEl).not.toBeVisible();
   });
 
   test("a user can't successfully visit non-verification pages if their email isn't verified", () => {

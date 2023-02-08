@@ -34,10 +34,14 @@ export default function useFirebaseAuth() {
   useEffect(() => {
     // console.log("deleteMe got here c1 auth changed: ");
     // console.log(authStateChanged);
-    onAuthStateChanged(auth, () => {
-      console.log("deleteMe authState has changed...updating");
-      setUser(auth.currentUser);
-    });
+    if (auth) {
+      onAuthStateChanged(auth, (user) => {
+        console.log("deleteMe authState has changed...updating and user is: ");
+        console.log(user);
+        //   setUser(auth.currentUser);
+        setUser(user);
+      });
+    }
     // if (authStateChanged) {
     //   setUser(auth.currentUser);
     //   const unsubscribe = auth.onAuthStateChanged(authStateChanged);
