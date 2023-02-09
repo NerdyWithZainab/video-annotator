@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  let loading: boolean = true;
+  let loading: boolean = true; // @TODO fix this
 
   useEffect(() => {
     setUser(getAuth(app)?.currentUser);
@@ -38,8 +38,6 @@ export default function App({ Component, pageProps }: AppProps) {
       },
     },
   });
-
-  // loading = false; // @TODO improve
 
   if (app.name && typeof window !== "undefined") {
     const analytics = getAnalytics(app); // @TODO flesh out

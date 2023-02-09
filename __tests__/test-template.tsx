@@ -28,7 +28,7 @@ describe("In @TODO,", () => {
   test("@TODO delete this one", () => {
     expect(true).toBeTruthy();
   });
-  //   test("cannot access this page if email is not verified", () => {
+  //   test("cannot access this page if email is not verified or user not logged in", () => {
   //     //   renderWithReactIntl(locale, messages, <CreateAccount />);
   //     //   const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
   //     //     messages["MUST_BE_VALID_EMAIL"]

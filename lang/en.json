@@ -17,5 +17,5 @@
   "LOGIN": "Login",
   "LOGOUT": "Logout",
   "FORGOT_PASSWORD": "Forgot Password?",
-  "EMAIL_VERIFICATION_DESCRIPTION": "It seems that you have not yet verified your email address. Please check your email for a link from us. If not, please click the button below to re-send."
+  "EMAIL_VERIFICATION_DESCRIPTION": "You have not yet verified your email address. Please check your email for a link from us. If not, please click the button below to re-send."
 }
