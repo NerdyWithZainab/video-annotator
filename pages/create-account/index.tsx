@@ -19,7 +19,7 @@ import {
 
 const CreateAccount: React.FC = () => {
   const intl: IntlShape = useIntl();
-  const router: NextRouter = useRouter(); // @TODO what type is this??
+  const router: NextRouter = useRouter();
 
   const { auth, user } = useFirebaseAuth();
 

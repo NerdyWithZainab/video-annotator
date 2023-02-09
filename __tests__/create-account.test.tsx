@@ -32,16 +32,8 @@ const renderWithReactIntl = (
 afterEach(cleanup);
 
 jest.mock("next/router", () => require("next-router-mock"));
-// jest.mock("auth/firebase", () => {
-//   const onAuthStateChanged = () => {
-//     return null;
-//   };
-// });
 
 describe("In account creation,", () => {
-  // test("This is dummy test", () => {
-  //   expect(true).toBeTruthy();
-  // });
   test("when email address input is untouched, there should be no error text about the email address", () => {
     renderWithReactIntl(locale, messages, <CreateAccount />);
     const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(

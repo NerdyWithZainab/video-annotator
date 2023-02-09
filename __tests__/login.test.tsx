@@ -138,7 +138,7 @@ describe("When logging in,", () => {
   });
 
   // test("a user doesn't see the login button on the login page", () => {
-  //   renderWithReactIntl(
+  //   renderWithReactIntl( // @TODO flesh this out
   //     locale,
   //     messages,
   //     <>
@@ -153,7 +153,7 @@ describe("When logging in,", () => {
   // }); // @TODO get this to work
 
   test("a user can't successfully visit non-verification pages if their email isn't verified", () => {
-    renderWithReactIntl(locale, messages, <Login />);
+    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
     expect(true).toBeTruthy();
     // expect(true).toBeFalsy();
     // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
@@ -162,7 +162,7 @@ describe("When logging in,", () => {
     // expect(emailErrorEl).toBeNull();
   });
   test("a user is directed to the verification page if their email isn't verified but they are logged in", () => {
-    renderWithReactIntl(locale, messages, <Login />);
+    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
     expect(true).toBeTruthy();
     // expect(true).toBeFalsy();
     // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
@@ -171,7 +171,7 @@ describe("When logging in,", () => {
     // expect(emailErrorEl).toBeNull();
   });
   test("a user doesn't see the login button if they are already logged in or if they are in the create-account page", () => {
-    renderWithReactIntl(locale, messages, <Login />);
+    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
     expect(true).toBeTruthy();
     // expect(true).toBeFalsy();
     // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
@@ -180,7 +180,7 @@ describe("When logging in,", () => {
     // expect(emailErrorEl).toBeNull();
   });
   test("a user doesn't see the login button if they are in the create-account page", () => {
-    renderWithReactIntl(locale, messages, <Login />);
+    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
     expect(true).toBeTruthy();
     // expect(true).toBeFalsy();
     // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
