@@ -9,6 +9,7 @@ import {
 import * as englishMessages from "../lang/en.json";
 
 import { IntlProvider } from "react-intl";
+import Navbar from "../components/Navbar";
 
 const messageMap: {} = {
   en: englishMessages,
@@ -31,6 +32,11 @@ const renderWithReactIntl = (
 afterEach(cleanup);
 
 jest.mock("next/router", () => require("next-router-mock"));
+// jest.mock("auth/firebase", () => {
+//   const onAuthStateChanged = () => {
+//     return null;
+//   };
+// });
 
 describe("In account creation,", () => {
   // test("This is dummy test", () => {
@@ -43,7 +49,7 @@ describe("In account creation,", () => {
     );
     expect(emailErrorEl).toBeNull();
   });
-  test("when email address input is touched and is valid, there should be error text about the email address", () => {
+  test("when email address input is touched and is valid, there should not be error text about the email address", () => {
     renderWithReactIntl(locale, messages, <CreateAccount />);
     const emailAddressEl: HTMLInputElement | null | undefined = screen
       .queryByTestId("emailInput")
@@ -268,5 +274,29 @@ describe("In account creation,", () => {
     } else {
       expect(true).toBeFalsy();
     }
+  });
+
+  test("a user sees the login button on the create account page", () => {
+    renderWithReactIntl(
+      locale,
+      messages,
+      <>
+        <Navbar />
+        {/* <CreateAccount /> */}
+      </>
+    );
+    const loginButtonEl: HTMLButtonElement | null =
+      screen.queryByTestId("login-button");
+    expect(loginButtonEl).not.toBeNull();
+  });
+
+  test("a user cannot create an account if they are logged in", () => {
+    // renderWithReactIntl(locale, messages, <Login />);
+    expect(true).toBeTruthy(); // @TODO
+    // expect(true).toBeFalsy();
+    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
+    //   messages["MUST_BE_VALID_EMAIL"]
+    // );
+    // expect(emailErrorEl).toBeNull();
   });
 });

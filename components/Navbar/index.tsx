@@ -2,44 +2,72 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
-import { AuthContext } from "../../contexts/authContext";
-import { useContext } from "react";
-import { useTheme } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+import { useRouter, NextRouter } from "next/router";
+import { pathsToHideLoginBtnFrom } from "../../utilities/doNotShowLoginBtn";
+import useFirebaseAuth from "../../hooks/useFirebaseAuth";
+import { FormattedMessage } from "react-intl";
+// import Logo from "../Logo";
 
 const Navbar: React.FC = () => {
-  const { auth, loading } = useContext(AuthContext);
-  const currentUser = auth?.currentUser;
+  const { user, signOut } = useFirebaseAuth();
+  const displayName = user?.displayName || user?.email;
+  const router: NextRouter = useRouter();
+  const hideLoginBtn: boolean = pathsToHideLoginBtnFrom.includes(
+    router.pathname
+  );
 
-  const theme = useTheme();
-  console.log("deleteMe theme primary in child is: ");
-  // console.log(theme);
-  console.log(theme.palette.primary.main);
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [showLogout, setShowLogout] = useState<boolean>(false);
 
-  const handleLogout = () => {
-    auth.signOut();
-    // @TODO I think I need a custom hook to handle listening for this state change
+  useEffect(() => {
+    setShowLogin(!user && !hideLoginBtn);
+    setShowLogout(Boolean(user));
+  }, [user, hideLoginBtn]);
+
+  const handleLogout = async () => {
+    await signOut();
   };
-  //color={theme.palette.primary}
   return (
-    <AppBar
-      position="sticky"
-      style={{ backgroundColor: theme.palette.primary.main }}
-      // color="primary"
-    >
+    <AppBar position="sticky" color="primary">
       <Toolbar>
-        <IconButton size="large" edge="start" aria-label="menu" sx={{ mr: 2 }}>
-          Tmp
-          {/* <MenuIcon /> */}
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News
-        </Typography>
-        {!currentUser && <Button variant="contained">Login</Button>}
-        {currentUser && (
-          <Button variant="contained" onClick={handleLogout}>
-            Logout
+        {/* <Logo
+          style={{ display: "block", width: 50, margin: "16px 8px 20px 0" }}
+        /> */}
+        {displayName && (
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <FormattedMessage
+              id="WELCOME_USER"
+              values={{ username: displayName }}
+            />
+          </Typography>
+        )}
+        {!displayName && (
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          ></Typography>
+        )}
+        {showLogin && (
+          <Button
+            variant="contained"
+            color="secondary"
+            href="/login"
+            data-testid="login-button"
+            style={{ textAlign: "right" }}
+          >
+            <FormattedMessage id="LOGIN" defaultMessage="Login" />
+          </Button>
+        )}
+        {showLogout && (
+          <Button
+            variant="contained"
+            data-testid="logout-button"
+            onClick={handleLogout}
+            style={{ justifyContent: "right" }}
+          >
+            <FormattedMessage id="LOGOUT" defaultMessage="Logout" />
           </Button>
         )}
       </Toolbar>
