@@ -6,20 +6,12 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
-import { themeOptions } from "../styles/materialTheme";
 import { useState, useEffect } from "react";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, User } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 import Navbar from "../components/Navbar";
-
-declare module "@mui/styles/defaultTheme" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
-
-// import { wrapper } from "../firebase";
 
 export default function App({ Component, pageProps }: AppProps) {
   const messageMap = {
@@ -34,8 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     setUser(getAuth(app)?.currentUser);
-  }, [auth]);
-  // const theme = createTheme(themeOptions);
+  }, [auth, app]);
+
   const theme = createTheme({
     palette: {
       primary: {
@@ -45,22 +37,13 @@ export default function App({ Component, pageProps }: AppProps) {
         main: "#26a69a",
       },
     },
-    // overrides: {
-    //   MuiAppBar: {
-    //     colorPrimary: {
-    //       backgroundColor: "#662E9B",
-    //     },
-    //   },
-    // },
   });
 
-  // const auth: Auth | null = getAuth(app); // @TODO if wonky, improve the TypeScript here
-  loading = false; // @TODO improve??
+  // loading = false; // @TODO improve
 
   if (app.name && typeof window !== "undefined") {
-    const analytics = getAnalytics(app);
+    const analytics = getAnalytics(app); // @TODO flesh out
   }
-  // const auth: Auth = wrapper.auth;
 
   return (
     <AuthContext.Provider value={{ auth, user, loading, setUser }}>

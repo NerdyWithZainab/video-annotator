@@ -1,22 +1,14 @@
 import { Button, Paper, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
-// import { auth } from "../firebase";
 import { User, sendEmailVerification, Auth, getAuth } from "firebase/auth";
 
 const EmailVerification: React.FC = () => {
   const auth: Auth = getAuth();
   const currentUser: User | null = auth.currentUser;
-  if (currentUser) {
-    // @TODO deleteMe
-    // console.log("deleteMe currentUser is: ");
-    // console.log(currentUser);
-  }
 
   const handleVerificationEmailSendoff = async () => {
     if (currentUser) {
-      const verificationEmailSender = await sendEmailVerification(currentUser);
-      // console.log("deleteMe verificationEmailSender info is: ");
-      // console.log(verificationEmailSender);
+      await sendEmailVerification(currentUser);
     }
   };
 

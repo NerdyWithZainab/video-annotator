@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  ReactFragment,
-  useState,
-  useEffect,
-  useContext,
-} from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, NextRouter } from "next/router";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 import { UserCredential } from "firebase/auth";
@@ -12,12 +6,9 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import InputAdornment from "@mui/material/InputAdornment";
 import useOnEnter from "../../hooks/useOnEnter";
 
-// TODO delete this after you are satisfied that the wrapper thing is not the way to go
-// import { wrapper } from "../../firebase";
-
 import { TextField, Paper, Button } from "@mui/material";
 import { FormattedMessage, useIntl, IntlShape } from "react-intl";
-import { AuthContext } from "../../contexts/authContext";
+import { sendEmailVerification } from "firebase/auth";
 
 import CustomError from "../../components/Error/index";
 import {
@@ -30,15 +21,10 @@ const CreateAccount: React.FC = () => {
   const intl: IntlShape = useIntl();
   const router: NextRouter = useRouter(); // @TODO what type is this??
 
-  // const { auth, loading } = useContext(AuthContext);
   const { auth, user } = useFirebaseAuth();
 
-  const { loading: firebaseLoading, createUser, authError } = useFirebaseAuth();
-  // console.log("deleteMe auth is currently: ");
-  // console.log(auth);
-  // console.log("deleteMe loading is currently: ");
-  // console.log(loading);
-  const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
+  const { createUser, authError } = useFirebaseAuth();
+  const [emailInvalid, setEmailInvalid] = useState<boolean>(false); // @TODO all of these useStates probably might could be cleaned up and combined
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
   const [confirmPasswordInvalid, setConfirmPasswordInvalid] =
     useState<boolean>(false);
@@ -139,12 +125,8 @@ const CreateAccount: React.FC = () => {
         const userToken: string | null =
           (await userInfo?.user?.getIdToken()) || null;
         if (userToken) {
-          //  && auth.currentUser
-          // const verificationEmailSender = await sendEmailVerification(
-          //   auth.currentUser
-          // );
-          // console.log("deleteMe verificationEmailSender info is: ");
-          // console.log(verificationEmailSender);
+          // @TODO handle the fact that the user gets redirected to the scenario wherein they can't be in account creation without being logged out
+          await sendEmailVerification(user);
           router.push("email-verification");
         } else {
           router.push("error");
@@ -153,11 +135,7 @@ const CreateAccount: React.FC = () => {
         router.push("error");
       }
     } catch (error: any) {
-      console.log("deleteMe error is: ");
-      console.log(error?.message);
       setError(error?.message);
-      // return <CustomError errorMsg={error?.message} />;
-      // router.push("error");
     }
   };
 

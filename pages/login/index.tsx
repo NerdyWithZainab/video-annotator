@@ -7,15 +7,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 import { isValidEmail } from "../../utilities/validators";
 import CustomError from "../../components/Error/index";
-import { setUserProperties } from "firebase/analytics";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
-import { FirebaseError } from "firebase/app";
 import useOnEnter from "../../hooks/useOnEnter";
 
 const Login: React.FC = () => {
   const router: NextRouter = useRouter();
   const intl: IntlShape = useIntl();
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>(""); // @TODO simplify all of these useStates
   const [password, setPassword] = useState<string>("");
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
   const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
@@ -23,14 +21,7 @@ const Login: React.FC = () => {
   const [passwordFieldType, setPasswordFieldType] =
     useState<string>("password");
 
-  const {
-    user,
-    loading: firebaseLoading,
-    login,
-    createUser,
-    signOut,
-    authError,
-  } = useFirebaseAuth();
+  const { user, login, authError } = useFirebaseAuth();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail: string = event?.currentTarget?.value;
@@ -44,22 +35,9 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    console.log(
-      "deleteMe handleLogin entered. Email is: " +
-        email +
-        " and password is: " +
-        password
-    );
     try {
-      // signOut(); // @TODO delete this
-      console.log("deleteMe got here a1 and user is: ");
-      console.log(user);
       if (!user) {
-        console.log("deleteMe got here a2 user before login is: ");
-        console.log(user);
         await login(email, password);
-        console.log("deleteMe user after login is: ");
-        console.log(user);
       }
     } catch (error: any) {
       setError(error?.message);
