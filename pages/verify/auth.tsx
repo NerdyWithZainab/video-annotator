@@ -1,15 +1,25 @@
 import { useRouter, NextRouter } from "next/router";
 
-import { getAuth, Auth } from "firebase/auth";
-
+import useFirebaseAuth from "../../hooks/useFirebaseAuth";
+import CustomError from "../../components/Error";
 const VerifyEmailAddress: React.FC = () => {
-  const auth: Auth = getAuth();
-  const currentUser = auth?.currentUser;
+  // const currentUser = auth?.currentUser;
 
   const router: NextRouter = useRouter();
-  //   const query = // @TODO flesh out
+  const { verifyEmail, authError } = useFirebaseAuth();
+  const oobCode: string | undefined = router?.query?.oobCode?.toString() || "";
+  console.log("deleteMe oobCode is: ");
+  console.log(oobCode);
+  if (oobCode) {
+    verifyEmail(oobCode);
+  }
 
-  return <h1>Email verified?</h1>;
+  return (
+    <>
+      <h1>Email verified?</h1>
+      {authError && <CustomError errorMsg={authError} />}
+    </>
+  );
 };
 
 export default VerifyEmailAddress;
