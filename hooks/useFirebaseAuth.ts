@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  applyActionCode,
 } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 
@@ -39,9 +40,21 @@ export default function useFirebaseAuth() {
   };
 
   const createUser = (auth: Auth, email: string, password: string) =>
-    createUserWithEmailAndPassword(auth, email, password);
+    createUserWithEmailAndPassword(auth, email, password); // @TODO how does user know to update on this one without calling setUser??
 
   const signOut = () => auth.signOut().then(clear); // @TODO then send me to a welcome page
+
+  const verifyEmail = async (oobCode: string) => {
+    try {
+      const res = await applyActionCode(auth, oobCode);
+      console.log("deleteMe res in verifyEmail is: ");
+      console.log(res);
+    } catch (error: any) {
+      console.log("deleteMe verifyEmail error is: ");
+      console.log(error.message);
+      setAuthError(error.message);
+    }
+  };
 
   return {
     auth,
@@ -52,5 +65,6 @@ export default function useFirebaseAuth() {
     signOut,
     authError,
     emailVerified,
+    verifyEmail,
   };
 }
