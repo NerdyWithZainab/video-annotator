@@ -7,6 +7,7 @@ import { getAnalytics } from "firebase/analytics";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
+// import useFirebaseAuth from "../hooks/useFirebaseAuth";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, User } from "firebase/auth";
@@ -14,10 +15,13 @@ import { AuthContext } from "../contexts/authContext";
 import Navbar from "../components/Navbar";
 
 export default function App({ Component, pageProps }: AppProps) {
+  console.log("deleteMe App re-renders");
   const messageMap = {
     en: englishMessages,
   };
+
   const [user, setUser] = useState<User | null>(null);
+
   const locale = "en";
 
   const app = initializeApp(firebaseConfig);

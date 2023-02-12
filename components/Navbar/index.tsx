@@ -21,6 +21,8 @@ const Navbar: React.FC = () => {
   const [showLogout, setShowLogout] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log("deleteMe user is: ");
+    console.log(user);
     setShowLogin(!user && !hideLoginBtn);
     setShowLogout(Boolean(user));
   }, [user, hideLoginBtn]);

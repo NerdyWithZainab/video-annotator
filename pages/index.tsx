@@ -13,7 +13,8 @@ export default function Home() {
   const { emailVerified } = useFirebaseAuth();
 
   useEffect(() => {
-    if (!emailVerified) router.replace("/email-verification");
+    console.log("deleteMe emailVerified in index is: " + emailVerified);
+    // if (!emailVerified) router.replace("/email-verification");
   }, [emailVerified, router]);
   return (
     <>
