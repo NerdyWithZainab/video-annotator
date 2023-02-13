@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   applyActionCode,
+  User,
 } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 
@@ -15,12 +16,15 @@ export default function useFirebaseAuth() {
   const [emailVerified, setEmailVerified] = useState<boolean>(false);
 
   useEffect(() => {
+    let unsub = () => {};
     if (auth) {
-      onAuthStateChanged(auth, (user) => {
+      unsub = onAuthStateChanged(auth, (user) => {
         setUser(user);
         setEmailVerified(user?.emailVerified || false);
       });
     }
+
+    return unsub();
   }, [auth, setUser]);
 
   const clear = () => {
@@ -39,20 +43,24 @@ export default function useFirebaseAuth() {
     }
   };
 
-  const createUser = (auth: Auth, email: string, password: string) =>
-    createUserWithEmailAndPassword(auth, email, password); // @TODO how does user know to update on this one without calling setUser??
+  const createUser = async (auth: Auth, email: string, password: string) => {
+    const res = await createUserWithEmailAndPassword(auth, email, password); // @TODO how does user know to update on this one without calling setUser??
+    setUser(res?.user);
+    return res;
+  };
 
   const signOut = () => auth.signOut().then(clear); // @TODO then send me to a welcome page
 
-  const verifyEmail = async (oobCode: string) => {
+  const verifyEmail = async (oobCode: string): Promise<User> => {
     try {
-      const res = await applyActionCode(auth, oobCode);
-      console.log("deleteMe res in verifyEmail is: ");
-      console.log(res);
+      await applyActionCode(auth, oobCode);
+      await auth.currentUser.reload(); // @TODO no longer necessary?
+      setUser(auth.currentUser);
+      // @TODO setEmailVerified ??
     } catch (error: any) {
-      console.log("deleteMe verifyEmail error is: ");
-      console.log(error.message);
       setAuthError(error.message);
+    } finally {
+      return auth.currentUser;
     }
   };
 
@@ -66,5 +74,6 @@ export default function useFirebaseAuth() {
     authError,
     emailVerified,
     verifyEmail,
+    setAuthError,
   };
 }

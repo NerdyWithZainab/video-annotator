@@ -103,7 +103,7 @@ const CreateAccount: React.FC = () => {
   };
 
   useEffect(() => {
-    if (user) router.replace("/must-log-out-first");
+    // if (user) router.replace("/must-log-out-first"); // @TODO comment back in
   }, [user, router]);
 
   const handleConfirmPasswordVisibility = () => {
@@ -126,8 +126,8 @@ const CreateAccount: React.FC = () => {
           (await userInfo?.user?.getIdToken()) || null;
         if (userToken) {
           // @TODO handle the fact that the user gets redirected to the scenario wherein they can't be in account creation without being logged out
-          await sendEmailVerification(user);
-          router.push("email-verification");
+          // await sendEmailVerification(user);
+          // router.push("email-verification"); // @TODO comment back in
         } else {
           router.push("error");
         }

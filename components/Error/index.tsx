@@ -18,27 +18,27 @@ const CustomError: React.FC<{ errorMsg?: string | undefined | null }> = (
         maxWidth: 400,
       }}
     >
-      {props?.errorMsg && (
-        <React.Fragment>
-          <h1>
-            <FormattedMessage
-              id="404_ERROR"
-              defaultMessage="Whoops. Something didn't work."
-            ></FormattedMessage>
-          </h1>
-          <Alert severity="error" style={{ textAlign: "center" }}>
-            {props.errorMsg}
-          </Alert>
-        </React.Fragment>
-      )}
-      {!props?.errorMsg && (
-        <Alert style={{ textAlign: "center" }}>
+      <React.Fragment>
+        <h1>
           <FormattedMessage
             id="404_ERROR"
             defaultMessage="Whoops. Something didn't work."
           ></FormattedMessage>
-        </Alert>
-      )}
+        </h1>
+        {props?.errorMsg && (
+          <Alert severity="error" style={{ textAlign: "center" }}>
+            {props.errorMsg}
+          </Alert>
+        )}
+        {!props?.errorMsg && (
+          <Alert style={{ textAlign: "center" }} severity="error">
+            <FormattedMessage
+              id="GENERIC_ERROR"
+              defaultMessage="There was an error, but we don't have an error code for it."
+            ></FormattedMessage>
+          </Alert>
+        )}
+      </React.Fragment>
     </Paper>
   );
 }; // @TODO improve upon this
