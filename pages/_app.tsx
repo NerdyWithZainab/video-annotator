@@ -8,6 +8,14 @@ import { Container } from "@mui/material";
 import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 // import useFirebaseAuth from "../hooks/useFirebaseAuth";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import { firebaseConfig } from "../firebase";
 import { getAuth, User } from "firebase/auth";
@@ -16,6 +24,8 @@ import Navbar from "../components/Navbar";
 
 export default function App({ Component, pageProps }: AppProps) {
   console.log("deleteMe App re-renders");
+
+  const queryClient = new QueryClient();
   const messageMap = {
     en: englishMessages,
   };
@@ -48,19 +58,22 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ auth, user, loading, setUser }}>
-      <ThemeProvider theme={theme}>
-        <IntlProvider
-          messages={messageMap[locale]}
-          locale={locale}
-          defaultLocale="en"
-        >
-          <Container>
-            <Navbar />
-            <Component {...pageProps} />
-          </Container>
-        </IntlProvider>
-      </ThemeProvider>
-    </AuthContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AuthContext.Provider value={{ auth, user, loading, setUser }}>
+        <ThemeProvider theme={theme}>
+          <IntlProvider
+            messages={messageMap[locale]}
+            locale={locale}
+            defaultLocale="en"
+          >
+            <Container>
+              <Navbar />
+              <Component {...pageProps} />
+            </Container>
+          </IntlProvider>
+        </ThemeProvider>
+      </AuthContext.Provider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }

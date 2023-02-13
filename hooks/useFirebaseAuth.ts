@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   applyActionCode,
+  User,
 } from "firebase/auth";
 import { AuthContext } from "../contexts/authContext";
 
@@ -55,7 +56,7 @@ export default function useFirebaseAuth() {
 
   const signOut = () => auth.signOut().then(clear); // @TODO then send me to a welcome page
 
-  const verifyEmail = async (oobCode: string) => {
+  const verifyEmail = async (oobCode: string): Promise<User> => {
     try {
       console.log("deleteMe a1 user before action code verify is:");
       console.log(auth.currentUser);
@@ -73,6 +74,8 @@ export default function useFirebaseAuth() {
     } catch (error: any) {
       console.log("deleteMe got an error when verifying email");
       setAuthError(error.message);
+    } finally {
+      return auth.currentUser;
     }
   };
 

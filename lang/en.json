@@ -18,6 +18,7 @@
   "LOGOUT": "Logout",
   "FORGOT_PASSWORD": "Forgot Password?",
   "EMAIL_VERIFICATION_DESCRIPTION": "You have not yet verified your email address. Please check your email for a link from us. If not, please click the button below to re-send.",
-  "EMAIL_VERIFIED": "Congratulations! Your email address has been verified.",
-  "EMAIL_VERIFYING": "Attempting to verify your email address..."
+  "EMAIL_VERIFIED": "Congratulations! Your email address has been verified. No further action required on this page.",
+  "EMAIL_VERIFYING": "Attempting to verify your email address...",
+  "USER_NOT_LOGGED_IN": "We can't find the user data; make sure you're logged in."
 }

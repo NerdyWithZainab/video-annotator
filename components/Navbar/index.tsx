@@ -10,15 +10,14 @@ import { FormattedMessage } from "react-intl";
 // import Logo from "../Logo";
 
 const Navbar: React.FC = () => {
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [showLogout, setShowLogout] = useState<boolean>(false);
   const { user, signOut } = useFirebaseAuth();
   const displayName = user?.displayName || user?.email;
   const router: NextRouter = useRouter();
   const hideLoginBtn: boolean = pathsToHideLoginBtnFrom.includes(
     router.pathname
   );
-
-  const [showLogin, setShowLogin] = useState<boolean>(false);
-  const [showLogout, setShowLogout] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("deleteMe user is: ");
