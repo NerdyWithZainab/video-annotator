@@ -1,11 +1,9 @@
 import { Button, Paper, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
-import { User, sendEmailVerification, Auth, getAuth } from "firebase/auth";
+import { sendEmailVerification } from "firebase/auth";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 
 const EmailVerification: React.FC = () => {
-  // const auth: Auth = getAuth();
-  // const currentUser: User | null = auth.currentUser;
   const { user } = useFirebaseAuth();
 
   const handleVerificationEmailSendoff = async () => {
