@@ -151,6 +151,23 @@ describe("In account creation,", () => {
       expect(true).toBeFalsy();
     }
   });
+  test("when password input is touched and contains number and letters and special characters and is of sufficient length, there should be no error text", () => {
+    renderWithReactIntl(locale, messages, <CreateAccount />);
+    const passwordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("passwordInput")
+      ?.querySelector("input");
+    if (passwordInputEl) {
+      fireEvent.change(passwordInputEl, {
+        target: { value: "testing123?!" },
+      });
+      expect(isValidPassword(passwordInputEl.value)).toBeTruthy();
+      const passwordErrorEl: HTMLElement | null | undefined =
+        screen.queryByText(messages["PASSWORD_MUST_CONTAIN"]);
+      expect(passwordErrorEl).toBeNull();
+    } else {
+      expect(true).toBeFalsy();
+    }
+  });
   test("when confirm password is touched and does not match password, which is valid, there should be error text", () => {
     renderWithReactIntl(locale, messages, <CreateAccount />);
     const passwordInputEl: HTMLInputElement | null | undefined = screen

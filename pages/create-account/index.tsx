@@ -122,8 +122,6 @@ const CreateAccount: React.FC = () => {
           email,
           password
         );
-        // console.log("deleteMe userInfo is: ");
-        // console.log(userInfo);
         const userToken: string | null =
           (await userInfo?.user?.getIdToken()) || null;
         if (userToken) {

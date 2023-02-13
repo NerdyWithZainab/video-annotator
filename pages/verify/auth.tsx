@@ -8,43 +8,27 @@ import { useMutation } from "react-query";
 import { useIntl, IntlShape } from "react-intl";
 
 const VerifyEmailAddress: React.FC = () => {
-  // console.log("deleteMe render happens");
   const { verifyEmail, authError, user, emailVerified } = useFirebaseAuth();
   const intl: IntlShape = useIntl();
   const router: NextRouter = useRouter();
   const oobCode: string = router?.query?.oobCode?.toString() || "";
   const [verifyCalled, setVerifyCalled] = useState<boolean>(false);
 
-  const mutation = useMutation((oobCode: string) => {
-    // if (oobCode) {
-    return verifyEmail(oobCode);
-    // } else {
-    //   return null;
-    // }
-  });
-
-  console.log("deleteMe mutation is: ");
-  console.log(mutation);
   useEffect(() => {
     const runAsyncVerifyEmail = async (
       oobCode: string,
       emailVerfied: boolean
     ) => {
-      // console.log("deleteMe emailVerfied is: " + emailVerified);
       if (verifyCalled) {
-        console.log("deleteMe verify has been called. Reloading page");
-        router.reload();
+        router.reload(); //email verification with firebase auth for some crazy reason seems to need a page reload.
       }
       if (user && !emailVerified && oobCode) {
-        // console.log("deleteMe a1 calling verifyEmail");
         await verifyEmail(oobCode);
         setVerifyCalled(true);
-        // user?.reload();
-        // router.reload();
       }
     };
-    runAsyncVerifyEmail(oobCode, emailVerified);
-  }, [emailVerified, oobCode, user, verifyEmail]); // @TODO decide how best to handle the asynchronicity having to do with getting the user
+    runAsyncVerifyEmail(oobCode, emailVerified); // @TODO decide whether this is even necessary
+  }, [emailVerified, oobCode, user, verifyEmail, router, verifyCalled]); // @TODO decide how best to handle the asynchronicity having to do with getting the user
 
   return (
     <>

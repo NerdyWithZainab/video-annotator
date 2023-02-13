@@ -23,8 +23,6 @@ import { AuthContext } from "../contexts/authContext";
 import Navbar from "../components/Navbar";
 
 export default function App({ Component, pageProps }: AppProps) {
-  console.log("deleteMe App re-renders");
-
   const queryClient = new QueryClient();
   const messageMap = {
     en: englishMessages,

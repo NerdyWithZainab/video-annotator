@@ -20,8 +20,6 @@ const Navbar: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log("deleteMe user is: ");
-    console.log(user);
     setShowLogin(!user && !hideLoginBtn);
     setShowLogout(Boolean(user));
   }, [user, hideLoginBtn]);
