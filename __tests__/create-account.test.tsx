@@ -300,12 +300,27 @@ describe("In account creation,", () => {
   });
 
   test("a user cannot create an account if they are logged in", () => {
-    // renderWithReactIntl(locale, messages, <Login />);
-    expect(true).toBeTruthy(); // @TODO
-    // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
+    expect(true).toBeTruthy();
+    // TODO simulate a succesful login
+
+    // TODO uncomment the below
+    // renderWithReactIntl(locale, messages, <CreateAccount />);
+    // const emailAddressEl: HTMLInputElement | null | undefined = screen
+    //   .queryByTestId("emailInput")
+    //   ?.querySelector("input");
+    //   const passwordInputEl: HTMLInputElement | null | undefined = screen
+    //   .queryByTestId("passwordInput")
+    //   ?.querySelector("input");
+    //   const confirmPasswordInputEl: HTMLInputElement | null | undefined = screen
+    //   .queryByTestId("confirmPasswordInput")
+    //   ?.querySelector("input");
+    //   const userNameInputEl: HTMLInputElement | null | undefined = screen
+    //   .queryByTestId("usernameInput")
+    //   ?.querySelector("input");
+    
+    // expect(emailAddressEl).toBeNull();
+    // expect(passwordInputEl).toBeNull();
+    // expect(confirmPasswordInputEl).toBeNull();
+    // expect(userNameInputEl).toBeNull();
   });
 });

@@ -9,6 +9,7 @@ import useOnEnter from "../../hooks/useOnEnter";
 import { TextField, Paper, Button } from "@mui/material";
 import { FormattedMessage, useIntl, IntlShape } from "react-intl";
 import { sendEmailVerification } from "firebase/auth";
+import Typography from "@mui/material/Typography";
 
 import CustomError from "../../components/Error/index";
 import {
@@ -102,9 +103,6 @@ const CreateAccount: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    // if (user) router.replace("/must-log-out-first"); // @TODO comment back in
-  }, [user, router]);
 
   const handleConfirmPasswordVisibility = () => {
     if (confirmPasswordFieldType === "password") {
@@ -158,6 +156,8 @@ const CreateAccount: React.FC = () => {
           defaultMessage="Create an Account"
         />
       </h1>
+      {!user && (
+        <div>
       <div>
         <TextField
           fullWidth
@@ -281,6 +281,13 @@ const CreateAccount: React.FC = () => {
         <FormattedMessage id="CREATE_ACCOUNT" defaultMessage="Create Account" />
       </Button>
       {(error || authError) && <CustomError errorMsg={error || authError} />}
+      </div>
+      )}
+      {user && (
+        <Typography>
+          <FormattedMessage id="CANNOTE_CREATE_ACCOUNT_WHILE_LOGGED_IN" defaultMessage="You are currently logged in. You cannot create a new account while you are logged in. Make sure that you log out first." />
+          </Typography>
+      )}
     </Paper>
   );
 };
