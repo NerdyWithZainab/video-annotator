@@ -9,8 +9,14 @@ import { isValidEmail } from "../../utilities/validators";
 import CustomError from "../../components/Error/index";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 import useOnEnter from "../../hooks/useOnEnter";
+import { User } from "firebase/auth";
 
-const Login: React.FC = () => {
+const Login: React.FC<{
+  loginMethod?: (email: string, password: string) => void;
+  user?: User;
+}> = ({ loginMethod = null, user = null }) => {
+  //loginMethod is a prop here solely because I wanted to mock it for a test
+  //User is an optional prop only because it makes testing easier
   const router: NextRouter = useRouter();
   const intl: IntlShape = useIntl();
   const [email, setEmail] = useState<string>(""); // @TODO simplify all of these useStates
@@ -21,7 +27,9 @@ const Login: React.FC = () => {
   const [passwordFieldType, setPasswordFieldType] =
     useState<string>("password");
 
-  const { user, login, authError } = useFirebaseAuth();
+  const { user: userFromHook, login, authError } = useFirebaseAuth();
+  loginMethod = loginMethod ? loginMethod : login;
+  user = user ? user : userFromHook; // again, the only time a user prop should be provided to this component is in the tests
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail: string = event?.currentTarget?.value;
@@ -36,8 +44,8 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      if (!user) {
-        await login(email, password);
+      if (!user && loginMethod) {
+        await loginMethod(email, password);
       }
     } catch (error: any) {
       setError(error?.message);
@@ -82,7 +90,7 @@ const Login: React.FC = () => {
         maxWidth: 400,
       }}
     >
-      <h1>
+      <h1 data-testid="login-h1">
         <FormattedMessage id="LOGIN" defaultMessage="Login" />
       </h1>
       <div>

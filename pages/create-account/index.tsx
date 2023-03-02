@@ -5,6 +5,7 @@ import { UserCredential } from "firebase/auth";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import InputAdornment from "@mui/material/InputAdornment";
 import useOnEnter from "../../hooks/useOnEnter";
+import { User } from "firebase/auth";
 
 import { TextField, Paper, Button } from "@mui/material";
 import { FormattedMessage, useIntl, IntlShape } from "react-intl";
@@ -18,11 +19,13 @@ import {
   isValidUsername,
 } from "../../utilities/validators";
 
-const CreateAccount: React.FC = () => {
+const CreateAccount: React.FC<{ user?: User }> = ({ user = null }) => {
+  //User is an optional prop only because it makes testing easier
   const intl: IntlShape = useIntl();
   const router: NextRouter = useRouter();
 
-  const { auth, user } = useFirebaseAuth();
+  const { auth, user: userFromHook } = useFirebaseAuth();
+  user = user ? user : userFromHook; // again, the only time a user prop should be provided to this component is in the tests
 
   const { createUser, authError } = useFirebaseAuth();
   const [emailInvalid, setEmailInvalid] = useState<boolean>(false); // @TODO all of these useStates probably might could be cleaned up and combined
@@ -103,7 +106,6 @@ const CreateAccount: React.FC = () => {
     }
   };
 
-
   const handleConfirmPasswordVisibility = () => {
     if (confirmPasswordFieldType === "password") {
       setConfirmPasswordFieldType("text");
@@ -152,141 +154,156 @@ const CreateAccount: React.FC = () => {
     >
       <h1>
         <FormattedMessage
-          id="CREATE_AN_ACCOUNT"
+          id={user ? "MUST_LOG_OUT_FIRST" : "CREATE_AN_ACCOUNT"}
           defaultMessage="Create an Account"
         />
       </h1>
       {!user && (
         <div>
-      <div>
-        <TextField
-          fullWidth
-          data-testid={"emailInput"}
-          error={emailInvalid}
-          variant="filled"
-          label={
+          <div>
+            <TextField
+              fullWidth
+              data-testid={"emailInput"}
+              error={emailInvalid}
+              variant="filled"
+              label={
+                <FormattedMessage
+                  id="EMAIL_ADDRESS"
+                  defaultMessage="Email Address"
+                />
+              }
+              required
+              helperText={
+                emailInvalid
+                  ? intl.formatMessage({
+                      id: "MUST_BE_VALID_EMAIL",
+                      defaultMessage: "Must be a valid email address",
+                    })
+                  : ""
+              }
+              style={{ marginBottom: 10, maxWidth: 400 }}
+              onChange={handleEmailChange}
+              value={email}
+            ></TextField>
+          </div>
+          <div>
+            <TextField
+              type={passwordFieldType}
+              fullWidth
+              data-testid={"passwordInput"}
+              error={passwordInvalid}
+              variant="filled"
+              label={
+                <FormattedMessage id="PASSWORD" defaultMessage="Password" />
+              }
+              required
+              helperText={
+                passwordInvalid
+                  ? intl.formatMessage({
+                      id: "PASSWORD_MUST_CONTAIN",
+                      defaultMessage:
+                        "Password must be seven characters long and contain both letters and numbers",
+                    })
+                  : ""
+              }
+              onChange={handlePasswordChange}
+              style={{ marginBottom: 10, maxWidth: 400 }}
+              value={password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    position="end"
+                    onClick={handlePasswordVisibility}
+                  >
+                    <RemoveRedEyeIcon />
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
+          </div>
+          <div>
+            <TextField
+              type={confirmPasswordFieldType}
+              fullWidth
+              data-testid={"confirmPasswordInput"}
+              error={confirmPasswordInvalid}
+              variant="filled"
+              label={
+                <FormattedMessage
+                  id="CONFIRM_PASSWORD"
+                  defaultMessage="Confirm Passsword"
+                />
+              }
+              required
+              helperText={
+                confirmPasswordInvalid
+                  ? intl.formatMessage({
+                      id: "PASSWORDS_MUST_BE_IDENTICAL",
+                      defaultMessage: "Passwords must be identical",
+                    })
+                  : ""
+              }
+              style={{ marginBottom: 10, maxWidth: 400 }}
+              onChange={handleConfirmPasswordChange}
+              value={confirmPassword}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    position="end"
+                    onClick={handleConfirmPasswordVisibility}
+                  >
+                    <RemoveRedEyeIcon />
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              data-testid={"usernameInput"}
+              error={userNameInvalid}
+              variant="filled"
+              label={
+                <FormattedMessage id="USERNAME" defaultMessage="Username" />
+              }
+              required
+              helperText={
+                userNameInvalid
+                  ? intl.formatMessage({
+                      id: "USERNAME_IS_REQUIRED",
+                      defaultMessage: "Username is required",
+                    })
+                  : "" // @TODO already exists; try another username
+              }
+              style={{ marginBottom: 10, maxWidth: 400 }}
+              onChange={handleUsernameChange}
+              value={username}
+            ></TextField>
+          </div>
+          <Button
+            data-testid={"submit-button"}
+            variant="contained"
+            disabled={!allRequiredValid}
+            onClick={handleAccountCreation}
+          >
             <FormattedMessage
-              id="EMAIL_ADDRESS"
-              defaultMessage="Email Address"
+              id="CREATE_ACCOUNT"
+              defaultMessage="Create Account"
             />
-          }
-          required
-          helperText={
-            emailInvalid
-              ? intl.formatMessage({
-                  id: "MUST_BE_VALID_EMAIL",
-                  defaultMessage: "Must be a valid email address",
-                })
-              : ""
-          }
-          style={{ marginBottom: 10, maxWidth: 400 }}
-          onChange={handleEmailChange}
-          value={email}
-        ></TextField>
-      </div>
-      <div>
-        <TextField
-          type={passwordFieldType}
-          fullWidth
-          data-testid={"passwordInput"}
-          error={passwordInvalid}
-          variant="filled"
-          label={<FormattedMessage id="PASSWORD" defaultMessage="Password" />}
-          required
-          helperText={
-            passwordInvalid
-              ? intl.formatMessage({
-                  id: "PASSWORD_MUST_CONTAIN",
-                  defaultMessage:
-                    "Password must be seven characters long and contain both letters and numbers",
-                })
-              : ""
-          }
-          onChange={handlePasswordChange}
-          style={{ marginBottom: 10, maxWidth: 400 }}
-          value={password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end" onClick={handlePasswordVisibility}>
-                <RemoveRedEyeIcon />
-              </InputAdornment>
-            ),
-          }}
-        ></TextField>
-      </div>
-      <div>
-        <TextField
-          type={confirmPasswordFieldType}
-          fullWidth
-          data-testid={"confirmPasswordInput"}
-          error={confirmPasswordInvalid}
-          variant="filled"
-          label={
-            <FormattedMessage
-              id="CONFIRM_PASSWORD"
-              defaultMessage="Confirm Passsword"
-            />
-          }
-          required
-          helperText={
-            confirmPasswordInvalid
-              ? intl.formatMessage({
-                  id: "PASSWORDS_MUST_BE_IDENTICAL",
-                  defaultMessage: "Passwords must be identical",
-                })
-              : ""
-          }
-          style={{ marginBottom: 10, maxWidth: 400 }}
-          onChange={handleConfirmPasswordChange}
-          value={confirmPassword}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment
-                position="end"
-                onClick={handleConfirmPasswordVisibility}
-              >
-                <RemoveRedEyeIcon />
-              </InputAdornment>
-            ),
-          }}
-        ></TextField>
-      </div>
-      <div>
-        <TextField
-          fullWidth
-          data-testid={"usernameInput"}
-          error={userNameInvalid}
-          variant="filled"
-          label={<FormattedMessage id="USERNAME" defaultMessage="Username" />}
-          required
-          helperText={
-            userNameInvalid
-              ? intl.formatMessage({
-                  id: "USERNAME_IS_REQUIRED",
-                  defaultMessage: "Username is required",
-                })
-              : "" // @TODO already exists; try another username
-          }
-          style={{ marginBottom: 10, maxWidth: 400 }}
-          onChange={handleUsernameChange}
-          value={username}
-        ></TextField>
-      </div>
-      <Button
-        data-testid={"submit-button"}
-        variant="contained"
-        disabled={!allRequiredValid}
-        onClick={handleAccountCreation}
-      >
-        <FormattedMessage id="CREATE_ACCOUNT" defaultMessage="Create Account" />
-      </Button>
-      {(error || authError) && <CustomError errorMsg={error || authError} />}
-      </div>
+          </Button>
+          {(error || authError) && (
+            <CustomError errorMsg={error || authError} />
+          )}
+        </div>
       )}
       {user && (
         <Typography>
-          <FormattedMessage id="CANNOTE_CREATE_ACCOUNT_WHILE_LOGGED_IN" defaultMessage="You are currently logged in. You cannot create a new account while you are logged in. Make sure that you log out first." />
-          </Typography>
+          <FormattedMessage
+            id="CANNOTE_CREATE_ACCOUNT_WHILE_LOGGED_IN"
+            defaultMessage="You are currently logged in. You cannot create a new account while you are logged in. Make sure that you log out first."
+          />
+        </Typography>
       )}
     </Paper>
   );

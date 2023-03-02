@@ -21,5 +21,6 @@
   "EMAIL_VERIFIED": "Congratulations! Your email address has been verified. No further action required on this page.",
   "EMAIL_VERIFYING": "Attempting to verify your email address...",
   "USER_NOT_LOGGED_IN": "We can't find the user data; make sure you're logged in.",
-  "CANNOTE_CREATE_ACCOUNT_WHILE_LOGGED_IN": "You are currently logged in. You cannot create a new account while you are logged in. Make sure that you log out first."
+  "CANNOTE_CREATE_ACCOUNT_WHILE_LOGGED_IN": "You are currently logged in. You cannot create a new account while you are logged in.",
+  "MUST_LOG_OUT_FIRST": "You must log out first"
 }

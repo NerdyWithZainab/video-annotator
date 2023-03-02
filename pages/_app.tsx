@@ -66,6 +66,7 @@ export default function App({ Component, pageProps }: AppProps) {
           >
             <Container>
               <Navbar />
+              {/* <p>{user ? JSON.stringify(user) : null}</p> */}
               <Component {...pageProps} />
             </Container>
           </IntlProvider>
