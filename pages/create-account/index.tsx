@@ -20,7 +20,7 @@ import {
 } from "../../utilities/validators";
 
 const CreateAccount: React.FC<{ user?: User }> = ({ user = null }) => {
-  //User is an optional prop only because it makes testing easier
+  //User is an optional prop only because it makes testing easier... it's optional because I can't feed props to Next.js route components.
   const intl: IntlShape = useIntl();
   const router: NextRouter = useRouter();
 

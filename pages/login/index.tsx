@@ -16,7 +16,7 @@ const Login: React.FC<{
   user?: User;
 }> = ({ loginMethod = null, user = null }) => {
   //loginMethod is a prop here solely because I wanted to mock it for a test
-  //User is an optional prop only because it makes testing easier
+  //User is an optional prop only because it makes testing easier... it's optional because I can't feed props to Next.js route components.
   const router: NextRouter = useRouter();
   const intl: IntlShape = useIntl();
   const [email, setEmail] = useState<string>(""); // @TODO simplify all of these useStates
@@ -66,7 +66,7 @@ const Login: React.FC<{
   };
 
   useEffect(() => {
-    if (user) router.replace("/");
+    if (user) router.replace("/me");
   }, [user, router]);
 
   useEffect(() => {
