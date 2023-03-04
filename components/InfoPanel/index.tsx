@@ -5,8 +5,11 @@ import { FormattedMessage } from "react-intl";
 const InfoPanel: React.FC<{
   titleId: string;
   titleDefault: string;
+  styleOverrides?: {};
   children: React.ReactNode;
-}> = ({ titleId, titleDefault, children }) => {
+}> = ({ titleId, titleDefault, styleOverrides = {}, children }) => {
+  console.log("deleteMe styleOverrides in InfoPanel are: ");
+  console.log({ ...styleOverrides });
   return (
     <Paper
       elevation={8}
@@ -21,7 +24,7 @@ const InfoPanel: React.FC<{
       <Typography variant="h5" style={{ marginBottom: "2vh" }}>
         <FormattedMessage id={titleId} defaultMessage={titleDefault} />
       </Typography>
-      {children}
+      <div style={{ maxHeight: 200, overflow: "auto" }}>{children}</div>
     </Paper>
   );
 };

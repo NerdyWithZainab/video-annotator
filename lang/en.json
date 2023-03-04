@@ -45,5 +45,22 @@
   "DECEMBER": "December",
   "UNKNOWN_MONTH": "Unknown month",
   "CANCEL": "Cancel",
-  "ACTIVATE": "Activate"
+  "ACTIVATE": "Activate",
+  "MY_ANNOTATIONS": "My Annotations",
+  "ANNOTATION_ALERT": "Earn more annotation credits by annotating more videos",
+  "TOTAL_ANNOTATIONS_RECORDED": "Total annotations recorded",
+  "TOTAL_ANNOTATIONS_THIS_MONTH": "Total annotations recorded this month",
+  "AVERAGE_RATING_OF_ANNOTATIONS": "Average rating of total annotations recorded",
+  "MY_ACTIVITY_LOG": "My activity log",
+  "EARNED": "Earned",
+  "LOST": "Lost",
+  "POINTS_DUE_TO": "points due to",
+  "LEAVE_FEEDBACK": "Leave Feedback",
+  "GIVE_DEVELOPERS_FEEDBACK_ABOUT_THE_APP": "Give the developers feedback about the app.",
+  "MUST_BE_VALID_URL": "Must be a valid URL",
+  "URL_LINK_TO_ISSUE": "URL link to the issue",
+  "DESCRIPTION": "Description",
+  "DESCRIPTION_MUST_BE_INCLUDED": "Description must be included",
+  "STEPS_TO_REPRODUCE": "Steps to reproduce",
+  "STEPS_TO_REPRODUCE_MUST_BE_INCLUDED": "Steps to reproduce any issue must be included"
 }
