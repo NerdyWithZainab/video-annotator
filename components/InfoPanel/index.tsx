@@ -6,7 +6,7 @@ const InfoPanel: React.FC<{
   titleId: string;
   titleDefault: string;
   styleOverrides?: {};
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }> = ({ titleId, titleDefault, styleOverrides = {}, children }) => {
   console.log("deleteMe styleOverrides in InfoPanel are: ");
   console.log({ ...styleOverrides });
@@ -24,7 +24,9 @@ const InfoPanel: React.FC<{
       <Typography variant="h5" style={{ marginBottom: "2vh" }}>
         <FormattedMessage id={titleId} defaultMessage={titleDefault} />
       </Typography>
-      <div style={{ maxHeight: 200, overflow: "auto" }}>{children}</div>
+      <div style={{ maxHeight: 200, overflow: "auto", ...styleOverrides }}>
+        {children}
+      </div>
     </Paper>
   );
 };

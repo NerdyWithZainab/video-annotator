@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+
+import { FormattedMessage, useIntl, IntlShape } from "react-intl";
+import { TextField, Grid, Button } from "@mui/material";
+
 import InfoPanel from "../InfoPanel";
 import InfoPanelBody from "../InfoPanel/InfoPanelBody";
-import { FormattedMessage, useIntl, IntlShape } from "react-intl";
-import { TextField, Grid } from "@mui/material";
+import CustomError from "../Error";
 import useOnEnter from "../../hooks/useOnEnter";
 import {
   isValidUrl,
@@ -10,9 +13,9 @@ import {
   isValidStepsToReproduce,
 } from "../../utilities/validators";
 
-const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
-  styleOverrides = {}
-) => {
+const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = ({
+  styleOverrides = {},
+}) => {
   const intl: IntlShape = useIntl();
   console.log("deleteMe styleOverrides is FeedbackPanel are: ");
   console.log(styleOverrides);
@@ -25,6 +28,7 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
   const [description, setDescription] = useState<string>("");
   const [descriptionInvalid, setDescriptionInvalid] = useState<boolean>(false);
   const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -70,7 +74,17 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
     );
   };
 
-  const handleFeedbackSubmission: () => void = () => {};
+  const handleFeedbackSubmission: () => void = async () => {
+    try {
+      // @TODO add the feedback to the database
+      console.log("deleteMe handleFeedbackSubmission called!");
+      console.log("deleteMe feedbackUrl is: " + feedbackUrl);
+      console.log("deleteMe description is: " + description);
+      console.log("deleteMe stepsToReproduce is: " + stepsToReproduce);
+    } catch (error: any) {
+      setError(error?.message);
+    }
+  };
 
   return (
     <InfoPanel
@@ -82,9 +96,10 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
       <InfoPanelBody
         bodyId="GIVE_DEVELOPERS_FEEDBACK_ABOUT_THE_APP"
         bodyDefault="Give the developers feedback about the app."
+        styleOverrides={{ marginBottom: "4vh" }}
       />
       <Grid container>
-        <Grid item lg={12}>
+        <Grid item lg={12} sm={12}>
           <TextField
             fullWidth
             data-testid={"urlInput"}
@@ -110,7 +125,7 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
             value={feedbackUrl}
           ></TextField>
         </Grid>
-        <Grid item lg={12}>
+        <Grid item lg={12} sm={12}>
           <TextField
             fullWidth
             data-testid={"descriptionInput"}
@@ -133,7 +148,7 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
             value={description}
           ></TextField>
         </Grid>
-        <Grid item lg={12}>
+        <Grid item lg={12} sm={12}>
           <TextField
             fullWidth
             data-testid={"stepsToReproduceInput"}
@@ -159,6 +174,18 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = (
             onChange={handleStepsToReproduceChange}
             value={stepsToReproduce}
           ></TextField>
+        </Grid>
+        <Grid item lg={12} sm={12}>
+          <Button
+            style={{ marginBottom: 10 }}
+            data-testid={"submit-button"}
+            variant="contained"
+            disabled={!allRequiredValid}
+            onClick={handleFeedbackSubmission}
+          >
+            <FormattedMessage id="SUBMIT" defaultMessage="Submit" />
+          </Button>
+          {error && <CustomError errorMsg={error} />}
         </Grid>
       </Grid>
     </InfoPanel>

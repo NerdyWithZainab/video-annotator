@@ -20,6 +20,8 @@ const Me: React.FC = () => {
     averageRatingOfTotalAnnotationsRecorded: 1.3,
   };
   const shamMyActivityLogData: {
+    totalNetPointsEarnedThisMonth: number;
+    totalCumulativePointsEarned: number;
     activities: {
       id: string;
       date: Date;
@@ -27,6 +29,8 @@ const Me: React.FC = () => {
       details: string;
     }[];
   } = {
+    totalNetPointsEarnedThisMonth: 10,
+    totalCumulativePointsEarned: 700,
     activities: [
       {
         id: "1",
