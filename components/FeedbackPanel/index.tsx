@@ -17,8 +17,6 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = ({
   styleOverrides = {},
 }) => {
   const intl: IntlShape = useIntl();
-  console.log("deleteMe styleOverrides is FeedbackPanel are: ");
-  console.log(styleOverrides);
 
   const [feedbackUrl, setFeedbackUrl] = useState<string>("");
   const [feedbackUrlInvalid, setFeedbackUrlInvalid] = useState<boolean>(false); // @TODO all of these useStates probably might could be cleaned up and combined

@@ -96,16 +96,19 @@ const Me: React.FC = () => {
     ],
   };
 
-  const shamMyCollectionData: { name: string; id: string }[] = [
-    {
-      name: "Collection1",
-      id: "1",
-    },
-    {
-      name: "Collection2",
-      id: "2",
-    },
-  ];
+  const shamMyCollectionData: { name: string; removeMe: string; id: string }[] =
+    [
+      {
+        name: "Collection1",
+        removeMe: "boop",
+        id: "1",
+      },
+      {
+        name: "Collection2",
+        removeMe: "beep",
+        id: "2",
+      },
+    ];
 
   const email: string =
     user?.email ||
@@ -134,8 +137,11 @@ const Me: React.FC = () => {
       <Grid item sm={12} md={6}>
         <FeedbackPanel styleOverrides={{ maxHeight: 1000 }} />
       </Grid>
-      <Grid item sm={12} md={6}>
-        <MyCollectionsPanel myCollectionData={shamMyCollectionData} />
+      <Grid item sm={12} md={12}>
+        <MyCollectionsPanel
+          myCollectionData={shamMyCollectionData}
+          visibleColumnKeys={["name", "id"]}
+        />
       </Grid>
     </Grid>
   );
