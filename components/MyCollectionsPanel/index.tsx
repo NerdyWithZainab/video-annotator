@@ -38,16 +38,18 @@ const MyCollectionsPanel: React.FC<{
 
   // @TODO pull out the DataGrid and make into its own DataTable component with props data={myCollectionData} in this case.
   return (
-    <>
-      <Typography variant="h5" style={{ marginBottom: "2vh" }}>
-        <FormattedMessage id="COLLECTIONS" defaultMessage="Collections" />
-      </Typography>
+    <InfoPanel
+      titleId="COLLECTIONS"
+      titleDefault="Collections"
+      key="collections-log"
+    >
       <DataGrid
         rows={rows}
+        rowHeight={40}
         columns={columns}
         style={{ minHeight: 200, marginBottom: "2vh" }}
       />
-    </>
+    </InfoPanel>
   );
 };
 
