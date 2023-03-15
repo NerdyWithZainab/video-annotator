@@ -5,6 +5,7 @@ import UserDetailPanel from "../../components/UserDetailPanel";
 import MySubScriptionPanel from "../../components/MySubscriptionPanel";
 import MyAnnotationsPanel from "../../components/MyAnnotationsPanel";
 import MyActivityLogPanel from "../../components/MyActivityLogPanel";
+import MyCollectionsPanel from "../../components/MyCollectionsPanel";
 import FeedbackPanel from "../../components/FeedbackPanel";
 
 const Me: React.FC = () => {
@@ -95,6 +96,17 @@ const Me: React.FC = () => {
     ],
   };
 
+  const shamMyCollectionData: { name: string; id: string }[] = [
+    {
+      name: "Collection1",
+      id: "1",
+    },
+    {
+      name: "Collection2",
+      id: "2",
+    },
+  ];
+
   const email: string =
     user?.email ||
     intl.formatMessage({
@@ -121,6 +133,9 @@ const Me: React.FC = () => {
       </Grid>
       <Grid item sm={12} md={6}>
         <FeedbackPanel styleOverrides={{ maxHeight: 1000 }} />
+      </Grid>
+      <Grid item sm={12} md={6}>
+        <MyCollectionsPanel myCollectionData={shamMyCollectionData} />
       </Grid>
     </Grid>
   );

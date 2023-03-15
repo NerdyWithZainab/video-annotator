@@ -65,5 +65,6 @@
   "STEPS_TO_REPRODUCE_MUST_BE_INCLUDED": "Steps to reproduce any issue must be included",
   "TOTAL_NET_POINTS_EARNED_THIS_MONTH": "Total net points earned this month",
   "TOTAL_NET_CUMULATIVE_POINTS_EARNED": "Total net cumulative points earned",
-  "SUBMIT": "Submit"
+  "SUBMIT": "Submit",
+  "COLLECTIONS": "Collections"
 }
