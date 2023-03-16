@@ -6,8 +6,13 @@ const DataTable: React.FC<{
   data: {}[];
   colNamesToDisplay?: { [key: string]: any };
 }> = ({ data, colNamesToDisplay = { name: "Name", id: "ID" } }) => {
-  const colNamesToDisplayKeys: string[] = Object.keys(colNamesToDisplay) || [];
-  const shouldFilter: boolean = colNamesToDisplayKeys.length > 0;
+  const colNamesToDisplayKeys: string[] = useMemo(() => {
+    return Object.keys(colNamesToDisplay) || [];
+  }, [colNamesToDisplay]);
+
+  const shouldFilter: boolean = useMemo(() => {
+    return colNamesToDisplayKeys.length > 0;
+  }, [colNamesToDisplayKeys]);
 
   const rows: GridRowsProp = useMemo(() => {
     let tracker: number = 0;
