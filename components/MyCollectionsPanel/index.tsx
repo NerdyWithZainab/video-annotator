@@ -11,7 +11,7 @@ const MyCollectionsPanel: React.FC<{
       titleDefault="Collections"
       key="collections-log"
     >
-      <DataTable data={myCollectionData} />
+      <DataTable data={myCollectionData} colNamesToDisplay={{ name: "Name" }} />
     </InfoPanel>
   );
 };
