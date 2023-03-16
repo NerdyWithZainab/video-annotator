@@ -2,37 +2,52 @@ import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { reduce, map } from "lodash-es";
 import { useMemo } from "react";
 
-const DataTable: React.FC<{ data: {}[]; visibleColumnDict?: {} }> = ({
-  data,
-  visibleColumnDict = { name: "Name", id: "ID" },
-}) => {
+const DataTable: React.FC<{
+  data: {}[];
+  colNamesToDisplay?: { [key: string]: any };
+}> = ({ data, colNamesToDisplay = { name: "Name", id: "ID" } }) => {
+  const colNamesToDisplayKeys: string[] = Object.keys(colNamesToDisplay) || [];
+  const shouldFilter: boolean = colNamesToDisplayKeys.length > 0;
+
   const rows: GridRowsProp = useMemo(() => {
     let tracker: number = 0;
     return data?.map((dataRow, idx) => {
       tracker++;
-      const renamedCollection: { [key: string]: any } = reduce(
-        Object.values(dataRow),
+      let dataRowWithOnlyDesiredCols: { [key: string]: any } = dataRow;
+      if (shouldFilter) {
+        dataRowWithOnlyDesiredCols = reduce(
+          dataRow,
+          (memo: {}, col: any, colKey: string) => {
+            if (colNamesToDisplayKeys.includes(colKey)) {
+              return { ...memo, [colKey]: col };
+            } else {
+              return { ...memo };
+            }
+          },
+          {}
+        );
+      }
+      const renamedDataRow: { [key: string]: any } = reduce(
+        Object.values(dataRowWithOnlyDesiredCols),
         (memo: {}, el: any, elIdx: number) => {
           const colNum: number = elIdx + 1;
           return { ...memo, ["col" + colNum]: el };
         },
         {}
       );
-      return { id: idx + 1, ...renamedCollection };
+      return { id: idx + 1, ...renamedDataRow };
     });
-  }, [data]);
+  }, [colNamesToDisplayKeys, data, shouldFilter]);
 
   const columns: GridColDef[] = useMemo(() => {
     const safePrototypeRow: { [key: string]: any } = data[0] || {};
-    const visibleColumnDictKeys: string[] =
-      Object.keys(visibleColumnDict) || [];
     let prototypeRowWithOnlyDesiredCols: { [key: string]: any } =
       safePrototypeRow;
-    if (visibleColumnDictKeys.length > 0) {
+    if (shouldFilter) {
       prototypeRowWithOnlyDesiredCols = reduce(
         safePrototypeRow,
         (memo: {}, col: any, colKey: string) => {
-          if (visibleColumnDictKeys.includes(colKey)) {
+          if (colNamesToDisplayKeys.includes(colKey)) {
             return { ...memo, [colKey]: col };
           } else {
             return { ...memo };
@@ -41,12 +56,12 @@ const DataTable: React.FC<{ data: {}[]; visibleColumnDict?: {} }> = ({
         {}
       );
     }
-    console.log("deleteMe prototypeRowWithOnlyDesiredCols is: ");
-    console.log(prototypeRowWithOnlyDesiredCols);
     let tracker: number = 0;
     return map(prototypeRowWithOnlyDesiredCols, (el, elKey) => {
       tracker++; // tracker seems needed because I can't get both the keys and the indexes in map(obj)
-      const cleanHeader: string = elKey.trim().toLowerCase();
+      const cleanHeader: string =
+        colNamesToDisplay[elKey] || elKey.trim().toLowerCase();
+
       const headerName: string =
         cleanHeader.charAt(0).toUpperCase() + cleanHeader.slice(1);
       return {
@@ -55,7 +70,7 @@ const DataTable: React.FC<{ data: {}[]; visibleColumnDict?: {} }> = ({
         width: 150,
       };
     });
-  }, [data, visibleColumnDict]);
+  }, [data, shouldFilter, colNamesToDisplayKeys, colNamesToDisplay]);
 
   return (
     <DataGrid
