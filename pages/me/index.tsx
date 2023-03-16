@@ -137,7 +137,7 @@ const Me: React.FC = () => {
       <Grid item sm={12} md={6}>
         <FeedbackPanel styleOverrides={{ maxHeight: 1000 }} />
       </Grid>
-      <Grid item sm={12} md={12}>
+      <Grid item sm={12} md={6}>
         <MyCollectionsPanel
           myCollectionData={shamMyCollectionData}
           visibleColumnKeys={["name", "id"]}
