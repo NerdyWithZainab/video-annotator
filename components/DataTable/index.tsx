@@ -54,26 +54,26 @@ const DataTable: React.FC<{
           //     ? dataRowWithOnlyDesiredCols["actions"] +
           //       generateComponent(actionButtonsToDisplay[actionButtonKey], idx)
           //     : generateComponent(actionButtonsToDisplay[actionButtonKey], idx); // @TODO this needs to add action button (e.g., view, edit) components... which in turn need guids
-          dataRowWithOnlyDesiredCols["actions"] !== null ? (
-            dataRowWithOnlyDesiredCols["actions"] +
-            (
-              <h1>Hi</h1>
-              //   <ComponentWrapper
-              //     as={actionButtonsToDisplay[actionButtonKey]}
-              //     id={idx}
-              //   />
-            )
-          ) : (
-            <h1>Hi</h1>
-            // <ComponentWrapper
-            //   as={actionButtonsToDisplay[actionButtonKey]}
-            //   id={idx}
-            // />
-          ); // @TODO this needs to add action button (e.g., view, edit) components... which in turn need guids
+          dataRowWithOnlyDesiredCols["actions"] =
+            dataRowWithOnlyDesiredCols["actions"] !== null
+              ? dataRowWithOnlyDesiredCols["actions"] +
+                " " +
+                actionButtonsToDisplay[actionButtonKey]
+              : //   <h1>Hi</h1>
+                //   <ComponentWrapper
+                //     as={actionButtonsToDisplay[actionButtonKey]}
+                //     id={idx}
+                //   />
+                actionButtonsToDisplay[actionButtonKey];
+          // <h1>Hi</h1>
+          // <ComponentWrapper
+          //   as={actionButtonsToDisplay[actionButtonKey]}
+          //   id={idx}
+          // /> // @TODO this needs to add action button (e.g., view, edit) components... which in turn need guids
         });
       }
-      console.log("deleteMe dataRowWithOnlyDesiredCols a1 is: ");
-      console.log(dataRowWithOnlyDesiredCols);
+      //   console.log("deleteMe dataRowWithOnlyDesiredCols a1 is: ");
+      //   console.log(dataRowWithOnlyDesiredCols);
       if (shouldFilter) {
         dataRowWithOnlyDesiredCols = reduce(
           dataRow,
@@ -98,8 +98,8 @@ const DataTable: React.FC<{
     });
   }, [colNamesToDisplayKeys, data, shouldFilter]);
 
-  console.log("deleteMe rows is: ");
-  console.log(rows);
+  //   console.log("deleteMe rows is: ");
+  //   console.log(rows);
 
   const columns: GridColDef[] = useMemo(() => {
     const safePrototypeRow: { [key: string]: any } = data[0] || {}; // assumes that the first row of the data has all of the columns desired (i.e., that it's a good prototype to use)
@@ -137,9 +137,43 @@ const DataTable: React.FC<{
         renderCell:
           headerName === "Actions"
             ? (params: GridRenderCellParams) => {
-                console.log("deleteMe params are: ");
-                console.log(params);
-                return <h1>Test1</h1>;
+                // console.log("deleteMe params are: ");
+                // console.log(params?.id);
+                const rowId: number | string = params?.id || "";
+                console.log(params?.value.split(" "));
+                const actionButtonKeys: string[] =
+                  params?.value.split(" ") || [];
+                return (
+                  <>
+                    {actionButtonKeys.map((actionButtonKey) => {
+                      console.log(
+                        "deleteMe actionButtonKey is: " + actionButtonKey
+                      );
+                      const currentComponent = generateComponent(
+                        actionButtonKey,
+                        rowId
+                      );
+                      console.log("deleteMe currentComponent is: ");
+                      console.log(currentComponent);
+                      return currentComponent;
+                      //   return generateComponent(actionButtonKey, rowId);
+                      //   return <h1>Test {rowId} </h1>;
+                    })}
+                  </>
+                );
+                // actionButtonKeys.forEach((actionButtonKey) => {
+                //   //   console.log(
+                //   //     "deleteMe actionButtonKey is: " + actionButtonKey
+                //   //   );
+                //   const currentComponent = generateComponent(
+                //     actionButtonKey,
+                //     rowId
+                //   );
+                //   console.log("deleteMe currentComponent is: ");
+                //   console.log(currentComponent);
+                //   return generateComponent(actionButtonKey, rowId);
+                // });
+                // return <h1>Test1</h1>;
               }
             : () => {},
         //   headerName === "Actions"
@@ -148,10 +182,13 @@ const DataTable: React.FC<{
         //         props: { id: "test1" },
         //       })
         //     : () => {},
-        width: 150,
+        width: 200,
       };
     });
   }, [data, shouldFilter, colNamesToDisplayKeys, colNamesToDisplay]);
+
+  console.log("deleteMe columns is: ");
+  console.log(columns);
 
   return (
     <DataGrid
