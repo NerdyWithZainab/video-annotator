@@ -28,15 +28,10 @@ const DataTable: React.FC<{
   if (shouldAddActionButtons) {
     colNamesToDisplayWithActions["actions"] = "Actions";
   }
-  //   console.log("deleteMe colNamesToDisplayWithActions is: ");
-  //   console.log(colNamesToDisplayWithActions);
 
   const colNamesToDisplayKeys: string[] = useMemo(() => {
     return Object.keys(colNamesToDisplayWithActions) || [];
   }, [colNamesToDisplayWithActions]);
-
-  console.log("deleteMe colNamesToDisplayKeys is: ");
-  console.log(colNamesToDisplayKeys);
 
   const shouldFilter: boolean = useMemo(() => {
     return colNamesToDisplayKeys.length > 0;
@@ -46,34 +41,17 @@ const DataTable: React.FC<{
     return data?.map((dataRow, idx) => {
       let dataRowWithOnlyDesiredCols: { [key: string]: any } = dataRow;
       if (shouldAddActionButtons) {
-        dataRowWithOnlyDesiredCols["actions"] = null;
+        dataRowWithOnlyDesiredCols["actions"] = null; // reset upon every render
         actionButtonsKeys.forEach((actionButtonKey) => {
-          //   dataRowWithOnlyDesiredCols["actions"] = dataRowWithOnlyDesiredCols[
-          //     "actions"
-          //   ]
-          //     ? dataRowWithOnlyDesiredCols["actions"] +
-          //       generateComponent(actionButtonsToDisplay[actionButtonKey], idx)
-          //     : generateComponent(actionButtonsToDisplay[actionButtonKey], idx); // @TODO this needs to add action button (e.g., view, edit) components... which in turn need guids
+          // just add the actionButtonKey for the componentMap to use later in columns definition
           dataRowWithOnlyDesiredCols["actions"] =
             dataRowWithOnlyDesiredCols["actions"] !== null
               ? dataRowWithOnlyDesiredCols["actions"] +
                 " " +
                 actionButtonsToDisplay[actionButtonKey]
-              : //   <h1>Hi</h1>
-                //   <ComponentWrapper
-                //     as={actionButtonsToDisplay[actionButtonKey]}
-                //     id={idx}
-                //   />
-                actionButtonsToDisplay[actionButtonKey];
-          // <h1>Hi</h1>
-          // <ComponentWrapper
-          //   as={actionButtonsToDisplay[actionButtonKey]}
-          //   id={idx}
-          // /> // @TODO this needs to add action button (e.g., view, edit) components... which in turn need guids
+              : actionButtonsToDisplay[actionButtonKey];
         });
       }
-      //   console.log("deleteMe dataRowWithOnlyDesiredCols a1 is: ");
-      //   console.log(dataRowWithOnlyDesiredCols);
       if (shouldFilter) {
         dataRowWithOnlyDesiredCols = reduce(
           dataRow,
@@ -96,10 +74,14 @@ const DataTable: React.FC<{
       );
       return { id: idx + 1, ...renamedDataRow };
     });
-  }, [colNamesToDisplayKeys, data, shouldFilter]);
-
-  //   console.log("deleteMe rows is: ");
-  //   console.log(rows);
+  }, [
+    actionButtonsKeys,
+    actionButtonsToDisplay,
+    colNamesToDisplayKeys,
+    data,
+    shouldAddActionButtons,
+    shouldFilter,
+  ]);
 
   const columns: GridColDef[] = useMemo(() => {
     const safePrototypeRow: { [key: string]: any } = data[0] || {}; // assumes that the first row of the data has all of the columns desired (i.e., that it's a good prototype to use)
@@ -116,14 +98,6 @@ const DataTable: React.FC<{
       );
     }
     let tracker: number = 0;
-    // const actionButtonCellRenderer: (cellValues: {
-    //   type: any;
-    //   props: {};
-    // }) => any = (cellValues: { type: any; props: {} }) => {
-    //   console.log("deleteMe cellValues are: ");
-    //   console.log(cellValues);
-    //   return <h1>Test</h1>;
-    // };
     return map(prototypeRowWithOnlyDesiredCols, (el, elKey) => {
       tracker++; // tracker seems needed because I can't get both the keys and the indexes in map(obj)
       const cleanHeader: string = elKey.trim().toLowerCase();
@@ -135,10 +109,8 @@ const DataTable: React.FC<{
         field: "col" + tracker,
         headerName: headerName,
         renderCell:
-          headerName === "Actions"
+          headerName === "Actions" // @TODO isolate the below
             ? (params: GridRenderCellParams) => {
-                // console.log("deleteMe params are: ");
-                // console.log(params?.id);
                 const rowId: number | string = params?.id || "";
                 console.log(params?.value.split(" "));
                 const actionButtonKeys: string[] =
@@ -146,49 +118,20 @@ const DataTable: React.FC<{
                 return (
                   <>
                     {actionButtonKeys.map((actionButtonKey) => {
-                      console.log(
-                        "deleteMe actionButtonKey is: " + actionButtonKey
-                      );
                       const currentComponent = generateComponent(
                         actionButtonKey,
                         rowId
                       );
-                      console.log("deleteMe currentComponent is: ");
-                      console.log(currentComponent);
                       return currentComponent;
-                      //   return generateComponent(actionButtonKey, rowId);
-                      //   return <h1>Test {rowId} </h1>;
                     })}
                   </>
                 );
-                // actionButtonKeys.forEach((actionButtonKey) => {
-                //   //   console.log(
-                //   //     "deleteMe actionButtonKey is: " + actionButtonKey
-                //   //   );
-                //   const currentComponent = generateComponent(
-                //     actionButtonKey,
-                //     rowId
-                //   );
-                //   console.log("deleteMe currentComponent is: ");
-                //   console.log(currentComponent);
-                //   return generateComponent(actionButtonKey, rowId);
-                // });
-                // return <h1>Test1</h1>;
               }
             : () => {},
-        //   headerName === "Actions"
-        //     ? actionButtonCellRenderer({
-        //         type: EditActionButton,
-        //         props: { id: "test1" },
-        //       })
-        //     : () => {},
         width: 200,
       };
     });
   }, [data, shouldFilter, colNamesToDisplayKeys, colNamesToDisplay]);
-
-  console.log("deleteMe columns is: ");
-  console.log(columns);
 
   return (
     <DataGrid
