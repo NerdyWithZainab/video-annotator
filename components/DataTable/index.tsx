@@ -5,7 +5,23 @@ import { useMemo } from "react";
 const DataTable: React.FC<{
   data: {}[];
   colNamesToDisplay?: { [key: string]: any };
-}> = ({ data, colNamesToDisplay = {} }) => {
+  actionButtonsToDisplay?: { [key: string]: any };
+}> = ({ data, colNamesToDisplay = {}, actionButtonsToDisplay = {} }) => {
+  const actionButtonsKeys: string[] = useMemo(() => {
+    return Object.keys(actionButtonsToDisplay) || [];
+  }, [actionButtonsToDisplay]);
+
+  const shouldAddActionButtons: boolean = useMemo(() => {
+    return actionButtonsKeys.length > 0;
+  }, [actionButtonsKeys]);
+
+  let colNamesToDisplayWithActions: { [key: string]: any } = colNamesToDisplay;
+  if (shouldAddActionButtons) {
+    colNamesToDisplayWithActions["actions"] = "Actions";
+  }
+  console.log("deleteMe colNamesToDisplayWithActions is: ");
+  console.log(colNamesToDisplayWithActions);
+
   const colNamesToDisplayKeys: string[] = useMemo(() => {
     return Object.keys(colNamesToDisplay) || [];
   }, [colNamesToDisplay]);

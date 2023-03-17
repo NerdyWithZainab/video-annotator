@@ -3,15 +3,18 @@ import InfoPanel from "../InfoPanel";
 
 const MyCollectionsPanel: React.FC<{
   myCollectionData: {}[];
-  visibleColumnDict?: {};
-}> = ({ myCollectionData, visibleColumnDict = {} }) => {
+}> = ({ myCollectionData }) => {
   return (
     <InfoPanel
       titleId="COLLECTIONS"
       titleDefault="Collections"
       key="collections-log"
     >
-      <DataTable data={myCollectionData} colNamesToDisplay={{ name: "Name" }} />
+      <DataTable
+        data={myCollectionData}
+        colNamesToDisplay={{ name: "Name" }}
+        actionButtonsToDisplay={{ edit: "Edit", view: "View" }}
+      />
     </InfoPanel>
   );
 };
