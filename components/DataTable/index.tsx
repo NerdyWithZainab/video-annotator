@@ -4,12 +4,9 @@ import {
   GridRenderCellParams,
   GridRowsProp,
 } from "@mui/x-data-grid";
-import { AnyARecord } from "dns";
 import { reduce, map } from "lodash-es";
 import React, { useMemo } from "react";
-import { generateComponent } from "../../utilities/componentUtils";
-import ComponentWrapper from "../ComponentWrapper";
-import EditActionButton from "../EditActionButton";
+import { populateWithActionButtons } from "../../utilities/dataTableUtils";
 
 const DataTable: React.FC<{
   data: {}[];
@@ -83,7 +80,13 @@ const DataTable: React.FC<{
     shouldFilter,
   ]);
 
-  const columns: GridColDef[] = useMemo(() => {
+  const columns: GridColDef<{
+    type: "singleSelect";
+    field: string;
+    headerName: string;
+    renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
+    width: number;
+  }>[] = useMemo(() => {
     const safePrototypeRow: { [key: string]: any } = data[0] || {}; // assumes that the first row of the data has all of the columns desired (i.e., that it's a good prototype to use)
     let prototypeRowWithOnlyDesiredCols: { [key: string]: any } =
       safePrototypeRow;
@@ -106,26 +109,13 @@ const DataTable: React.FC<{
         colNamesToDisplay[elKey] ||
         cleanHeader.charAt(0).toUpperCase() + cleanHeader.slice(1);
       return {
+        type: "singleSelect",
         field: "col" + tracker,
         headerName: headerName,
         renderCell:
-          headerName === "Actions" // @TODO isolate the below
+          headerName === "Actions"
             ? (params: GridRenderCellParams) => {
-                const rowId: number | string = params?.id || "";
-                console.log(params?.value.split(" "));
-                const actionButtonKeys: string[] =
-                  params?.value.split(" ") || [];
-                return (
-                  <>
-                    {actionButtonKeys.map((actionButtonKey) => {
-                      const currentComponent = generateComponent(
-                        actionButtonKey,
-                        rowId
-                      );
-                      return currentComponent;
-                    })}
-                  </>
-                );
+                return populateWithActionButtons(params);
               }
             : () => {},
         width: 200,
