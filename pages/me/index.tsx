@@ -5,7 +5,7 @@ import UserDetailPanel from "../../components/UserDetailPanel";
 import MySubScriptionPanel from "../../components/MySubscriptionPanel";
 import MyAnnotationsPanel from "../../components/MyAnnotationsPanel";
 import MyActivityLogPanel from "../../components/MyActivityLogPanel";
-import MyCollectionsPanel from "../../components/MyCollectionsPanel";
+import CollectionsPanel from "../../components/CollectionsPanel";
 import FeedbackPanel from "../../components/FeedbackPanel";
 
 const Me: React.FC = () => {
@@ -110,6 +110,33 @@ const Me: React.FC = () => {
       },
     ];
 
+  const shamPublicCollectionData: {
+    name: string;
+    removeMe: string;
+    id: string;
+  }[] = [
+    {
+      name: "Public Collection 1",
+      removeMe: "boop",
+      id: "1",
+    },
+    {
+      name: "Public Collection 2",
+      removeMe: "beep",
+      id: "2",
+    },
+    {
+      name: "Public Collection 3",
+      removeMe: "beeple",
+      id: "3",
+    },
+    {
+      name: "Public Collection 4",
+      removeMe: "borple",
+      id: "4",
+    },
+  ];
+
   const email: string =
     user?.email ||
     intl.formatMessage({
@@ -138,9 +165,19 @@ const Me: React.FC = () => {
         <FeedbackPanel styleOverrides={{ maxHeight: 1000 }} />
       </Grid>
       <Grid item sm={12} md={6}>
-        <MyCollectionsPanel
-          myCollectionData={shamMyCollectionData}
-          visibleColumnKeys={["name", "id"]}
+        <CollectionsPanel
+          titleId={"COLLECTIONS"}
+          titleDefault={"My Collections"}
+          collectionData={shamMyCollectionData}
+          colNamesToDisplay={{ name: "Name", id: "ID" }}
+        />
+      </Grid>
+      <Grid item sm={12} md={6}>
+        <CollectionsPanel
+          titleId={"PUBLIC_COLLECTIONS"}
+          titleDefault={"Publi Collections"}
+          collectionData={shamPublicCollectionData}
+          colNamesToDisplay={{ name: "Name" }}
         />
       </Grid>
     </Grid>

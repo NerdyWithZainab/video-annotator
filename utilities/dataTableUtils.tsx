@@ -3,7 +3,6 @@ import { generateComponent } from "./componentUtils";
 
 export function populateWithActionButtons(params: GridRenderCellParams) {
   const rowId: number | string = params?.id || "";
-  console.log(params?.value.split(" "));
   const actionButtonKeys: string[] = params?.value.split(" ") || [];
   return (
     <>

@@ -9,10 +9,12 @@ import React, { useMemo } from "react";
 import { populateWithActionButtons } from "../../utilities/dataTableUtils";
 
 const DataTable: React.FC<{
+  key?: string | number;
   data: {}[];
+  // colNamesToDisplay?: { [key: string]: any };
   colNamesToDisplay?: { [key: string]: any };
   actionButtonsToDisplay?: { [key: string]: any };
-}> = ({ data, colNamesToDisplay = {}, actionButtonsToDisplay = {} }) => {
+}> = ({ key, data, colNamesToDisplay = {}, actionButtonsToDisplay = {} }) => {
   const actionButtonsKeys: string[] = useMemo(() => {
     return Object.keys(actionButtonsToDisplay) || [];
   }, [actionButtonsToDisplay]);
@@ -81,7 +83,7 @@ const DataTable: React.FC<{
   ]);
 
   const columns: GridColDef<{
-    type: "singleSelect";
+    // type: "singleSelect";
     field: string;
     headerName: string;
     renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
@@ -109,7 +111,7 @@ const DataTable: React.FC<{
         colNamesToDisplay[elKey] ||
         cleanHeader.charAt(0).toUpperCase() + cleanHeader.slice(1);
       return {
-        type: "singleSelect",
+        // type: "singleSelect",
         field: "col" + tracker,
         headerName: headerName,
         renderCell:
@@ -125,6 +127,7 @@ const DataTable: React.FC<{
 
   return (
     <DataGrid
+      key={key}
       rows={rows}
       rowHeight={40}
       columns={columns}
