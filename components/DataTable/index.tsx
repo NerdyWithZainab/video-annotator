@@ -11,7 +11,6 @@ import { populateWithActionButtons } from "../../utilities/dataTableUtils";
 const DataTable: React.FC<{
   key?: string | number;
   data: {}[];
-  // colNamesToDisplay?: { [key: string]: any };
   colNamesToDisplay?: { [key: string]: any };
   actionButtonsToDisplay?: { [key: string]: any };
 }> = ({ key, data, colNamesToDisplay = {}, actionButtonsToDisplay = {} }) => {
@@ -40,15 +39,16 @@ const DataTable: React.FC<{
     return data?.map((dataRow, idx) => {
       let dataRowWithOnlyDesiredCols: { [key: string]: any } = dataRow;
       if (shouldAddActionButtons) {
-        dataRowWithOnlyDesiredCols["actions"] = null; // reset upon every render
+        dataRowWithOnlyDesiredCols["actions"] = null; // reset upon every run
         actionButtonsKeys.forEach((actionButtonKey) => {
           // just add the actionButtonKey for the componentMap to use later in columns definition
-          dataRowWithOnlyDesiredCols["actions"] =
-            dataRowWithOnlyDesiredCols["actions"] !== null
-              ? dataRowWithOnlyDesiredCols["actions"] +
-                " " +
-                actionButtonsToDisplay[actionButtonKey]
-              : actionButtonsToDisplay[actionButtonKey];
+          const alreadyHasValues: boolean =
+            dataRowWithOnlyDesiredCols["actions"] !== null;
+          dataRowWithOnlyDesiredCols["actions"] = alreadyHasValues
+            ? dataRowWithOnlyDesiredCols["actions"] +
+              " " +
+              actionButtonsToDisplay[actionButtonKey]
+            : actionButtonsToDisplay[actionButtonKey];
         });
       }
       if (shouldFilter) {
@@ -63,7 +63,7 @@ const DataTable: React.FC<{
         );
       }
       const renamedDataRow: { [key: string]: any } = reduce(
-        // can't include in above reduce because this time I need the index number
+        // can't include in above reduce because this time I need the index number and lodash reduce won't track index and key of objects
         Object.values(dataRowWithOnlyDesiredCols),
         (memo: {}, el: any, elIdx: number) => {
           const colNum: number = elIdx + 1;
@@ -104,7 +104,7 @@ const DataTable: React.FC<{
     }
     let tracker: number = 0;
     return map(prototypeRowWithOnlyDesiredCols, (el, elKey) => {
-      tracker++; // tracker seems needed because I can't get both the keys and the indexes in map(obj)
+      tracker++; // tracker seems needed because I can't get both the keys and the indexes in lodash map(obj)
       const cleanHeader: string = elKey.trim().toLowerCase();
 
       const headerName: string =
