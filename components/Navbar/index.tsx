@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   }, [user, hideLoginBtn]);
 
   const handleLogout = async () => {
-    await signOut();
+    await signOut(); // TODO decide whether I also need to trigger a re-render here to get the correct behavior of protecting this url
   };
   return (
     <AppBar position="sticky" color="primary">
@@ -62,6 +62,7 @@ const Navbar: React.FC = () => {
         {showLogout && (
           <Button
             variant="contained"
+            color="secondary"
             data-testid="logout-button"
             onClick={handleLogout}
             style={{ justifyContent: "right" }}

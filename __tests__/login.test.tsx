@@ -7,6 +7,7 @@ import * as englishMessages from "../lang/en.json";
 import { IntlProvider } from "react-intl";
 
 import { isValidEmail } from "../utilities/validators";
+import { simulatedUser } from "../utilities/test_utils/sham-users";
 
 const messageMap: {} = {
   en: englishMessages,
@@ -137,55 +138,84 @@ describe("When logging in,", () => {
     }
   });
 
-  // test("a user doesn't see the login button on the login page", () => {
-  //   renderWithReactIntl( // @TODO flesh this out
-  //     locale,
-  //     messages,
-  //     <>
-  //       <Navbar />
-  //       {/* <Login /> */}
-  //     </>
-  //   );
-  //   const loginButtonEl: HTMLButtonElement | null =
-  //     screen.queryByTestId("login-button");
-  //   // expect(true).toBeFalsy();
-  //   expect(loginButtonEl).not.toBeVisible();
-  // }); // @TODO get this to work
+  test("a user doesn't see the login button on the login page", () => {
+    renderWithReactIntl(
+      locale,
+      messages,
+      <>
+        <Login />
+      </>
+    );
+    const loginButtonEl: HTMLButtonElement | null =
+      screen.queryByTestId("login-button");
+    expect(loginButtonEl).toBeNull();
+    const loginTextEl: HTMLElement | null | undefined =
+      screen.queryByTestId("login-h1");
+    expect(loginTextEl).not.toBeNull();
+  });
 
-  test("a user can't successfully visit non-verification pages if their email isn't verified", () => {
-    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
+  // test("a user can't successfully visit non-verification pages if their email isn't verified", () => {
+  //   renderWithReactIntl(locale, messages, <Login user={simulatedUser} />); // @TODO flesh this out
+  //   expect(true).toBeTruthy(); // @TODO left off here
+  //   // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
+  //   //   messages["MUST_BE_VALID_EMAIL"]
+  //   // );
+  //   // expect(emailErrorEl).toBeNull();
+  // });
+
+  // test("a user is directed to the verification page if their email isn't verified but they are logged in", () => {
+  //   renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
+  //   expect(true).toBeTruthy();
+  //   // expect(true).toBeFalsy();
+  //   // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
+  //   //   messages["MUST_BE_VALID_EMAIL"]
+  //   // );
+  //   // expect(emailErrorEl).toBeNull();
+  // });
+
+  // test("a user doesn't see the login button if they are already logged in", () => {
+  //   renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
+  //   expect(true).toBeTruthy();
+  //   // expect(true).toBeFalsy();
+  //   // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
+  //   //   messages["MUST_BE_VALID_EMAIL"]
+  //   // );
+  //   // expect(emailErrorEl).toBeNull();
+  // });
+
+  test("a user who correctly logs in calls the login method from the auth custom hook", () => {
+    const mockLoginMethod = jest.fn();
+    renderWithReactIntl(
+      locale,
+      messages,
+      <Login loginMethod={mockLoginMethod} />
+    );
+    const emailAddressEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("emailInput")
+      ?.querySelector("input");
     expect(true).toBeTruthy();
-    // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
-  });
-  test("a user is directed to the verification page if their email isn't verified but they are logged in", () => {
-    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
-    expect(true).toBeTruthy();
-    // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
-  });
-  test("a user doesn't see the login button if they are already logged in or if they are in the create-account page", () => {
-    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
-    expect(true).toBeTruthy();
-    // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
-  });
-  test("a user doesn't see the login button if they are in the create-account page", () => {
-    renderWithReactIntl(locale, messages, <Login />); // @TODO flesh this out
-    expect(true).toBeTruthy();
-    // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
+    if (emailAddressEl) {
+      fireEvent.change(emailAddressEl, {
+        target: { value: "testing@example.com" },
+      });
+    } else {
+      expect(true).toBeFalsy();
+    }
+    const passwordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("passwordInput")
+      ?.querySelector("input");
+    if (passwordInputEl) {
+      fireEvent.change(passwordInputEl, { target: { value: "test1234" } });
+    } else {
+      expect(true).toBeFalsy();
+    }
+    const loginButton: HTMLElement | null | undefined =
+      screen.queryByTestId("submit-button");
+    if (loginButton) {
+      fireEvent.click(loginButton);
+      expect(mockLoginMethod).toBeCalledTimes(1);
+    } else {
+      expect(true).toBeFalsy();
+    }
   });
 });

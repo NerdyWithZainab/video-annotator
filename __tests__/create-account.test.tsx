@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 
 import CreateAccount from "../pages/create-account";
+import Login from "../pages/login";
 import {
   isValidEmail,
   isValidPassword,
@@ -10,6 +11,8 @@ import * as englishMessages from "../lang/en.json";
 
 import { IntlProvider } from "react-intl";
 import Navbar from "../components/Navbar";
+import { setUserId } from "firebase/analytics";
+import { simulatedUser } from "../utilities/test_utils/sham-users";
 
 const messageMap: {} = {
   en: englishMessages,
@@ -28,6 +31,72 @@ const renderWithReactIntl = (
     </IntlProvider>
   );
 };
+
+// const simulateLogin = () => { // @TODO deleteMe
+//   const mockLoginMethod = jest.fn((email: string, password: string) => {
+//     const shamUser = {
+//       uid: "ttf48LgEWDUfNtZc63AwjOL2drU2",
+//       email: email,
+//       emailVerified: false,
+//       isAnonymous: false,
+//       providerData: [
+//         {
+//           providerId: "password",
+//           uid: "mark.aaron.fisher@gmail.com",
+//           displayName: null,
+//           email: email,
+//           phoneNumber: null,
+//           photoURL: null,
+//         },
+//       ],
+//       stsTokenManager: {
+//         refreshToken:
+//           "APJWN8f8yYPFdNjjfskT5fzFVKMsYJUJYTPk59d2fFtY9ml1wFu-SrJKVym2lopIm3NI3meXBf6e32uwbSmxsmza8Sh4jeDhX8PQiZmH8qYQV9sxj3NtTrbNJcbXKXFRCR42bnP-1ECiuqmdc3WOE1TfBiBy5vzv09rJ9fOqPS9Oo4S-QlHfqlfOxmAjvaIHiAIHcuK7KA9wHluE9qKiSKndl5NCoATJWC32EXcLMy5-ssxsMWkvtZo",
+//         accessToken:
+//           "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY4NzZiNzIxNDAwYmZhZmEyOWQ0MTFmZTYwODE2YmRhZWMyM2IzODIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYW5ub3RhdGUtdmlkZW8tYTg3ODMiLCJhdWQiOiJhbm5vdGF0ZS12aWRlby1hODc4MyIsImF1dGhfdGltZSI6MTY3Nzc5MDcwMSwidXNlcl9pZCI6InR0ZjQ4TGdFV0RVZk50WmM2M0F3ak9MMmRyVTIiLCJzdWIiOiJ0dGY0OExnRVdEVWZOdFpjNjNBd2pPTDJkclUyIiwiaWF0IjoxNjc3NzkwNzAxLCJleHAiOjE2Nzc3OTQzMDEsImVtYWlsIjoibWFyay5hYXJvbi5maXNoZXJAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbIm1hcmsuYWFyb24uZmlzaGVyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.uiHHGUXLNDWSU-F1tvVdDs9m0d3lvvuaLZ6vg7DJXJWrWq_HcoYGmFVwBrIVFjuy-87ju7sbz8W3otIT2khQQG75W8-eUYRMFmI9tCt-13J19sqAFbZw9qAyX2PJ0t7PD-OrSLcNhe5OW8MjfgjMn5RINfwBO4bKVnPBth4iSS0-MqRady7hoMn1FjXVvry0lGgYJM_iv_Lh79ztKgb68uAe_VuZTEa8fEShAAiMAXSA4MhgV0XQbd4vGVctnjVWwJjsvLxf_vmmvedksVqdWYL93pNVch1cD_uetvfy_I6cFroWy2bZMFL76GiNZm0MT2VEtU5KJGzOM3cvmTfUCA",
+//         expirationTime: 1677794301373,
+//       },
+//       createdAt: "1673929897962",
+//       lastLoginAt: "1677790701400",
+//       apiKey: "AIzaSyAkyK0eEz1GLUoit_oGBPM97NVJUcrxz-o",
+//       appName: "[DEFAULT]",
+//     };
+//     setUser(shamUser);
+//   });
+//   renderWithReactIntl(
+//     locale,
+//     messages,
+//     <Login loginMethod={mockLoginMethod} />
+//   );
+//   const emailAddressEl: HTMLInputElement | null | undefined = screen
+//     .queryByTestId("emailInput")
+//     ?.querySelector("input");
+//   expect(true).toBeTruthy();
+//   if (emailAddressEl) {
+//     fireEvent.change(emailAddressEl, {
+//       target: { value: "validEmail@example.com" },
+//     });
+//   } else {
+//     expect(true).toBeFalsy();
+//   }
+//   const passwordInputEl: HTMLInputElement | null | undefined = screen
+//     .queryByTestId("passwordInput")
+//     ?.querySelector("input");
+//   if (passwordInputEl) {
+//     fireEvent.change(passwordInputEl, {
+//       target: { value: "validPassword1234" },
+//     });
+//   } else {
+//     expect(true).toBeFalsy();
+//   }
+//   const loginButton: HTMLElement | null | undefined =
+//     screen.queryByTestId("submit-button");
+//   if (loginButton) {
+//     fireEvent.click(loginButton);
+//   } else {
+//     expect(true).toBeFalsy();
+//   }
+// };
 
 afterEach(cleanup);
 
@@ -300,12 +369,33 @@ describe("In account creation,", () => {
   });
 
   test("a user cannot create an account if they are logged in", () => {
-    // renderWithReactIntl(locale, messages, <Login />);
-    expect(true).toBeTruthy(); // @TODO
-    // expect(true).toBeFalsy();
-    // const emailErrorEl: HTMLElement | null | undefined = screen.queryByText(
-    //   messages["MUST_BE_VALID_EMAIL"]
-    // );
-    // expect(emailErrorEl).toBeNull();
+    renderWithReactIntl(
+      locale,
+      messages,
+      <CreateAccount user={simulatedUser} />
+    );
+
+    const emailAddressEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("emailInput")
+      ?.querySelector("input");
+    const passwordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("passwordInput")
+      ?.querySelector("input");
+    const confirmPasswordInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("confirmPasswordInput")
+      ?.querySelector("input");
+    const userNameInputEl: HTMLInputElement | null | undefined = screen
+      .queryByTestId("usernameInput")
+      ?.querySelector("input");
+
+    expect(emailAddressEl).toBeUndefined();
+    expect(passwordInputEl).toBeUndefined();
+    expect(confirmPasswordInputEl).toBeUndefined();
+    expect(userNameInputEl).toBeUndefined();
+
+    const notLoggedInWarningEl: HTMLElement | null | undefined =
+      screen.queryByText(messages["MUST_LOG_OUT_FIRST"]);
+    expect(notLoggedInWarningEl).not.toBeNull();
+    expect(notLoggedInWarningEl).not.toBeUndefined();
   });
 });
