@@ -66,5 +66,8 @@
   "TOTAL_NET_POINTS_EARNED_THIS_MONTH": "Total net points earned this month",
   "TOTAL_NET_CUMULATIVE_POINTS_EARNED": "Total net cumulative points earned",
   "SUBMIT": "Submit",
-  "COLLECTIONS": "Collections"
+  "COLLECTIONS": "My Collections",
+  "VIEW": "View",
+  "EDIT": "Edit",
+  "PUBLIC_COLLECTIONS": "Public Collections"
 }

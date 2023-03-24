@@ -75,10 +75,10 @@ const FeedbackPanel: React.FC<{ styleOverrides?: {} }> = ({
   const handleFeedbackSubmission: () => void = async () => {
     try {
       // @TODO add the feedback to the database
-      console.log("deleteMe handleFeedbackSubmission called!");
-      console.log("deleteMe feedbackUrl is: " + feedbackUrl);
-      console.log("deleteMe description is: " + description);
-      console.log("deleteMe stepsToReproduce is: " + stepsToReproduce);
+      // console.log("deleteMe handleFeedbackSubmission called!");
+      // console.log("deleteMe feedbackUrl is: " + feedbackUrl);
+      // console.log("deleteMe description is: " + description);
+      // console.log("deleteMe stepsToReproduce is: " + stepsToReproduce);
     } catch (error: any) {
       setError(error?.message);
     }
