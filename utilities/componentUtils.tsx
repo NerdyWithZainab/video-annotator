@@ -10,5 +10,5 @@ export const componentMap: { [key: string]: any } = {
 
 export function generateComponent(componentName: string, id: string | number) {
   const Returncomponent = componentMap[componentName] || null;
-  return createElement(Returncomponent, { id });
+  return createElement(Returncomponent, { id, key: id });
 }

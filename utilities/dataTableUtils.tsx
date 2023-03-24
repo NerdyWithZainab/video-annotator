@@ -1,13 +1,22 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import { generateComponent } from "./componentUtils";
 
-export function populateWithActionButtons(params: GridRenderCellParams) {
+export function populateWithActionButtons(
+  tableTitle: string,
+  params: GridRenderCellParams
+) {
+  console.log("deleteMe params are: ");
+  console.log(params);
   const rowId: number | string = params?.id || "";
+  const field: string = params?.field || "";
   const actionButtonKeys: string[] = params?.value?.split(" ") || [];
   return (
     <>
       {actionButtonKeys.map((actionButtonKey) => {
-        return generateComponent(actionButtonKey, rowId);
+        return generateComponent(
+          actionButtonKey,
+          tableTitle + field + rowId + actionButtonKey
+        );
       })}
     </>
   );

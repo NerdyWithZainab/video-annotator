@@ -8,12 +8,9 @@ const CollectionsPanel: React.FC<{
   colNamesToDisplay?: { [key: string]: any };
 }> = ({ collectionData, titleId, titleDefault, colNamesToDisplay = {} }) => {
   return (
-    <InfoPanel
-      titleId={titleId}
-      titleDefault={titleDefault}
-      key="collections-log"
-    >
+    <InfoPanel titleId={titleId} titleDefault={titleDefault} key={titleId}>
       <DataTable
+        tableTitle={titleId}
         key={titleId}
         data={collectionData}
         colNamesToDisplay={colNamesToDisplay}

@@ -1,20 +1,19 @@
-import {
-  DataGrid,
-  GridColDef,
-  GridRenderCellParams,
-  GridRowsProp,
-  GridTreeNodeWithRender,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { reduce, map } from "lodash-es";
 import React, { useMemo } from "react";
 import { populateWithActionButtons } from "../../utilities/dataTableUtils";
 
 const DataTable: React.FC<{
-  key?: string | number;
+  tableTitle: string;
   data: {}[];
   colNamesToDisplay?: { [key: string]: any };
   actionButtonsToDisplay?: { [key: string]: any };
-}> = ({ key, data, colNamesToDisplay = {}, actionButtonsToDisplay = {} }) => {
+}> = ({
+  tableTitle,
+  data,
+  colNamesToDisplay = {},
+  actionButtonsToDisplay = {},
+}) => {
   const actionButtonsKeys: string[] = useMemo(() => {
     return Object.keys(actionButtonsToDisplay) || [];
   }, [actionButtonsToDisplay]);
@@ -85,11 +84,6 @@ const DataTable: React.FC<{
 
   const columns: GridColDef<{
     [key: string | number]: any;
-    // type: string;
-    // field: string;
-    // headerName: string;
-    // renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
-    // width: number;
   }>[] = useMemo(() => {
     const safePrototypeRow: { [key: string]: any } = data[0] || {}; // assumes that the first row of the data has all of the columns desired (i.e., that it's a good prototype to use)
     let prototypeRowWithOnlyDesiredCols: { [key: string]: any } =
@@ -113,33 +107,31 @@ const DataTable: React.FC<{
         colNamesToDisplay[elKey] ||
         cleanHeader.charAt(0).toUpperCase() + cleanHeader.slice(1);
       const returnVal: GridColDef<{
-        [key: string | number]: any;
-        // type: string;
-        // field: string;
-        // headerName: string;
-        // renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
-        // width: number;
+        [key: string | number]: any | null;
       }> = {
-        // type: "singleSelect",
         field: "col" + tracker,
         headerName: headerName,
         renderCell:
           headerName === "Actions"
             ? (params) => {
-                return populateWithActionButtons(params);
+                return populateWithActionButtons(tableTitle, params);
               }
-            : () => {
-                return <></>;
-              },
+            : undefined,
         width: 200,
       };
       return returnVal;
     });
-  }, [data, shouldFilter, colNamesToDisplayKeys, colNamesToDisplay]);
+  }, [
+    data,
+    shouldFilter,
+    colNamesToDisplayKeys,
+    colNamesToDisplay,
+    tableTitle,
+  ]);
 
   return (
     <DataGrid
-      key={key}
+      key={tableTitle}
       rows={rows}
       rowHeight={40}
       columns={columns}
