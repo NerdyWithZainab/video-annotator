@@ -3,6 +3,7 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridRowsProp,
+  GridTreeNodeWithRender,
 } from "@mui/x-data-grid";
 import { reduce, map } from "lodash-es";
 import React, { useMemo } from "react";
@@ -83,11 +84,12 @@ const DataTable: React.FC<{
   ]);
 
   const columns: GridColDef<{
-    // type: "singleSelect";
-    field: string;
-    headerName: string;
-    renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
-    width: number;
+    [key: string | number]: any;
+    // type: string;
+    // field: string;
+    // headerName: string;
+    // renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
+    // width: number;
   }>[] = useMemo(() => {
     const safePrototypeRow: { [key: string]: any } = data[0] || {}; // assumes that the first row of the data has all of the columns desired (i.e., that it's a good prototype to use)
     let prototypeRowWithOnlyDesiredCols: { [key: string]: any } =
@@ -110,18 +112,28 @@ const DataTable: React.FC<{
       const headerName: string =
         colNamesToDisplay[elKey] ||
         cleanHeader.charAt(0).toUpperCase() + cleanHeader.slice(1);
-      return {
+      const returnVal: GridColDef<{
+        [key: string | number]: any;
+        // type: string;
+        // field: string;
+        // headerName: string;
+        // renderCell: ((params: GridRenderCellParams) => JSX.Element) | (() => void);
+        // width: number;
+      }> = {
         // type: "singleSelect",
         field: "col" + tracker,
         headerName: headerName,
         renderCell:
           headerName === "Actions"
-            ? (params: GridRenderCellParams) => {
+            ? (params) => {
                 return populateWithActionButtons(params);
               }
-            : () => {},
+            : () => {
+                return <></>;
+              },
         width: 200,
       };
+      return returnVal;
     });
   }, [data, shouldFilter, colNamesToDisplayKeys, colNamesToDisplay]);
 
