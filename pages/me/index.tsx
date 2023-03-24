@@ -169,7 +169,7 @@ const Me: React.FC = () => {
           titleId={"COLLECTIONS"}
           titleDefault={"My Collections"}
           collectionData={shamMyCollectionData}
-          colNamesToDisplay={{ name: "Name", id: "ID" }}
+          colNamesToDisplay={{ name: "Name" }}
         />
       </Grid>
       <Grid item sm={12} md={6}>
