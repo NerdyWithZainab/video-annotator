@@ -166,6 +166,7 @@ const Me: React.FC = () => {
       </Grid>
       <Grid item sm={12} md={6}>
         <CollectionsPanel
+          key={"COLLECTIONS"}
           titleId={"COLLECTIONS"}
           titleDefault={"My Collections"}
           collectionData={shamMyCollectionData}
@@ -174,6 +175,7 @@ const Me: React.FC = () => {
       </Grid>
       <Grid item sm={12} md={6}>
         <CollectionsPanel
+          key={"PUBLIC_COLLECTIONS"}
           titleId={"PUBLIC_COLLECTIONS"}
           titleDefault={"Publi Collections"}
           collectionData={shamPublicCollectionData}
