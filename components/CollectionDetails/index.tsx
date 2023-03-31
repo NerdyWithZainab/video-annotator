@@ -1,18 +1,27 @@
+import React, { useState } from "react";
+
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  TextField,
+} from "@mui/material";
+import { FormattedMessage, useIntl, IntlShape } from "react-intl";
+import { isBoolean } from "lodash-es";
+
 import InfoPanel from "../InfoPanel";
 import { Collection } from "../../types";
 import InfoPanelBody from "../InfoPanel/InfoPanelBody";
-import { Grid, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { FormattedMessage, useIntl, IntlShape } from "react-intl";
 import { isValidName } from "../../utilities/validators";
-import { isBoolean } from "lodash-es";
 
 const CollectionDetails: React.FC<{
   collection: Collection;
 }> = ({ collection }) => {
   const intl: IntlShape = useIntl();
 
-  const [name, setName] = useState<string>(collection?.name);
+  const [name, setName] = useState<string>(collection?.name || "");
   const [nameInvalid, setNameInvalid] = useState<boolean>(false);
   const handleNameChange: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -49,13 +58,13 @@ const CollectionDetails: React.FC<{
   const [isPrivate, setIsPrivate] = useState<boolean>(
     collection?.isPrivate || false
   ); // default to public
-  const [isPrivateInvalid, setIsPrivateInvalid] = useState<boolean>(false);
-  const handleIsPrivateChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const currentIsPrivate: boolean = Boolean(event?.currentTarget?.value);
+  //   const [isPrivateInvalid, setIsPrivateInvalid] = useState<boolean>(false);
+  const handleIsPrivateChange: (event: any) => void = (event: any) => {
+    const currentIsPrivate: any = event?.target?.checked;
+    console.log("deleteMe currentIsPrivate is: ");
+    console.log(currentIsPrivate);
     setIsPrivate(currentIsPrivate);
-    setIsPrivateInvalid(!isBoolean(currentIsPrivate));
+    // setIsPrivateInvalid(!isBoolean(currentIsPrivate));
   };
 
   return (
@@ -112,7 +121,7 @@ const CollectionDetails: React.FC<{
                         id: "GENERIC_CANNOT_BE_BLANK",
                         defaultMessage: "Name of video cannot be blank",
                       },
-                      { name: "Name of video" }
+                      { name: "Name of video" } // @TODO internationalize this, too
                     )
                   : ""
               }
@@ -124,28 +133,48 @@ const CollectionDetails: React.FC<{
           <Grid item lg={12} sm={12}>
             <TextField
               fullWidth
-              data-testid={"collection-name"}
-              error={nameInvalid}
+              error={nameOfEventInvalid}
               variant="filled"
+              data-testid={"collection-name-of-event"}
               label={
                 <FormattedMessage
-                  id="COLLECTION_NAME"
-                  defaultMessage="Collection Name"
+                  id="NAME_OF_EVENT"
+                  defaultMessage="Name of event"
                 />
               }
               required
               helperText={
-                nameInvalid
-                  ? intl.formatMessage({
-                      id: "COLLECTION_NAME_CANNOT_BE_BLANK",
-                      defaultMessage: "Collection name cannot be blank",
-                    })
+                nameOfEventInvalid
+                  ? intl.formatMessage(
+                      {
+                        id: "GENERIC_CANNOT_BE_BLANK",
+                        defaultMessage: "Name of event cannot be blank",
+                      },
+                      { name: "Name of event" } // @TODO internationalize this, too
+                    )
                   : ""
               }
               style={{ marginBottom: 10, maxWidth: 400 }}
-              onChange={handleNameChange}
-              value={name}
+              onChange={handleNameOfEventChange}
+              value={nameOfEvent}
             ></TextField>
+          </Grid>
+          <Grid item lg={12} sm={12}>
+            {/* <FormControl> */}
+            {/* <FormGroup> */}
+            <FormControlLabel
+              control={<Checkbox />}
+              value={isPrivate}
+              onChange={handleIsPrivateChange}
+              label={
+                <FormattedMessage
+                  id="IS_COLLECTION_PRIVATE"
+                  defaultMessage="Is the collection private?"
+                />
+              }
+            />
+            {/* </FormGroup> */}
+            {/* </FormControl> */}
           </Grid>
         </Grid>
       </InfoPanelBody>

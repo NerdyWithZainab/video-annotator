@@ -74,5 +74,8 @@
   "COLLECTION_NAME": "Collection Name",
   "COLLECTION_NAME_CANNOT_BE_BLANK": "Collection name cannot be blank",
   "NAME_OF_VIDEO": "Name of video",
-  "GENERIC_CANNOT_BE_BLANK": "{name} cannot be blank"
+  "GENERIC_CANNOT_BE_BLANK": "{name} cannot be blank",
+  "NAME_OF_EVENT": "Name of event",
+  "IS_COLLECTION_PRIVATE": "Is the collection private?",
+  "SOMETHING_WENT_WRONG_CONTACT_DEVELOPER": "Something went wrong. Alert a developer by <a href='/me'>leaving feedback</a>"
 }

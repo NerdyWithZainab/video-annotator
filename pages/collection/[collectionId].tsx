@@ -9,6 +9,7 @@ const SingleCollection: React.FC = () => {
     nameOfVideo: "Match",
     nameOfEvent: "Move",
     isPrivate: false,
+    language: "eng",
   };
 
   return (
