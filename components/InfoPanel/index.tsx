@@ -6,8 +6,15 @@ const InfoPanel: React.FC<{
   titleId: string;
   titleDefault: string;
   styleOverrides?: {};
+  textOverrides?: {};
   children?: React.ReactNode;
-}> = ({ titleId, titleDefault, styleOverrides = {}, children }) => {
+}> = ({
+  titleId,
+  titleDefault,
+  styleOverrides = {},
+  textOverrides = {},
+  children,
+}) => {
   return (
     <Paper
       elevation={8}
@@ -20,7 +27,10 @@ const InfoPanel: React.FC<{
       }}
     >
       <>
-        <Typography variant="h5" style={{ marginBottom: "2vh" }}>
+        <Typography
+          variant="h5"
+          style={{ marginBottom: "2vh", ...textOverrides }}
+        >
           <FormattedMessage id={titleId} defaultMessage={titleDefault} />
         </Typography>
         <div style={{ maxHeight: 200, overflow: "auto", ...styleOverrides }}>

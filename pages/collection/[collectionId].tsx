@@ -1,13 +1,23 @@
 import { Grid } from "@mui/material";
 import CollectionDetails from "../../components/CollectionDetails";
 
+import { Collection } from "../../types";
+
 const SingleCollection: React.FC = () => {
+  const shamCollection: Collection = {
+    name: "Brazilian Jiu Jitsu",
+    nameOfVideo: "Match",
+    nameOfEvent: "Move",
+    isPrivate: false,
+  };
+
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
-      {/* @TODO align this in the middle */}
+      <Grid item sm={12} md={4}></Grid>
       <Grid item sm={12} md={4}>
-        <CollectionDetails></CollectionDetails>
+        <CollectionDetails collection={shamCollection}></CollectionDetails>
       </Grid>
+      <Grid item sm={12} md={4}></Grid>
     </Grid>
   );
 };

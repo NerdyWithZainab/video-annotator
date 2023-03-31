@@ -1,3 +1,7 @@
+export function isNonEmptyString(str: string): boolean {
+  return Boolean(str);
+}
+
 export function isValidEmail(email: string): boolean {
   if (email) {
     const re: RegExp =
@@ -28,6 +32,10 @@ export function isValidPassword(password: string): boolean {
 
 export function isValidUsername(username: string): boolean {
   return Boolean(username);
+}
+
+export function isValidName(name: string): boolean {
+  return isNonEmptyString(name);
 }
 
 export function isValidStepsToReproduce(stepsToReproduce: string): boolean {
