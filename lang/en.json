@@ -69,5 +69,6 @@
   "COLLECTIONS": "My Collections",
   "VIEW": "View",
   "EDIT": "Edit",
-  "PUBLIC_COLLECTIONS": "Public Collections"
+  "PUBLIC_COLLECTIONS": "Public Collections",
+  "COLLECTION_DETAILS": "Collection Details"
 }
