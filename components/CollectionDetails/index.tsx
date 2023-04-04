@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import { Avatar, Tooltip } from "@mui/material";
 
 import {
   Checkbox,
@@ -68,11 +70,17 @@ const CollectionDetails: React.FC<{
     // setIsPrivateInvalid(!isBoolean(currentIsPrivate));
   };
 
+  const isPrivateCollectionLabel: string = intl.formatMessage({
+    id: "IS_COLLECTION_PRIVATE",
+    defaultMessage: "Is the collection private?",
+  });
+
   return (
     <InfoPanel
       titleId="COLLECTION_DETAILS"
       titleDefault="Collection Details"
       textOverrides={{ textAlign: "center" }}
+      styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
         <Grid item lg={12} sm={12}>
@@ -160,21 +168,31 @@ const CollectionDetails: React.FC<{
           ></TextField>
         </Grid>
         <Grid item lg={12} sm={12}>
-          {/* <FormControl> */}
-          {/* <FormGroup> */}
           <FormControlLabel
             control={<Checkbox />}
             value={isPrivate}
             onChange={handleIsPrivateChange}
-            label={
-              <FormattedMessage
-                id="IS_COLLECTION_PRIVATE"
-                defaultMessage="Is the collection private?"
-              />
-            }
+            label={isPrivateCollectionLabel}
           />
-          {/* </FormGroup> */}
-          {/* </FormControl> */}
+          <Tooltip
+            title={intl.formatMessage({
+              id: "IS_PRIVATE_DESCRIPTION",
+              defaultMessage:
+                "If selected, other users will be able to access, read, and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake.",
+            })}
+          >
+            <Avatar
+              style={{
+                border: "1px solid black",
+                height: 25,
+                width: 25,
+                paddingRight: 0,
+                marginRight: 0,
+              }}
+            >
+              <QuestionMarkIcon />
+            </Avatar>
+          </Tooltip>
         </Grid>
       </Grid>
     </InfoPanel>

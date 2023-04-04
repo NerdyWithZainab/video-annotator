@@ -14,11 +14,11 @@ const SingleCollection: React.FC = () => {
 
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
-      <Grid item sm={12} md={4}></Grid>
-      <Grid item sm={12} md={4}>
+      <Grid item sm={12} md={3}></Grid>
+      <Grid item sm={12} md={6}>
         <CollectionDetails collection={shamCollection}></CollectionDetails>
       </Grid>
-      <Grid item sm={12} md={4}></Grid>
+      <Grid item sm={12} md={3}></Grid>
     </Grid>
   );
 };
