@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-import { Avatar, Tooltip } from "@mui/material";
+import InfoIcon from "../InfoIcon";
 
 import {
+  Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
-  FormGroup,
   Grid,
   TextField,
 } from "@mui/material";
 import { FormattedMessage, useIntl, IntlShape } from "react-intl";
-import { isBoolean } from "lodash-es";
 
 import InfoPanel from "../InfoPanel";
 import { Collection } from "../../types";
-import InfoPanelBody from "../InfoPanel/InfoPanelBody";
 import { isValidName } from "../../utilities/validators";
+import CustomError from "../Error";
 
 const CollectionDetails: React.FC<{
   collection: Collection;
@@ -30,6 +27,8 @@ const CollectionDetails: React.FC<{
     setIsPrivate(collection?.isPrivate);
   }, [collection]);
 
+  const [error, setError] = useState<string>("");
+  const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [nameInvalid, setNameInvalid] = useState<boolean>(false);
   const handleNameChange: (
@@ -61,13 +60,33 @@ const CollectionDetails: React.FC<{
   };
 
   const [isPrivate, setIsPrivate] = useState<boolean>(); // default to public
-  //   const [isPrivateInvalid, setIsPrivateInvalid] = useState<boolean>(false);
   const handleIsPrivateChange: (event: any) => void = (event: any) => {
     const currentIsPrivate: any = event?.target?.checked;
-    console.log("deleteMe currentIsPrivate is: ");
-    console.log(currentIsPrivate);
     setIsPrivate(currentIsPrivate);
-    // setIsPrivateInvalid(!isBoolean(currentIsPrivate));
+  };
+
+  useEffect(() => {
+    if (
+      isValidName(name) &&
+      isValidName(nameOfEvent) &&
+      isValidName(nameOfVideo)
+    ) {
+      setAllRequiredValid(true);
+    } else {
+      setAllRequiredValid(false);
+    }
+  }, [name, nameOfEvent, nameOfVideo]);
+
+  const handleCollectionDetailsSubmission: () => void = async () => {
+    try {
+      // TODO@ add this to the database
+      // currentIsPrivate
+      // name
+      // nameOfVideo
+      // nameOfEvent
+    } catch (error: any) {
+      setError(error?.message);
+    }
   };
 
   const isPrivateCollectionLabel: string = intl.formatMessage({
@@ -168,31 +187,31 @@ const CollectionDetails: React.FC<{
           ></TextField>
         </Grid>
         <Grid item lg={12} sm={12}>
-          <FormControlLabel
-            control={<Checkbox />}
-            value={isPrivate}
-            onChange={handleIsPrivateChange}
-            label={isPrivateCollectionLabel}
-          />
-          <Tooltip
-            title={intl.formatMessage({
-              id: "IS_PRIVATE_DESCRIPTION",
-              defaultMessage:
-                "If selected, other users will be able to access, read, and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake.",
-            })}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <FormControlLabel
+              style={{ marginRight: 10 }}
+              control={<Checkbox />}
+              value={isPrivate}
+              onChange={handleIsPrivateChange}
+              label={isPrivateCollectionLabel}
+            />
+            <InfoIcon
+              messageId="IS_PRIVATE_DESCRIPTION"
+              defaultMessage="If selected, other users will be able to access, read, and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake."
+            />
+          </div>
+        </Grid>
+        <Grid item lg={12} sm={12}>
+          <Button
+            style={{ marginBottom: 10 }}
+            data-testid={"collection-details-submit-button"}
+            variant="contained"
+            disabled={!allRequiredValid}
+            onClick={handleCollectionDetailsSubmission}
           >
-            <Avatar
-              style={{
-                border: "1px solid black",
-                height: 25,
-                width: 25,
-                paddingRight: 0,
-                marginRight: 0,
-              }}
-            >
-              <QuestionMarkIcon />
-            </Avatar>
-          </Tooltip>
+            <FormattedMessage id="UPDATE" defaultMessage="Update" />
+          </Button>
+          {error && <CustomError errorMsg={error} />}
         </Grid>
       </Grid>
     </InfoPanel>

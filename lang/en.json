@@ -78,5 +78,6 @@
   "NAME_OF_EVENT": "Name of event",
   "IS_COLLECTION_PRIVATE": "Is the collection private?",
   "SOMETHING_WENT_WRONG_CONTACT_DEVELOPER": "Something went wrong. Alert a developer by <a href='/me'>leaving feedback</a>",
-  "IS_PRIVATE_DESCRIPTION": "If selected, other users will be able to discover your collection, as well as view and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake."
+  "IS_PRIVATE_DESCRIPTION": "If selected, other users will be able to discover your collection, as well as view and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake.",
+  "UPDATE": "Update"
 }
