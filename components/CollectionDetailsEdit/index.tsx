@@ -17,7 +17,8 @@ import CustomError from "../Error";
 
 const CollectionDetailsEdit: React.FC<{
   collection: Collection;
-}> = ({ collection }) => {
+  setIsCollectionDetailsInEditMode: () => {};
+}> = ({ collection, setIsCollectionDetailsInEditMode }) => {
   const intl: IntlShape = useIntl();
 
   useEffect(() => {
@@ -84,6 +85,7 @@ const CollectionDetailsEdit: React.FC<{
       // name
       // nameOfVideo
       // nameOfEvent
+      setIsCollectionDetailsInEditMode(false);
     } catch (error: any) {
       setError(error?.message);
     }
@@ -209,7 +211,7 @@ const CollectionDetailsEdit: React.FC<{
             disabled={!allRequiredValid}
             onClick={handleCollectionDetailsSubmission}
           >
-            <FormattedMessage id="UPDATE" defaultMessage="Update" />
+            <FormattedMessage id="DONE" defaultMessage="Done" />
           </Button>
           {error && <CustomError errorMsg={error} />}
         </Grid>

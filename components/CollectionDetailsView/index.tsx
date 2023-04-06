@@ -9,15 +9,18 @@ import {
   convertCamelCaseToCapitalCase,
 } from "../../utilities/textUtils";
 
-const CollectionDetailsView: React.FC<{ collection: Collection }> = ({
-  collection,
-}) => {
+const CollectionDetailsView: React.FC<{
+  collection: Collection;
+  setIsCollectionDetailsInEditMode: () => {};
+}> = ({ collection, setIsCollectionDetailsInEditMode }) => {
   return (
     <InfoPanel
       titleId="COLLECTION_DETAILS"
       titleDefault="Collection Details"
       textOverrides={{ textAlign: "center" }}
       styleOverrides={{ maxHeight: 1000 }}
+      includeCornerEditButton={true}
+      setEditButton={setIsCollectionDetailsInEditMode}
     >
       <Grid container>
         {map(collection, (collectionEl, elKey) => {

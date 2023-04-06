@@ -24,11 +24,13 @@ const SingleCollection: React.FC = () => {
         {isCollectionDetailsInEditMode && (
           <CollectionDetailsEdit
             collection={shamCollection}
+            setIsCollectionDetailsInEditMode={setIsCollectionDetailsInEditMode}
           ></CollectionDetailsEdit>
         )}
         {!isCollectionDetailsInEditMode && (
           <CollectionDetailsView
             collection={shamCollection}
+            setIsCollectionDetailsInEditMode={setIsCollectionDetailsInEditMode}
           ></CollectionDetailsView>
         )}
       </Grid>
