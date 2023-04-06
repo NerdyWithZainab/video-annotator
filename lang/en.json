@@ -71,6 +71,7 @@
   "EDIT": "Edit",
   "PUBLIC_COLLECTIONS": "Public Collections",
   "COLLECTION_DETAILS": "Collection Details",
+  "COLLECTION_DETAILS_EDIT": "Edit Collection Details",
   "COLLECTION_NAME": "Collection Name",
   "COLLECTION_NAME_CANNOT_BE_BLANK": "Collection name cannot be blank",
   "NAME_OF_VIDEO": "Name of video",

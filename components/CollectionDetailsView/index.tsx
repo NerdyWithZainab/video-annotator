@@ -1,99 +1,17 @@
-import React, { useEffect, useState } from "react";
-import InfoIcon from "../InfoIcon";
+import { Grid, Typography } from "@mui/material";
 
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  TextField,
-} from "@mui/material";
-import { FormattedMessage, useIntl, IntlShape } from "react-intl";
+import { map } from "lodash-es";
 
-import InfoPanel from "../InfoPanel";
 import { Collection } from "../../types";
-import { isValidName } from "../../utilities/validators";
-import CustomError from "../Error";
+import InfoPanel from "../InfoPanel";
+import {
+  capitalizeEachWord,
+  convertCamelCaseToCapitalCase,
+} from "../../utilities/textUtils";
 
-const CollectionDetails: React.FC<{
-  collection: Collection;
-}> = ({ collection }) => {
-  const intl: IntlShape = useIntl();
-
-  useEffect(() => {
-    setName(collection?.name);
-    setNameOfVideo(collection?.nameOfVideo);
-    setNameOfEvent(collection?.nameOfEvent);
-    setIsPrivate(collection?.isPrivate);
-  }, [collection]);
-
-  const [error, setError] = useState<string>("");
-  const [allRequiredValid, setAllRequiredValid] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [nameInvalid, setNameInvalid] = useState<boolean>(false);
-  const handleNameChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const currentName: string = event?.currentTarget?.value;
-    setName(currentName);
-    setNameInvalid(!isValidName(currentName));
-  };
-
-  const [nameOfVideo, setNameOfVideo] = useState<string>("");
-  const [nameOfVideoInvalid, setNameOfVideoInvalid] = useState<boolean>(false);
-  const handleNameOfVideoChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const currentNameOfVideo: string = event?.currentTarget?.value;
-    setNameOfVideo(currentNameOfVideo);
-    setNameOfVideoInvalid(!isValidName(currentNameOfVideo));
-  };
-
-  const [nameOfEvent, setNameOfEvent] = useState<string>("");
-  const [nameOfEventInvalid, setnameOfEventInvalid] = useState<boolean>(false);
-  const handleNameOfEventChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const currentNameOfEvent: string = event?.currentTarget?.value;
-    setNameOfEvent(currentNameOfEvent);
-    setnameOfEventInvalid(!isValidName(currentNameOfEvent));
-  };
-
-  const [isPrivate, setIsPrivate] = useState<boolean>(); // default to public
-  const handleIsPrivateChange: (event: any) => void = (event: any) => {
-    const currentIsPrivate: any = event?.target?.checked;
-    setIsPrivate(currentIsPrivate);
-  };
-
-  useEffect(() => {
-    if (
-      isValidName(name) &&
-      isValidName(nameOfEvent) &&
-      isValidName(nameOfVideo)
-    ) {
-      setAllRequiredValid(true);
-    } else {
-      setAllRequiredValid(false);
-    }
-  }, [name, nameOfEvent, nameOfVideo]);
-
-  const handleCollectionDetailsSubmission: () => void = async () => {
-    try {
-      // TODO@ add this to the database
-      // currentIsPrivate
-      // name
-      // nameOfVideo
-      // nameOfEvent
-    } catch (error: any) {
-      setError(error?.message);
-    }
-  };
-
-  const isPrivateCollectionLabel: string = intl.formatMessage({
-    id: "IS_COLLECTION_PRIVATE",
-    defaultMessage: "Is the collection private?",
-  });
-
+const CollectionDetailsView: React.FC<{ collection: Collection }> = ({
+  collection,
+}) => {
   return (
     <InfoPanel
       titleId="COLLECTION_DETAILS"
@@ -102,7 +20,22 @@ const CollectionDetails: React.FC<{
       styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
-        <Grid item lg={12} sm={12}>
+        {map(collection, (collectionEl, elKey) => {
+          //   console.log("deleteMe collectionEl is: ");
+          //   console.log(capitalizeEachWord(collectionEl.toString()));
+          //   console.log("deleteMe elKey is: ");
+          //   console.log(convertCamelCaseToCapitalCase(elKey));
+          return (
+            <Grid item lg={12} sm={12}>
+              <Typography>
+                {convertCamelCaseToCapitalCase(elKey)} :{" "}
+                {capitalizeEachWord(collectionEl.toString())}
+              </Typography>
+            </Grid>
+          );
+        })}
+
+        {/* <Grid item lg={12} sm={12}>
           <TextField
             fullWidth
             data-testid={"collection-name"}
@@ -212,10 +145,10 @@ const CollectionDetails: React.FC<{
             <FormattedMessage id="UPDATE" defaultMessage="Update" />
           </Button>
           {error && <CustomError errorMsg={error} />}
-        </Grid>
+        </Grid> */}
       </Grid>
     </InfoPanel>
   );
 };
 
-export default CollectionDetails;
+export default CollectionDetailsView;

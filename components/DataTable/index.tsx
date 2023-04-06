@@ -101,7 +101,7 @@ const DataTable: React.FC<{
     let tracker: number = 0;
     return map(prototypeRowWithOnlyDesiredCols, (el, elKey) => {
       tracker++; // tracker seems needed because I can't get both the keys and the indexes in lodash map(obj)
-      const cleanHeader: string = elKey.trim().toLowerCase();
+      const cleanHeader: string = elKey.trim().toLowerCase(); // @TODO use capitalizeEachWord utili here
 
       const headerName: string =
         colNamesToDisplay[elKey] ||

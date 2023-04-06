@@ -1,5 +1,7 @@
 import { Grid } from "@mui/material";
-import CollectionDetails from "../../components/CollectionDetails";
+import { useState } from "react";
+import CollectionDetailsEdit from "../../components/CollectionDetailsEdit";
+import CollectionDetailsView from "../../components/CollectionDetailsView";
 
 import { Collection } from "../../types";
 
@@ -12,11 +14,23 @@ const SingleCollection: React.FC = () => {
     language: "eng",
   };
 
+  const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
+    useState<boolean>(false);
+
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
       <Grid item sm={12} md={3}></Grid>
       <Grid item sm={12} md={6}>
-        <CollectionDetails collection={shamCollection}></CollectionDetails>
+        {isCollectionDetailsInEditMode && (
+          <CollectionDetailsEdit
+            collection={shamCollection}
+          ></CollectionDetailsEdit>
+        )}
+        {!isCollectionDetailsInEditMode && (
+          <CollectionDetailsView
+            collection={shamCollection}
+          ></CollectionDetailsView>
+        )}
       </Grid>
       <Grid item sm={12} md={3}></Grid>
     </Grid>
