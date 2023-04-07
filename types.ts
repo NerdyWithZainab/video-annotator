@@ -4,6 +4,8 @@ export interface Question {
   language: string;
   isRequired: boolean;
   testId: string;
+  doNotDisplay: string[];
+  shouldBeCheckboxes: string[];
 }
 
 export interface QuestionValidity {

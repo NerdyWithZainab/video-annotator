@@ -86,5 +86,8 @@
   "UNKNOWN_TYPE": "Unknown type",
   "UNKNOWN_LANGUAGE": "Unknown language",
   "IS_QUESTION_REQUIRED": "Should the question be required?",
-  "IS_REQUIRED_DESCRIPTION": "If selected, users who submit videos to this collection will be required to fill out this field with every video that they submit."
+  "IS_REQUIRED_DESCRIPTION": "If selected, users who submit videos to this collection will be required to fill out this field with every video that they submit.",
+  "LABEL": "Label",
+  "TYPE": "Type",
+  "LANGUAGE": "Language"
 }
