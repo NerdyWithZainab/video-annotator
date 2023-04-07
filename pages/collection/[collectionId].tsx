@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { useState } from "react";
 import CollectionDetailsEdit from "../../components/CollectionDetailsEdit";
 import CollectionDetailsView from "../../components/CollectionDetailsView";
+import VideoIntakeQuestions from "../../components/VideoIntakeQuestions";
 
 import { Collection } from "../../types";
 
@@ -11,7 +12,6 @@ const SingleCollection: React.FC = () => {
     nameOfVideo: "Match",
     nameOfEvent: "Move",
     isPrivate: false,
-    language: "eng",
   };
 
   const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
@@ -35,6 +35,10 @@ const SingleCollection: React.FC = () => {
         )}
       </Grid>
       <Grid item sm={12} md={3}></Grid>
+      <Grid item sm={12} md={2}>
+        <VideoIntakeQuestions collection={shamCollection} />
+      </Grid>
+      <Grid item sm={12} md={10}></Grid>
     </Grid>
   );
 };

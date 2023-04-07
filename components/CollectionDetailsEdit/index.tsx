@@ -17,7 +17,7 @@ import CustomError from "../Error";
 
 const CollectionDetailsEdit: React.FC<{
   collection: Collection;
-  setIsCollectionDetailsInEditMode: () => {};
+  setIsCollectionDetailsInEditMode: (val: boolean) => void;
 }> = ({ collection, setIsCollectionDetailsInEditMode }) => {
   const intl: IntlShape = useIntl();
 

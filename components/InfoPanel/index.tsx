@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Grid, IconButton, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  Fab,
+  Grid,
+  IconButton,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { Tooltip } from "@mui/material";
 // import EditIcon from "@mui/icons-material/Edit";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
@@ -46,13 +53,19 @@ const InfoPanel: React.FC<{
         {isEditable && (
           <Grid container justifyContent="flex-end" alignItems="flex-end">
             <Grid item>
-              <IconButton
+              {/* <IconButton
+                color="primary"
+                aria-label="edit collection"
+                onClick={handleEditClick}
+              > */}
+              <Fab
                 color="primary"
                 aria-label="edit collection"
                 onClick={handleEditClick}
               >
                 <EditRoundedIcon />
-              </IconButton>
+              </Fab>
+              {/* </IconButton> */}
             </Grid>
           </Grid>
         )}

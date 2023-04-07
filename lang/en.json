@@ -80,5 +80,11 @@
   "IS_COLLECTION_PRIVATE": "Is the collection private?",
   "SOMETHING_WENT_WRONG_CONTACT_DEVELOPER": "Something went wrong. Alert a developer by <a href='/me'>leaving feedback</a>",
   "IS_PRIVATE_DESCRIPTION": "If selected, other users will be able to discover your collection, as well as view and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake.",
-  "DONE": "Done"
+  "DONE": "Done",
+  "UNKNOWN_LABEL": "Unknown Label",
+  "ADD_ANOTHER_QUESTION": "Add another question",
+  "UNKNOWN_TYPE": "Unknown type",
+  "UNKNOWN_LANGUAGE": "Unknown language",
+  "IS_QUESTION_REQUIRED": "Should the question be required?",
+  "IS_REQUIRED_DESCRIPTION": "If selected, users who submit videos to this collection will be required to fill out this field with every video that they submit."
 }

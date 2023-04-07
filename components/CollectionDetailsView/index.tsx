@@ -11,7 +11,7 @@ import {
 
 const CollectionDetailsView: React.FC<{
   collection: Collection;
-  setIsCollectionDetailsInEditMode: () => {};
+  setIsCollectionDetailsInEditMode: (val: boolean) => void;
 }> = ({ collection, setIsCollectionDetailsInEditMode }) => {
   return (
     <InfoPanel
@@ -28,7 +28,7 @@ const CollectionDetailsView: React.FC<{
             <Grid item lg={12} sm={12}>
               <Typography>
                 {convertCamelCaseToCapitalCase(elKey)} :{" "}
-                {capitalizeEachWord(collectionEl.toString())}
+                {capitalizeEachWord(collectionEl?.toString() || "No value")}
               </Typography>
             </Grid>
           );
