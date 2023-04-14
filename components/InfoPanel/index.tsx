@@ -30,8 +30,8 @@ const InfoPanel: React.FC<{
   setEditButton = () => {},
   children,
 }) => {
-  console.log("deleteMe includeCornerEditButton is: ");
-  console.log(includeCornerEditButton);
+  // console.log("deleteMe includeCornerEditButton is: ");
+  // console.log(includeCornerEditButton);
   const isEditable: boolean = includeCornerEditButton && Boolean(setEditButton);
 
   const handleEditClick: () => void = () => {

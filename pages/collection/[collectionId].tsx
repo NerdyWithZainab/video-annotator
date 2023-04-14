@@ -5,35 +5,23 @@ import CollectionDetailsView from "../../components/CollectionDetailsView";
 import VideoIntakePreview from "../../components/VideoIntakePreview";
 import VideoIntakeQuestions from "../../components/VideoIntakeQuestions";
 
-import { Collection, Question } from "../../types";
+import { Collection, FormFieldGroup, SingleFormField } from "../../types";
+import { isValidUrl } from "../../utilities/validators";
+import { shamCollection } from '../../dummy_data/dummyCollection';
 
 const SingleCollection: React.FC = () => {
+  // const [formValues, setFormValues] = useState<{}>({});
+  // const [areFormValuesValid, setAreFormValuesValid] = useState<{}>({});
+
+  // const shamFormFieldGroup: FormFieldGroup = {
+  //   setValues: setFormValues,
+  //   actualValues: formValues,
+  //   isValids: areFormValuesValid,
+  //   setIsValids: setAreFormValuesValid
+  // };
+  // shamCollection.formFieldGroup = shamFormFieldGroup;
 
 
-  const firstQuestion: Question = {
-    label: "URL",
-    type: "URL",
-    language: "English",
-    isRequired: true,
-    testId: "url",
-    doNotDisplay: [],
-    shouldBeCheckboxes: [];
-    setValue?: (input: any)=>void,
-    actualValue?: {},
-    isValid?: {},
-    setIsValid?: ({}) =>void,
-    invalidInputMessage: ,
-    validatorMethod:
-  };
-  const shamCollection: Collection = {
-    name: "Brazilian Jiu Jitsu",
-    nameOfVideo: "Match",
-    nameOfEvent: "Move",
-    isPrivate: false,
-    language: "English",
-    intakeQuestions: [firstQuestion],
-    excludeFromDetailList: ["intakeQuestions", "excludeFromDetailList"],
-  };
 
   const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
     useState<boolean>(false);

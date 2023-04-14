@@ -24,8 +24,8 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
   const [intakeQuestions, setIntakeQuestions] = useState<
     Question[] | undefined
   >(undefined);
-  const [questionContent, setQuestionContent] = useState<{}>({});
-  const [questionContentIsValid, setQuestionContentIsValid] = useState<{}>({});
+  // const [questionContent, setQuestionContent] = useState<{}>({});
+  // const [questionContentIsValid, setQuestionContentIsValid] = useState<{}>({});
   const [intakeQuestionsInvalid, setIntakeQuestionsInvalid] = useState<
     QuestionValidity[] | undefined
   >(undefined);
@@ -47,10 +47,6 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
       testId: "change me",
       doNotDisplay: ["testId", "doNotDisplay", "shouldBeCheckboxes"],
       shouldBeCheckboxes: ["isRequired"],
-      setValue: setQuestionContent,
-      actualValue: questionContent,
-      isValid: questionContentIsValid,
-      setIsValid: setQuestionContentIsValid
     };
   }, []);
   useEffect(() => {

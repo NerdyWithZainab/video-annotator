@@ -4,23 +4,29 @@ export interface Collection {
   nameOfEvent: string;
   isPrivate: boolean;
   language: string;
-  intakeQuestions?: Question[];
+  intakeQuestions?: SingleFormField[];
   excludeFromDetailList: string[];
+  formFieldGroup?: FormFieldGroup;
 }
-export interface Question {
+
+export interface FormFieldGroup {
+  // shouldBeCheckboxes?: string[]; // @TODO this should be  a formGroup-level attribute
+  setValues?: (input: any)=>void, // @TODO this should be  a formGroup-level attribute
+  actualValues?: {}; // @TODO this should be  a formGroup-level attribute
+  isInvalids?: {}; // @TODO this should be  a formGroup-level attribute
+  setIsInvalids?: ({}) =>void; // @TODO this should be  a formGroup-level attribute
+}
+
+export interface SingleFormField {
   label: string;
   type: string;
   language: string;
   isRequired: boolean;
   testId?: string;
   doNotDisplay?: string[];
-  shouldBeCheckboxes?: string[]; // @TODO this should be  a formGroup-level attribute
-  setValue?: (input: any)=>void, // @TODO this should be  a formGroup-level attribute
-  actualValue?: any; // @TODO this should be  a formGroup-level attribute
-  isValid?: {}; // @TODO this should be  a formGroup-level attribute
-  setIsValid?: ({}) =>void; // @TODO this should be  a formGroup-level attribute
   invalidInputMessage?: string;
   validatorMethod?: (input: any) => boolean;
+  shouldBeCheckboxes: string[];
 }
 
 export interface QuestionValidity {
