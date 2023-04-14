@@ -23,13 +23,17 @@ const CollectionDetailsView: React.FC<{
       setEditButton={setIsCollectionDetailsInEditMode}
     >
       <Grid container>
-        {map(collection, (collectionEl, elKey) => {
+        {map(collection, (collectionEl, elKey, wholeCollection) => {
+          const showInView: boolean =
+            !wholeCollection.excludeFromDetailList.includes(elKey.toString());
           return (
-            <Grid item lg={12} sm={12}>
-              <Typography>
-                {convertCamelCaseToCapitalCase(elKey)} :{" "}
-                {capitalizeEachWord(collectionEl?.toString() || "No value")}
-              </Typography>
+            <Grid key={elKey} item lg={12} sm={12}>
+              {showInView && (
+                <Typography key={elKey}>
+                  {convertCamelCaseToCapitalCase(elKey)} :{" "}
+                  {capitalizeEachWord(collectionEl?.toString() || "No value")}
+                </Typography>
+              )}
             </Grid>
           );
         })}

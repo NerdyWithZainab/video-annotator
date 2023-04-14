@@ -97,6 +97,7 @@ const CollectionDetailsEdit: React.FC<{
   });
 
   return (
+    // @TODO make this generic
     <InfoPanel
       titleId="COLLECTION_DETAILS_EDIT"
       titleDefault="Edit Collection Details"

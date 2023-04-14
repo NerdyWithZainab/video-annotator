@@ -89,5 +89,7 @@
   "IS_REQUIRED_DESCRIPTION": "If selected, users who submit videos to this collection will be required to fill out this field with every video that they submit.",
   "LABEL": "Label",
   "TYPE": "Type",
-  "LANGUAGE": "Language"
+  "LANGUAGE": "Language",
+  "VIDEO_INTAKE_QUESTIONS": "Video Intake Questions",
+  "VIDEO_INTAKE_PREVIEW": "Video Intake Preview"
 }

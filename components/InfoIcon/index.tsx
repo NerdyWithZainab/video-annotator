@@ -7,12 +7,6 @@ const InfoIcon: React.FC<{ messageId: string; defaultMessage: string }> = ({
   messageId,
   defaultMessage,
 }) => {
-  console.log("deleteMe messageId is: ");
-  console.log(messageId);
-
-  console.log("deleteMe defaultMessage is: ");
-  console.log(defaultMessage);
-
   const intl: IntlShape = useIntl();
 
   const [openTooltip, setOpenTooltip] = useState(false);
