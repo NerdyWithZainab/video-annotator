@@ -1,5 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { get } from "lodash-es";
 import { Question } from "../../types";
 
 const SingleFormField: React.FC<{ question: Question }> = ({ question }) => {
@@ -14,13 +15,16 @@ const SingleFormField: React.FC<{ question: Question }> = ({ question }) => {
   }
   console.log("deleteMe question is: ");
   console.log(question);
+  const isError: boolean = Boolean(get(question, ["isValid", question?.label], false));
+  console.log('deleteMe isError is: ');
+  console.log(isError);
   switch(question?.type){
     case 'URL':
       return (<TextField
         required={question?.isRequired}
         fullWidth
         data-testid={question?.testId}
-        error={question?.isValid?[question?.label]}
+        error={isError}
         variant="filled"
         label={
           question?.label

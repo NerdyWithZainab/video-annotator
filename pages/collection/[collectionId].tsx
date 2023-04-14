@@ -8,12 +8,22 @@ import VideoIntakeQuestions from "../../components/VideoIntakeQuestions";
 import { Collection, Question } from "../../types";
 
 const SingleCollection: React.FC = () => {
+
+
   const firstQuestion: Question = {
     label: "URL",
     type: "URL",
     language: "English",
     isRequired: true,
     testId: "url",
+    doNotDisplay: [],
+    shouldBeCheckboxes: [];
+    setValue?: (input: any)=>void,
+    actualValue?: {},
+    isValid?: {},
+    setIsValid?: ({}) =>void,
+    invalidInputMessage: ,
+    validatorMethod:
   };
   const shamCollection: Collection = {
     name: "Brazilian Jiu Jitsu",
