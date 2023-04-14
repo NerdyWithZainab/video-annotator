@@ -10,16 +10,16 @@ import { isValidUrl } from "../../utilities/validators";
 import { shamCollection } from '../../dummy_data/dummyCollection';
 
 const SingleCollection: React.FC = () => {
-  // const [formValues, setFormValues] = useState<{}>({});
-  // const [areFormValuesValid, setAreFormValuesValid] = useState<{}>({});
+  const [formValues, setFormValues] = useState<{}>({});
+  const [areFormValuesInvalid, setAreFormValuesInvalid] = useState<{}>({});
 
-  // const shamFormFieldGroup: FormFieldGroup = {
-  //   setValues: setFormValues,
-  //   actualValues: formValues,
-  //   isValids: areFormValuesValid,
-  //   setIsValids: setAreFormValuesValid
-  // };
-  // shamCollection.formFieldGroup = shamFormFieldGroup;
+  const shamFormFieldGroup: FormFieldGroup = {
+    setValues: setFormValues,
+    actualValues: formValues,
+    isInvalids: areFormValuesInvalid,
+    setIsInvalids: setAreFormValuesInvalid
+  };
+  shamCollection.formFieldGroup = shamFormFieldGroup;
 
 
 
