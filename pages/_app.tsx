@@ -7,6 +7,8 @@ import { getAnalytics } from "firebase/analytics";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 // import useFirebaseAuth from "../hooks/useFirebaseAuth";
 import {
   useQuery,
@@ -56,6 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <QueryClientProvider client={queryClient}>
       <AuthContext.Provider value={{ auth, user, loading, setUser }}>
         <ThemeProvider theme={theme}>
@@ -73,5 +76,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </AuthContext.Provider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
+    </LocalizationProvider>
+
   );
 }

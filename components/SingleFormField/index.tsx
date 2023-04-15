@@ -15,40 +15,12 @@ const SingleFormField: React.FC<{ question: SingleFormField, collection: Collect
     const currentVal: any = event?.currentTarget?.value;
     updateStates(currentVal);
 
-    // const newActualValue: {} = {[question.label]: currentVal};
-    // console.log('deleteMe newActualValue is: ');
-    // console.log(newActualValue);
-    // collection?.formFieldGroup?.setValues ? collection.formFieldGroup.setValues((prevState: {})=>{
-    //   console.log('deleteMe prevState is: ');
-    //   console.log(prevState);
-    //   return {...prevState, ...newActualValue};
-    // }) : undefined; // I was getting silly linter errors if I didn't do something like this.
-    //
-    // const currentFormIsInvalid = question.validatorMethod ? !question.validatorMethod(currentVal) : false;
-    // (collection?.formFieldGroup?.setIsInvalids && collection?.formFieldGroup?.isInvalids && question?.label) ? collection.formFieldGroup.setIsInvalids({...collection.formFieldGroup.isInvalids, [question.label]: currentFormIsInvalid} ) : undefined;
-
   }
 
   const handleCheckChange: (event: any)=>void = (event: any) => {
 
     const currentVal: any = event?.target?.checked;
     updateStates(currentVal);
-
-    // const newActualValue: {} = {[question.label]: currentVal};
-    // console.log('deleteMe newActualValue is: ');
-    // console.log(newActualValue);
-    // collection?.formFieldGroup?.setValues ? collection.formFieldGroup.setValues((prevState: {})=>{
-    //   console.log('deleteMe prevState is: ');
-    //   console.log(prevState);
-    //   return {...prevState, ...newActualValue};
-    // }) : undefined; // I was getting silly linter errors if I didn't do something like this.
-    //
-    // const currentFormIsInvalid = question.validatorMethod ? !question.validatorMethod(currentVal) : false;
-    // (collection?.formFieldGroup?.setIsInvalids && collection?.formFieldGroup?.isInvalids && question?.label) ? collection.formFieldGroup.setIsInvalids({...collection.formFieldGroup.isInvalids, [question.label]: currentFormIsInvalid} ) : undefined;
-    // if(collection?.formFieldGroup?.isInvalids && question?.label){
-    //   console.log('deleteMe collection.formFieldGroup.IsInvalids is: ');
-    //   console.log(collection.formFieldGroup.isInvalids);
-    // }
   }
 
 const updateStates: (currentVal: any) => void = (currentVal: any) =>{
@@ -117,7 +89,7 @@ const updateStates: (currentVal: any) => void = (currentVal: any) =>{
               onChange={handleCheckChange}
               label={question?.label}
             />
-            
+
           </div>);
     default:
       return (<Typography>

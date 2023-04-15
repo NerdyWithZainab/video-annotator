@@ -29,10 +29,10 @@ const thirdQuestion: SingleFormField = {
   label: "Gi?",
   type: "Checkbox",
   language: "English",
-  // isRequired: true,
+  isRequired: true,
   testId: "isGi",
   doNotDisplay: [],
-  shouldBeCheckboxes: ["isRequired"]
+  shouldBeCheckboxes: ["isRequired"],
 };
 
 export const shamCollection: Collection = {
