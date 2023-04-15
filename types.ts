@@ -10,11 +10,11 @@ export interface Collection {
 }
 
 export interface FormFieldGroup {
-  // shouldBeCheckboxes?: string[]; // @TODO this should be  a formGroup-level attribute
-  setValues?: (input: any)=>void, // @TODO this should be  a formGroup-level attribute
-  actualValues?: {}; // @TODO this should be  a formGroup-level attribute
-  isInvalids?: {}; // @TODO this should be  a formGroup-level attribute
-  setIsInvalids?: ({}) =>void; // @TODO this should be  a formGroup-level attribute
+  // shouldBeCheckboxes?: string[]; // @TODO figure out whether this is needed and whether it's part of the FormFieldGroup
+  setValues?: (input: any)=>void,
+  actualValues?: {};
+  isInvalids?: {};
+  setIsInvalids?: ({}) =>void;
 }
 
 export interface SingleFormField {

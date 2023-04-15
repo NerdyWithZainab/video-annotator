@@ -25,13 +25,24 @@ const secondQuestion: SingleFormField = {
   shouldBeCheckboxes: ["isRequired"]
 };
 
+const thirdQuestion: SingleFormField = {
+  label: "Gi?",
+  type: "Checkbox",
+  language: "English",
+  // isRequired: true,
+  testId: "isGi",
+  doNotDisplay: [],
+  shouldBeCheckboxes: ["isRequired"]
+};
+
 export const shamCollection: Collection = {
   name: "Brazilian Jiu Jitsu",
   nameOfVideo: "Match",
   nameOfEvent: "Move",
   isPrivate: false,
   language: "English",
-  intakeQuestions: [firstQuestion, secondQuestion],
+  intakeQuestions: [firstQuestion, secondQuestion, thirdQuestion],
+  // intakeQuestions: [secondQuestion],
   excludeFromDetailList: ["intakeQuestions", "excludeFromDetailList", "formFieldGroup"],
   // formFieldGroup: shamFormFieldGroup
 };
