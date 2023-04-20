@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { Grid } from "@mui/material";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import CollectionDetailsEdit from "../../components/CollectionDetailsEdit";
 import CollectionDetailsView from "../../components/CollectionDetailsView";
@@ -49,9 +48,6 @@ const SingleCollection: React.FC = () => {
       </Grid>
       <Grid item sm={12} md={8}>
         <VideoIntakePreview collection={shamCollection} />
-      </Grid>
-      <Grid item sm={12} md={8}>
-        <DatePicker />
       </Grid>
     </Grid>
   );
