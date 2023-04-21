@@ -11,10 +11,10 @@ export interface Collection {
 
 export interface FormFieldGroup {
   // shouldBeCheckboxes?: string[]; // @TODO figure out whether this is needed and whether it's part of the FormFieldGroup
-  setValues?: (input: any)=>void,
+  setValues?: (input: any) => void;
   actualValues?: {};
   isInvalids?: {};
-  setIsInvalids?: ({}) =>void;
+  setIsInvalids?: ({}) => void;
 }
 
 export interface SingleFormField {
@@ -27,6 +27,8 @@ export interface SingleFormField {
   invalidInputMessage?: string;
   validatorMethod?: (input: any) => boolean;
   shouldBeCheckboxes: string[];
+  autocompleteOptions?: string[];
+  autocompleteExtras?: {};
 }
 
 export interface QuestionValidity {

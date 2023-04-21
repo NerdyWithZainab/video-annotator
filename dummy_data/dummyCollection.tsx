@@ -10,7 +10,7 @@ const firstQuestion: SingleFormField = {
   doNotDisplay: [],
   invalidInputMessage: "MUST_BE_VALID_URL",
   validatorMethod: isValidUrl,
-  shouldBeCheckboxes: ["isRequired"]
+  shouldBeCheckboxes: ["isRequired"],
 };
 
 const secondQuestion: SingleFormField = {
@@ -22,7 +22,7 @@ const secondQuestion: SingleFormField = {
   doNotDisplay: [],
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
   validatorMethod: isNonEmptyString,
-  shouldBeCheckboxes: ["isRequired"]
+  shouldBeCheckboxes: ["isRequired"],
 };
 
 const thirdQuestion: SingleFormField = {
@@ -45,14 +45,44 @@ const fourthQuestion: SingleFormField = {
   shouldBeCheckboxes: ["isRequired"],
 };
 
+const fifthQuestion: SingleFormField = {
+  label: "Name of Athlete on the Left",
+  type: "Autocomplete",
+  language: "English",
+  isRequired: true,
+  testId: "athleteLeftName",
+  doNotDisplay: [],
+  shouldBeCheckboxes: ["isRequired"],
+  validatorMethod: isNonEmptyString,
+  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  autocompleteOptions: [
+    "Fisher, Mark",
+    "Deodara, Dirt",
+    "Ziegler, Eddie",
+    "Diggins, John",
+  ],
+  autocompleteExtras: {
+    freeSolo: true,
+  },
+};
+
 export const shamCollection: Collection = {
   name: "Brazilian Jiu Jitsu",
   nameOfVideo: "Match",
   nameOfEvent: "Move",
   isPrivate: false,
   language: "English",
-  intakeQuestions: [firstQuestion, secondQuestion, thirdQuestion, fourthQuestion],
-  // intakeQuestions: [secondQuestion],
-  excludeFromDetailList: ["intakeQuestions", "excludeFromDetailList", "formFieldGroup"],
-  // formFieldGroup: shamFormFieldGroup
+  intakeQuestions: [
+    firstQuestion,
+    secondQuestion,
+    thirdQuestion,
+    fourthQuestion,
+    fifthQuestion,
+  ],
+  excludeFromDetailList: [
+    "intakeQuestions",
+    "excludeFromDetailList",
+    "formFieldGroup",
+  ],
+  // formFieldGroup: shamFormFieldGroup // gets populated elsewhere now because passing useStates through different components was silly
 };
