@@ -211,6 +211,34 @@ const SingleFormField: React.FC<{
           onInputChange={handleAutocompleteChange}
         ></Autocomplete>
       );
+
+    case "Number":
+      return (
+        <TextField
+          required={question?.isRequired}
+          fullWidth
+          type="number"
+          data-testid={question?.testId}
+          error={currentIsInvalid}
+          variant="filled"
+          label={question?.label}
+          helperText={
+            currentIsInvalid
+              ? intl.formatMessage({
+                  id: question?.invalidInputMessage || "FIELD_CANNOT_BE_BLANK",
+                  defaultMessage: "Cannot be blank",
+                })
+              : ""
+          }
+          style={{ marginBottom: 10, maxWidth: 400 }}
+          onChange={handleTextChange}
+          value={get(
+            collection,
+            ["formFieldGroup", "actualValues", question?.label],
+            ""
+          )}
+        ></TextField>
+      );
     default:
       return (
         <Typography>

@@ -66,6 +66,18 @@ const fifthQuestion: SingleFormField = {
   },
 };
 
+const sixthQuestion: SingleFormField = {
+  label: "Age",
+  type: "Number",
+  language: "English",
+  // isRequired: true,
+  testId: "age",
+  doNotDisplay: [],
+  shouldBeCheckboxes: ["isRequired"],
+  // validatorMethod: isNonEmptyString,
+  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+};
+
 export const shamCollection: Collection = {
   name: "Brazilian Jiu Jitsu",
   nameOfVideo: "Match",
@@ -78,6 +90,7 @@ export const shamCollection: Collection = {
     thirdQuestion,
     fourthQuestion,
     fifthQuestion,
+    sixthQuestion,
   ],
   excludeFromDetailList: [
     "intakeQuestions",
