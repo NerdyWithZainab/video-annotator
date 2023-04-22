@@ -1,6 +1,8 @@
 import { Grid } from "@mui/material";
-import { map } from "lodash-es";
-import { Collection, Question } from "../../types";
+import { get, map } from "lodash-es";
+import { shamCollection } from "../../dummy_data/dummyCollection";
+import { Collection } from "../../types";
+import ComposedFormSubmissionButton from "../ComposedFormSubmissionButton";
 import InfoPanel from "../InfoPanel";
 import InfoPanelBody from "../InfoPanel/InfoPanelBody";
 import SingleFormField from "../SingleFormField";
@@ -15,15 +17,28 @@ const VideoIntakePreview: React.FC<{ collection: Collection }> = ({
       textOverrides={{ textAlign: "center" }}
       styleOverrides={{ maxHeight: 1000 }}
     >
-    <InfoPanelBody bodyId="INTAKE_PREVIEW_DETAILS" bodyDefault="Contributors to your collection will see the following questions when they submit new videos to the collection: " />
+      <InfoPanelBody
+        bodyId="INTAKE_PREVIEW_DETAILS"
+        bodyDefault="Contributors to your collection will see the following questions when they submit new videos to the collection: "
+      />
       <Grid container>
         {map(collection?.intakeQuestions, (intakeQuestion) => {
           return (
             <Grid item lg={12} sm={12}>
-              <SingleFormField question={intakeQuestion} collection={collection} key={intakeQuestion?.label} />
+              <SingleFormField
+                question={intakeQuestion}
+                formFieldGroup={get(collection, "formFieldGroup", {})}
+                key={intakeQuestion?.label}
+              />
             </Grid>
           );
         })}
+        <Grid item lg={12} sm={12}>
+          <ComposedFormSubmissionButton
+            questions={shamCollection?.intakeQuestions || []}
+            formFieldGroup={shamCollection?.formFieldGroup || {}}
+          />
+        </Grid>
       </Grid>
     </InfoPanel>
   );

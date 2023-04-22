@@ -8,21 +8,39 @@ import {
 } from "@mui/material";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { get } from "lodash-es";
-import { Collection, SingleFormField } from "../../types";
-import { ReactNode, SyntheticEvent, useState } from "react";
-import InfoIcon from "../InfoIcon";
+import { FormFieldGroup, SingleFormField } from "../../types";
+import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 const SingleFormField: React.FC<{
   question: SingleFormField;
-  collection: Collection;
-}> = ({ question, collection }) => {
+  formFieldGroup: FormFieldGroup;
+}> = ({ question, formFieldGroup }) => {
   const intl: IntlShape = useIntl();
   const currentIsInvalid: boolean = get(
-    collection,
-    ["formFieldGroup", "isInvalids", question?.label],
+    formFieldGroup,
+    ["isInvalids", question?.label],
     false
   );
+
+  useEffect(() => {
+    // set default values. In the case of checkbox, this is needed for correct behavior. In the case of Date, it's a bandaid for resolving the missing value red box/required upon initial load issue
+    if (
+      question?.type === "Checkbox" &&
+      !get(formFieldGroup, ["actualValues", question?.label])
+    ) {
+      updateStates(false, false);
+    }
+
+    if (
+      question?.type === "Date" &&
+      !get(formFieldGroup, ["actualValues", question?.label])
+    ) {
+      updateStates(dayjs(), false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formFieldGroup, question?.label, question?.type]);
 
   const handleTextChange: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -56,8 +74,8 @@ const SingleFormField: React.FC<{
     defaultValidValue: boolean = false
   ) => {
     const newActualValue: {} = { [question.label]: currentVal };
-    collection?.formFieldGroup?.setValues
-      ? collection.formFieldGroup.setValues((prevState: {}) => {
+    formFieldGroup?.setValues
+      ? formFieldGroup.setValues((prevState: {}) => {
           return { ...prevState, ...newActualValue };
         })
       : undefined; // I was getting silly linter errors if I didn't do something like this.
@@ -65,14 +83,19 @@ const SingleFormField: React.FC<{
     const currentFormIsInvalid = question.validatorMethod
       ? !question.validatorMethod(currentVal)
       : defaultValidValue;
-    collection?.formFieldGroup?.setIsInvalids &&
-    collection?.formFieldGroup?.isInvalids &&
+    formFieldGroup?.setIsInvalids &&
+    formFieldGroup?.isInvalids &&
     question?.label
-      ? collection.formFieldGroup.setIsInvalids({
-          ...collection.formFieldGroup.isInvalids,
+      ? formFieldGroup.setIsInvalids({
+          ...formFieldGroup.isInvalids,
           [question.label]: currentFormIsInvalid,
         })
       : undefined;
+
+    console.log("deleteMe actualValues are: ");
+    console.log(get(formFieldGroup, "actualValues"));
+    console.log("deleteMe isInvalids is: ");
+    console.log(get(formFieldGroup, "isInvalids"));
   };
 
   const autocompleteExtras: {} = question?.autocompleteExtras || {};
@@ -97,11 +120,7 @@ const SingleFormField: React.FC<{
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleTextChange}
-          value={get(
-            collection,
-            ["formFieldGroup", "actualValues", question?.label],
-            ""
-          )}
+          value={get(formFieldGroup, ["actualValues", question?.label], "")}
         ></TextField>
       );
     case "Text":
@@ -123,11 +142,7 @@ const SingleFormField: React.FC<{
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleTextChange}
-          value={get(
-            collection,
-            ["formFieldGroup", "actualValues", question?.label],
-            ""
-          )}
+          value={get(formFieldGroup, ["actualValues", question?.label], "")}
         ></TextField>
       );
     case "Checkbox":
@@ -139,9 +154,9 @@ const SingleFormField: React.FC<{
             style={{ marginRight: 10 }}
             control={<Checkbox />}
             value={get(
-              collection,
-              ["formFieldGroup", "actualValues", question?.label],
-              true
+              formFieldGroup,
+              ["actualValues", question?.label],
+              false
             )}
             onChange={handleCheckChange}
             label={question?.label}
@@ -157,11 +172,7 @@ const SingleFormField: React.FC<{
             onChange={(newValue) => {
               handleDateChange(newValue);
             }}
-            value={get(
-              collection,
-              ["formFieldGroup", "actualValues", question?.label],
-              ""
-            )}
+            value={get(formFieldGroup, ["actualValues", question?.label], "")}
           ></DatePicker>
         </div>
       );
@@ -196,16 +207,12 @@ const SingleFormField: React.FC<{
           // variant="filled"
           // label={question?.label}
           style={{ marginBottom: 10, maxWidth: 400 }}
-          value={get(
-            collection,
-            ["formFieldGroup", "actualValues", question?.label],
-            ""
-          )}
+          value={get(formFieldGroup, ["actualValues", question?.label], "")}
           onChange={handleAutocompleteChange}
           {...autocompleteExtras}
           inputValue={get(
-            collection,
-            ["formFieldGroup", "actualValues", question?.label],
+            formFieldGroup,
+            ["actualValues", question?.label],
             ""
           )}
           onInputChange={handleAutocompleteChange}
@@ -232,11 +239,7 @@ const SingleFormField: React.FC<{
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleTextChange}
-          value={get(
-            collection,
-            ["formFieldGroup", "actualValues", question?.label],
-            ""
-          )}
+          value={get(formFieldGroup, ["actualValues", question?.label], "")}
         ></TextField>
       );
     default:

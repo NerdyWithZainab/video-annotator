@@ -39,7 +39,6 @@ const fourthQuestion: SingleFormField = {
   label: "Date of match",
   type: "Date",
   language: "English",
-  isRequired: true,
   testId: "matchDate",
   doNotDisplay: [],
   shouldBeCheckboxes: ["isRequired"],
@@ -76,6 +75,7 @@ const sixthQuestion: SingleFormField = {
   shouldBeCheckboxes: ["isRequired"],
   // validatorMethod: isNonEmptyString,
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  isRequired: false,
 };
 
 export const shamCollection: Collection = {

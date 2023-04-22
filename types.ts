@@ -21,7 +21,7 @@ export interface SingleFormField {
   label: string;
   type: string;
   language: string;
-  isRequired: boolean;
+  isRequired?: boolean;
   testId?: string;
   doNotDisplay?: string[];
   invalidInputMessage?: string;

@@ -57,8 +57,8 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const currentEvent = event;
-    console.log("deleteMe currentEvent is: ");
-    console.log(currentEvent);
+    // console.log("deleteMe currentEvent is: ");
+    // console.log(currentEvent);
     // @TODO flesh this out. See if you can make it handle everything with question key + index being passed in as well?
   };
 
