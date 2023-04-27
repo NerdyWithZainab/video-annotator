@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { map, get } from "lodash-es";
 
-import { Collection, Question, QuestionValidity } from "../../types";
+import { Collection, SingleFormField, QuestionValidity } from "../../types";
 import {
   Button,
   Checkbox,
@@ -15,6 +15,7 @@ import InfoIcon from "../InfoIcon";
 import CustomError from "../Error";
 import { convertCamelCaseToCapitalCase } from "../../utilities/textUtils";
 import InfoPanel from "../InfoPanel";
+import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 
 const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
   collection,
@@ -22,7 +23,7 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
   const intl: IntlShape = useIntl();
 
   const [intakeQuestions, setIntakeQuestions] = useState<
-    Question[] | undefined
+    SingleFormField[] | undefined
   >(undefined);
   // const [questionContent, setQuestionContent] = useState<{}>({});
   // const [questionContentIsValid, setQuestionContentIsValid] = useState<{}>({});
@@ -36,7 +37,7 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
     defaultMessage: "Should the question be required?",
   });
 
-  const newQuestion: Question = useMemo(() => {
+  const newQuestion: SingleFormField = useMemo(() => {
     // const [currentVal, setCurrentVal] = useState<any>();
     // const [isValid, setIsValid] = useState<boolean>(true);
     return {
@@ -70,6 +71,26 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
     }
   };
 
+  const intakeQuestionElement = map(
+    intakeQuestions,
+    (intakeQuestion, intakeQuestionIdx) => {
+      return map(
+        intakeQuestion,
+        (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
+          return (
+            <SingleVideoIntakeQuestion
+              intakeQuestionEl={intakeQuestionEl}
+              intakeQuestionKey={intakeQuestionKey}
+              wholeQuestion={wholeQuestion}
+              intakeQuestionsInvalid={intakeQuestionsInvalid}
+              intakeQuestionIdx={intakeQuestionIdx}
+            />
+          );
+        }
+      );
+    }
+  );
+
   return (
     <InfoPanel
       titleId="VIDEO_INTAKE_QUESTIONS"
@@ -78,84 +99,7 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
       styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
-        {map(intakeQuestions || [], (intakeQuestion, intakeQuestionIdx) => {
-          return (
-            <>
-              {map(
-                intakeQuestion,
-                (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
-                  const shouldBeTextField: boolean =
-                    !(wholeQuestion?.doNotDisplay || []).includes(
-                      intakeQuestionKey
-                    ) &&
-                    !(wholeQuestion?.shouldBeCheckboxes || []).includes(
-                      intakeQuestionKey
-                    );
-                  const shouldBeCheckbox: boolean =
-                    !(wholeQuestion?.doNotDisplay || []).includes(
-                      intakeQuestionKey
-                    ) &&
-                    (wholeQuestion?.shouldBeCheckboxes || []).includes(
-                      intakeQuestionKey
-                    );
-
-                  return (
-                    <Grid item lg={12} sm={12}>
-                      {shouldBeTextField && (
-                        <TextField
-                          fullWidth
-                          data-testid={
-                            intakeQuestionKey + "-" + intakeQuestionEl
-                          }
-                          error={get(intakeQuestionsInvalid, [
-                            intakeQuestionIdx,
-                            intakeQuestionKey,
-                          ])}
-                          variant="filled"
-                          label={
-                            <FormattedMessage
-                              id={intakeQuestionKey.toUpperCase()}
-                              defaultMessage="Uknown question key"
-                            />
-                          }
-                          required
-                          helperText={
-                            get(intakeQuestionsInvalid, [
-                              intakeQuestionIdx,
-                              intakeQuestionKey,
-                            ])
-                              ? intl.formatMessage(
-                                  {
-                                    id: "GENERIC_CANNOT_BE_BLANK",
-                                    defaultMessage: "Field cannot be blank",
-                                  },
-                                  { name: "Question" + intakeQuestionKey } // @TODO internationalize this, too
-                                )
-                              : ""
-                          }
-                          style={{ marginBottom: 10, maxWidth: 400 }}
-                          onChange={handleChange}
-                          value={intakeQuestionEl}
-                        ></TextField>
-                      )}
-                      {shouldBeCheckbox && (
-                        <FormControlLabel
-                          style={{ marginRight: 10 }}
-                          control={<Checkbox />} // @TODO LEFT OFF HERE
-                          value={intakeQuestionEl}
-                          onChange={handleChange}
-                          label={convertCamelCaseToCapitalCase(
-                            intakeQuestionKey
-                          )}
-                        />
-                      )}
-                    </Grid>
-                  );
-                }
-              )}
-            </>
-          );
-        })}
+        {intakeQuestions && intakeQuestionElement}
         <Grid item lg={12} sm={12}>
           <Button
             style={{ marginBottom: 10 }}
