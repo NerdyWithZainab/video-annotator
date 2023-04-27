@@ -17,12 +17,27 @@ const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionsInvalid,
   intakeQuestionIdx,
 }) => {
-  const shouldBeTextField: boolean =
-    !(wholeQuestion?.doNotDisplay || []).includes(intakeQuestionKey) &&
-    !(wholeQuestion?.shouldBeCheckboxes || []).includes(intakeQuestionKey);
-  const shouldBeCheckbox: boolean =
-    !(wholeQuestion?.doNotDisplay || []).includes(intakeQuestionKey) &&
-    (wholeQuestion?.shouldBeCheckboxes || []).includes(intakeQuestionKey);
+  console.log("deleteMe intakeQuestionEl is: ");
+  console.log(intakeQuestionEl);
+  console.log("deleteMe wholeQuestion is: ");
+  console.log(wholeQuestion);
+  console.log("deleteMe intakeQuestionKey is: " + intakeQuestionKey);
+
+  const onTheNoDisplayList: boolean = (
+    wholeQuestion?.doNotDisplay || []
+  ).includes(intakeQuestionKey);
+  console.log("deleteMe onTheNoDisplayList is: " + onTheNoDisplayList);
+
+  const onCheckboxList: boolean = (
+    wholeQuestion?.shouldBeCheckboxes || []
+  ).includes(intakeQuestionKey);
+
+  console.log("deleteMe onCheckboxList is: " + onCheckboxList);
+
+  const shouldBeTextField: boolean = !onTheNoDisplayList && !onCheckboxList;
+  console.log("deleteMe shouldBeTextField is: " + shouldBeTextField);
+  const shouldBeCheckbox: boolean = !onTheNoDisplayList && onCheckboxList;
+  console.log("deleteMe shouldBeCheckbox is: " + shouldBeCheckbox);
 
   const intl: IntlShape = useIntl();
   const handleChange: (event: any) => void = (event: any) => {
@@ -44,8 +59,8 @@ const SingleVideoIntakeQuestion: React.FC<{
           variant="filled"
           label={
             <FormattedMessage
-              id={intakeQuestionKey.toUpperCase()}
-              defaultMessage="Uknown question key"
+              id={intakeQuestionKey.toUpperCase().replace(" ", "_")}
+              defaultMessage="Unknown question key"
             />
           }
           required

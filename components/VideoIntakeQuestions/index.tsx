@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import { IntlShape, FormattedMessage, useIntl } from "react-intl";
 import InfoIcon from "../InfoIcon";
@@ -47,7 +48,12 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
       isRequired: false,
       testId: "change me",
       doNotDisplay: ["testId", "doNotDisplay", "shouldBeCheckboxes"],
+      invalidInputMessage: "change me",
+      validatorMethod: (tmp) => {
+        return true;
+      }, // @TODO should be a dropdown,
       shouldBeCheckboxes: ["isRequired"],
+      autocompleteOptions: ["options"], // @TODO should have ability to add more options
     };
   }, []);
   useEffect(() => {
@@ -71,20 +77,27 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
     }
   };
 
-  const intakeQuestionElement = map(
+  const intakeQuestionElements = map(
     intakeQuestions,
     (intakeQuestion, intakeQuestionIdx) => {
       return map(
         intakeQuestion,
         (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
           return (
-            <SingleVideoIntakeQuestion
-              intakeQuestionEl={intakeQuestionEl}
-              intakeQuestionKey={intakeQuestionKey}
-              wholeQuestion={wholeQuestion}
-              intakeQuestionsInvalid={intakeQuestionsInvalid}
-              intakeQuestionIdx={intakeQuestionIdx}
-            />
+            <>
+              {intakeQuestionKey === "label" && (
+                <Typography style={{ marginBottom: 10 }}>
+                  {"Question " + (intakeQuestionIdx + 1) + ". "}
+                </Typography>
+              )}
+              <SingleVideoIntakeQuestion
+                intakeQuestionEl={intakeQuestionEl}
+                intakeQuestionKey={intakeQuestionKey}
+                wholeQuestion={wholeQuestion}
+                intakeQuestionsInvalid={intakeQuestionsInvalid}
+                intakeQuestionIdx={intakeQuestionIdx}
+              />
+            </>
           );
         }
       );
@@ -99,7 +112,7 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
       styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
-        {intakeQuestions && intakeQuestionElement}
+        {intakeQuestions && intakeQuestionElements}
         <Grid item lg={12} sm={12}>
           <Button
             style={{ marginBottom: 10 }}

@@ -1,13 +1,19 @@
 import { FormFieldGroup, SingleFormField, Collection } from "../types";
 import { isNonEmptyString, isValidUrl } from "../utilities/validators";
 
+export const defaultDoNotDisplays: string[] = [
+  "testId",
+  "doNotDisplay",
+  "shouldBeCheckboxes",
+];
+
 const firstQuestion: SingleFormField = {
   label: "URL",
   type: "URL",
   language: "English",
   isRequired: true,
   testId: "url",
-  doNotDisplay: [],
+  doNotDisplay: defaultDoNotDisplays,
   invalidInputMessage: "MUST_BE_VALID_URL",
   validatorMethod: isValidUrl,
   shouldBeCheckboxes: ["isRequired"],
@@ -19,7 +25,7 @@ const secondQuestion: SingleFormField = {
   language: "English",
   isRequired: true,
   testId: "tournament",
-  doNotDisplay: [],
+  doNotDisplay: defaultDoNotDisplays,
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
   validatorMethod: isNonEmptyString,
   shouldBeCheckboxes: ["isRequired"],
@@ -31,7 +37,7 @@ const thirdQuestion: SingleFormField = {
   language: "English",
   isRequired: true,
   testId: "isGi",
-  doNotDisplay: [],
+  doNotDisplay: defaultDoNotDisplays,
   shouldBeCheckboxes: ["isRequired"],
 };
 
@@ -40,7 +46,7 @@ const fourthQuestion: SingleFormField = {
   type: "Date",
   language: "English",
   testId: "matchDate",
-  doNotDisplay: [],
+  doNotDisplay: defaultDoNotDisplays,
   shouldBeCheckboxes: ["isRequired"],
 };
 
@@ -50,7 +56,7 @@ const fifthQuestion: SingleFormField = {
   language: "English",
   isRequired: true,
   testId: "athleteLeftName",
-  doNotDisplay: [],
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteExtras"],
   shouldBeCheckboxes: ["isRequired"],
   validatorMethod: isNonEmptyString,
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
@@ -71,7 +77,7 @@ const sixthQuestion: SingleFormField = {
   language: "English",
   // isRequired: true,
   testId: "age",
-  doNotDisplay: [],
+  doNotDisplay: defaultDoNotDisplays,
   shouldBeCheckboxes: ["isRequired"],
   // validatorMethod: isNonEmptyString,
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",

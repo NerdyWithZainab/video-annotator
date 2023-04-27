@@ -40,7 +40,8 @@ const SingleFormField: React.FC<{
       updateStates(dayjs(), false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formFieldGroup, question?.label, question?.type]);
+    // }, [formFieldGroup, question?.label, question?.type]);
+  }, []);
 
   const handleTextChange: (
     event: React.ChangeEvent<HTMLInputElement>
