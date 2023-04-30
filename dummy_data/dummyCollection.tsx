@@ -66,9 +66,10 @@ const fifthQuestion: SingleFormField = {
     "Ziegler, Eddie",
     "Diggins, John",
   ],
-  autocompleteExtras: {
-    freeSolo: true,
-  },
+  usersCanAddCustomOptions: true,
+  // autocompleteExtras: {
+  //   freeSolo: true,
+  // },
 };
 
 const sixthQuestion: SingleFormField = {

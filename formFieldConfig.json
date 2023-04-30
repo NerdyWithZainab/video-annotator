@@ -1,0 +1,42 @@
+[
+  {
+    "type": "URL",
+    "attributesToDisplay": ["label", "type", "language", "isRequired"],
+    "validationMethod": "isValidUrl",
+    "invalidInputMessage": "MUST_BE_VALID_URL"
+  },
+  {
+    "type": "Text",
+    "attributesToDisplay": ["label", "type", "language", "isRequired"],
+    "validationMethod": "isNonEmptyString",
+    "invalidInputMessage": "FIELD_CANNOT_BE_BLANK"
+  },
+  {
+    "type": "Email",
+    "attributesToDisplay": ["label", "type", "language", "isRequired"],
+    "validationMethod": "isValidEmail",
+    "invalidInputMessage": "MUST_BE_VALID_EMAIL"
+  },
+  {
+    "type": "Checkbox",
+    "attributesToDisplay": ["label", "type", "language"]
+  },
+  {
+    "type": "Date",
+    "attributesToDisplay": ["label", "type", "language", "isRequired"],
+    "validationMethod": "isNonFalsy",
+    "invalidInputMessage": "THIS_FIELD_IS_REQUIRED"
+  },
+  {
+    "type": "Autocomplete",
+    "attributesToDisplay": [
+      "label",
+      "type",
+      "language",
+      "isRequired",
+      "autocompleteOptions"
+    ],
+    "validationMethod": "isValidEmail",
+    "invalidInputMessage": "MUST_BE_VALID_EMAIL"
+  }
+]

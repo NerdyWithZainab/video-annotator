@@ -3,24 +3,16 @@ import { useEffect, useMemo, useState } from "react";
 import { map, get } from "lodash-es";
 
 import { Collection, SingleFormField, QuestionValidity } from "../../types";
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { IntlShape, FormattedMessage, useIntl } from "react-intl";
-import InfoIcon from "../InfoIcon";
 import CustomError from "../Error";
-import { convertCamelCaseToCapitalCase } from "../../utilities/textUtils";
 import InfoPanel from "../InfoPanel";
 import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 
-const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
-  collection,
-}) => {
+const VideoIntakeQuestions: React.FC<{
+  collection: Collection;
+  setCollection: (collection: Collection) => void;
+}> = ({ collection, setCollection }) => {
   const intl: IntlShape = useIntl();
 
   const [intakeQuestions, setIntakeQuestions] = useState<
@@ -57,21 +49,23 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
     };
   }, []);
   useEffect(() => {
-    setIntakeQuestions([...(collection?.intakeQuestions || []), newQuestion]);
-  }, [collection, newQuestion]);
+    setIntakeQuestions([...(collection?.intakeQuestions || [])]);
+  }, [collection]);
 
   const handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const currentEvent = event;
-    // console.log("deleteMe currentEvent is: ");
-    // console.log(currentEvent);
+    console.log("deleteMe currentEvent is: ");
+    console.log(currentEvent);
     // @TODO flesh this out. See if you can make it handle everything with question key + index being passed in as well?
+    // @TODO setCollection(modifiedCollection)
   };
 
   const createNewIntakeQuestion: () => void = () => {
     try {
       collection.intakeQuestions = [...(intakeQuestions || []), newQuestion]; // @TODO lookup whether this is bad practice using currently existing state in the setter for the new state... I vaguely remember something like using previous value for this?
+      setCollection(collection);
     } catch (error: any) {
       setError(error?.message);
     }
@@ -96,6 +90,8 @@ const VideoIntakeQuestions: React.FC<{ collection: Collection }> = ({
                 wholeQuestion={wholeQuestion}
                 intakeQuestionsInvalid={intakeQuestionsInvalid}
                 intakeQuestionIdx={intakeQuestionIdx}
+                collection={collection}
+                setCollection={setCollection}
               />
             </>
           );

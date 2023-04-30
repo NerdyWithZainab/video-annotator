@@ -93,10 +93,10 @@ const SingleFormField: React.FC<{
         })
       : undefined;
 
-    console.log("deleteMe actualValues are: ");
-    console.log(get(formFieldGroup, "actualValues"));
-    console.log("deleteMe isInvalids is: ");
-    console.log(get(formFieldGroup, "isInvalids"));
+    // console.log("deleteMe actualValues are: ");
+    // console.log(get(formFieldGroup, "actualValues"));
+    // console.log("deleteMe isInvalids is: ");
+    // console.log(get(formFieldGroup, "isInvalids"));
   };
 
   const autocompleteExtras: {} = question?.autocompleteExtras || {};
@@ -210,6 +210,7 @@ const SingleFormField: React.FC<{
           style={{ marginBottom: 10, maxWidth: 400 }}
           value={get(formFieldGroup, ["actualValues", question?.label], "")}
           onChange={handleAutocompleteChange}
+          freeSolo={question?.usersCanAddCustomOptions}
           {...autocompleteExtras}
           inputValue={get(
             formFieldGroup,

@@ -2,6 +2,10 @@ export function isNonEmptyString(str: string): boolean {
   return Boolean(str);
 }
 
+export function isNonFalsy(input: any): boolean {
+  return Boolean(input);
+}
+
 export function isValidEmail(email: string): boolean {
   if (email) {
     const re: RegExp =

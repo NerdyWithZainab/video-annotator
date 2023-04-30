@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Grid } from "@mui/material";
 
@@ -7,23 +7,28 @@ import CollectionDetailsView from "../../components/CollectionDetailsView";
 import VideoIntakePreview from "../../components/VideoIntakePreview";
 import VideoIntakeQuestions from "../../components/VideoIntakeQuestions";
 
-import { FormFieldGroup } from "../../types";
-import { shamCollection } from '../../dummy_data/dummyCollection';
+import { Collection, FormFieldGroup } from "../../types";
+import { shamCollection } from "../../dummy_data/dummyCollection";
 
 const SingleCollection: React.FC = () => {
   const [formValues, setFormValues] = useState<{}>({});
   const [areFormValuesInvalid, setAreFormValuesInvalid] = useState<{}>({});
+  const [collection, setCollection] = useState<Collection>();
+  const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    setCollection(shamCollection);
+  }, []);
 
   const shamFormFieldGroup: FormFieldGroup = {
     setValues: setFormValues,
     actualValues: formValues,
     isInvalids: areFormValuesInvalid,
-    setIsInvalids: setAreFormValuesInvalid
+    setIsInvalids: setAreFormValuesInvalid,
   };
   shamCollection.formFieldGroup = shamFormFieldGroup;
-
-  const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
-    useState<boolean>(false);
+  // setCollection(shamCollection);
 
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
@@ -44,7 +49,10 @@ const SingleCollection: React.FC = () => {
       </Grid>
       {/* <Grid item sm={12} md={3}></Grid> */}
       <Grid item sm={12} md={4}>
-        <VideoIntakeQuestions collection={shamCollection} />
+        <VideoIntakeQuestions
+          collection={collection}
+          setCollection={setCollection}
+        />
       </Grid>
       <Grid item sm={12} md={8}>
         <VideoIntakePreview collection={shamCollection} />

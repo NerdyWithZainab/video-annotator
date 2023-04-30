@@ -28,6 +28,7 @@ export interface SingleFormField {
   validatorMethod?: (input: any) => boolean;
   shouldBeCheckboxes: string[];
   autocompleteOptions?: string[];
+  usersCanAddCustomOptions?: boolean;
   autocompleteExtras?: {};
 }
 
