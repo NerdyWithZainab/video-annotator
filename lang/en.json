@@ -2,6 +2,7 @@
   "CREATE_AN_ACCOUNT": "Create an Account",
   "EMAIL_ADDRESS": "Email Address",
   "MUST_BE_VALID_EMAIL": "Must be a valid email address",
+  "MUST_BE_VALID_NUMBER": "Must be a valid number",
   "PASSWORD": "Password",
   "PASSWORD_MUST_CONTAIN": "Password must be seven characters long and contain both letters and numbers",
   "CONFIRM_PASSWORD": "Confirm Password",

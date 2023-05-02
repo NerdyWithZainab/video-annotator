@@ -34,9 +34,16 @@
       "type",
       "language",
       "isRequired",
-      "autocompleteOptions"
+      "autocompleteOptions",
+      "usersCanAddCustomOptions"
     ],
     "validationMethod": "isValidEmail",
     "invalidInputMessage": "MUST_BE_VALID_EMAIL"
+  },
+  {
+    "type": "Number",
+    "attributesToDisplay": ["label", "type", "language", "isRequired"],
+    "validationMethod": "isNumber",
+    "invalidInputMessage": "MUST_BE_VALID_NUMBER"
   }
 ]

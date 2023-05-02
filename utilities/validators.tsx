@@ -6,6 +6,10 @@ export function isNonFalsy(input: any): boolean {
   return Boolean(input);
 }
 
+export function isNumber(input: any): boolean {
+  return typeof input === "number";
+}
+
 export function isValidEmail(email: string): boolean {
   if (email) {
     const re: RegExp =
