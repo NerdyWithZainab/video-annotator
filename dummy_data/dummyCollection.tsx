@@ -92,12 +92,12 @@ export const shamCollection: Collection = {
   isPrivate: false,
   language: "English",
   intakeQuestions: [
-    firstQuestion,
-    secondQuestion,
-    thirdQuestion,
-    fourthQuestion,
+    // firstQuestion,
+    // secondQuestion,
+    // thirdQuestion,
+    // fourthQuestion,
     fifthQuestion,
-    sixthQuestion,
+    // sixthQuestion,
   ],
   excludeFromDetailList: [
     "intakeQuestions",

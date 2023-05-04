@@ -7,11 +7,16 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { filter, get, map } from "lodash-es";
+import { get, map } from "lodash-es";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { Collection, QuestionValidity, SingleFormField } from "../../types";
 import { convertCamelCaseToCapitalCase } from "../../utilities/textUtils";
 import formFieldConfig from "../../formFieldConfig.json";
+import {
+  calculateCurrentAttributesToDisplay,
+  updateCollection,
+} from "../../utilities/singleFormFieldUtils";
+import OptionSet from "../OptionSet";
 
 const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionEl: any;
@@ -46,32 +51,28 @@ const SingleVideoIntakeQuestion: React.FC<{
     wholeQuestion?.doNotDisplay || []
   ).includes(intakeQuestionKey);
 
-  const currentTypeConfig = filter(formFieldConfig, (entry) => {
-    const deleteMeEntryType = entry?.type;
-    console.log("deleteMe deleteMeEntryType is: ");
-    console.log(deleteMeEntryType);
-    console.log("deleteMe wholeQuestion type is: ");
-    console.log(wholeQuestion?.type);
-    const matches: boolean = entry?.type === wholeQuestion?.type;
-    console.log("deleteMe matches is: ");
-    console.log(matches);
-    return matches;
-  });
-  console.log("deleteMe currentTypeConfig is: ");
-  console.log(currentTypeConfig);
+  const currentAttributesToDisplay: string[] =
+    calculateCurrentAttributesToDisplay(wholeQuestion);
 
-  // const notOnTheAttributesToDisplayListForTheType: boolean =
-  //   !currentTypeConfig?.attributesToDisplay?.includes(intakeQuestionKey);
+  const onTheDisplayListForThisQuestionType: boolean =
+    currentAttributesToDisplay.includes(intakeQuestionKey);
 
   const onCheckboxList: boolean = (
     wholeQuestion?.shouldBeCheckboxes || []
   ).includes(intakeQuestionKey);
 
-  const shouldBeTypeDropdown: boolean = intakeQuestionKey === "type";
+  const shouldBeTypeDropdown: boolean =
+    intakeQuestionKey === "type" && onTheDisplayListForThisQuestionType;
   const shouldBeTextField: boolean =
-    !onTheNoDisplayList && !onCheckboxList && !shouldBeTypeDropdown;
+    !onTheNoDisplayList &&
+    !onCheckboxList &&
+    !shouldBeTypeDropdown &&
+    onTheDisplayListForThisQuestionType;
   const shouldBeCheckbox: boolean =
-    !onTheNoDisplayList && onCheckboxList && !shouldBeTypeDropdown;
+    !onTheNoDisplayList &&
+    onCheckboxList &&
+    !shouldBeTypeDropdown &&
+    onTheDisplayListForThisQuestionType;
 
   const intl: IntlShape = useIntl();
   const handleChange: (event: any) => void = (event: any) => {
@@ -80,19 +81,13 @@ const SingleVideoIntakeQuestion: React.FC<{
     // 2) change what options are visible/available in the video intake questions section
 
     const currentVal: any = event?.currentTarget?.value || event?.target?.value;
-    const targetQuestion: SingleFormField = get(
+    updateCollection(
       collection,
-      ["intakeQuestions", intakeQuestionIdx],
-      {}
+      intakeQuestionIdx,
+      intakeQuestionKey,
+      currentVal,
+      setCollection
     );
-    const modifiedQuestion = {
-      ...targetQuestion,
-      [intakeQuestionKey]: currentVal,
-    };
-    const newIntakeQuestionSet: SingleFormField[] =
-      collection?.intakeQuestions || [];
-    newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
-    setCollection({ ...collection, intakeQuestions: newIntakeQuestionSet });
   };
 
   const typeElements = map(types, (type: string) => {
@@ -103,8 +98,23 @@ const SingleVideoIntakeQuestion: React.FC<{
     );
   });
 
+  const shouldBeOptionField = intakeQuestionKey === "autocompleteOptions";
+  // const options: string[] = get(wholeQuestion, ["autocompleteOptions"], []);
+
+  // const setOptions: (input: any) => void = get(collection, [
+  //   "formFieldGroup",
+  //   "setValues",
+  // ]);
+
   return (
     <Grid item lg={12} sm={12}>
+      {shouldBeOptionField && (
+        <OptionSet
+          formField={wholeQuestion}
+          collection={collection}
+          targetformFieldIdx={intakeQuestionIdx}
+        />
+      )}
       {shouldBeTextField && (
         <TextField
           fullWidth
