@@ -1,7 +1,8 @@
 import { Paper, Typography } from "@mui/material";
-import { forEach, get, map } from "lodash-es";
+import { filter, forEach, get, map, reduce } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { useState } from "react";
+import { IntlShape, useIntl } from "react-intl";
 import { SingleFormField, Collection, FormFieldGroup } from "../../types";
 import { updateCollection } from "../../utilities/singleFormFieldUtils";
 import { isNonEmptyString } from "../../utilities/validators";
@@ -13,6 +14,7 @@ const OptionSet: React.FC<{
   targetformFieldIdx: number;
   setCollection: (collection: Collection) => void;
 }> = ({ formField, collection, targetformFieldIdx, setCollection }) => {
+  const intl: IntlShape = useIntl();
   const options: string[] = get(formField, ["autocompleteOptions"], []);
   const usersCanAddCustomOptions: boolean = get(
     formField,
@@ -42,6 +44,7 @@ const OptionSet: React.FC<{
   }, [invalidOptions, optionValues]);
 
   useEffect(() => {
+    // @TODO test whether this useEffect is even necessary.
     forEach(options, (option, optionIdx) => {
       const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option };
       optionFormFieldGroup?.setValues
@@ -54,26 +57,61 @@ const OptionSet: React.FC<{
   }, []);
 
   useEffect(() => {
-    // @TODO update the parent collection
-    console.log("deleteMe optionFormGroup has been changed. The values are: ");
+    console.log("deleteMe optionFormFieldGroup?.actualValues is: ");
     console.log(optionFormFieldGroup?.actualValues);
-    const updatedVals: string[] = Object.values(
-      optionFormFieldGroup?.actualValues || {}
+
+    const autoCompleteVals: string[] = filter(
+      optionFormFieldGroup?.actualValues || {},
+      (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
+        return optionFormFieldGroupKey.startsWith("Option"); // @TODO prevent the collection owner from making labels that start with Option??? Or at least test for wonky behavior
+      }
     );
-    // const questionKey: string = get(
-    //   collection,
-    //   ["intakeQuestions", targetformFieldIdx, "label"],
-    //   ""
-    // );
-    // console.log("deleteMe questionKey is: ");
-    // console.log(questionKey);
     updateCollection(
       collection,
       targetformFieldIdx,
       "autocompleteOptions",
-      updatedVals,
+      autoCompleteVals,
       setCollection
     );
+
+    const canEndUserAddCustomOptionsValsArr: string[] = filter(
+      optionFormFieldGroup?.actualValues || {},
+      (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
+        const targetString: string = intl.formatMessage({
+          id: "CAN_END_USER_ADD_CUSTOM_OPTIONS",
+          defaultMessage:
+            "Can the people annotating videos in this collection add their own candidates to this list? You as the collection owner will be able to approve or remove these later.",
+        });
+        return optionFormFieldGroupKey.startsWith(targetString);
+      }
+    );
+    updateCollection(
+      collection,
+      targetformFieldIdx,
+      "usersCanAddCustomOptions",
+      get(canEndUserAddCustomOptionsValsArr, [0], true),
+      setCollection
+    );
+    // const otherVals: {} = reduce(
+    //   optionFormFieldGroup?.actualValues || {},
+    //   (memo, optionFormGroupFieldValue, optionFormGroupFieldKey) => {
+    //     // console.log("deleteMe optionFormGroupFieldValue is: ");
+    //     // console.log(optionFormGroupFieldValue);
+    //     return !optionFormGroupFieldKey.startsWith("Option")
+    //       ? { ...memo, [optionFormGroupFieldKey]: optionFormGroupFieldValue }
+    //       : { ...memo };
+    //   },
+    //   {}
+    // );
+
+    // forEach(otherVals, (nonOptionVal, nonOptionKey) => {
+    //   console.log("deleteMe entry is: ");
+    //   console.log(entry);
+    //   console.log("deleteMe idx is: ");
+    //   console.log(idx);
+    //   updateCollection(collection, idx, entry, autoCompleteVals, setCollection);
+    // });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionFormFieldGroup]);
 
@@ -97,16 +135,26 @@ const OptionSet: React.FC<{
     const key: string = "option-" + (optionIdx + 1);
     return (
       <>
-        {/* <Typography>Option {optionIdx + 1}: </Typography> */}
-        <React.Fragment key={key}>
-          <SingleFormFieldComponent
-            question={optionFormField}
-            formFieldGroup={optionFormFieldGroup}
-          />
-        </React.Fragment>
+        <SingleFormFieldComponent
+          key={key}
+          question={optionFormField}
+          formFieldGroup={optionFormFieldGroup}
+        />
       </>
     );
   });
+
+  const canEndUserAddCustomOptionsCheckbox = {
+    label: intl.formatMessage({
+      id: "CAN_END_USER_ADD_CUSTOM_OPTIONS",
+      defaultMessage:
+        "Can the people annotating videos in this collection add their own candidates to this list? You as the collection owner will be able to approve or remove these later.",
+    }),
+    type: "Checkbox",
+    language: formField?.language,
+    isRequired: true,
+    shouldBeCheckboxes: [],
+  };
 
   return (
     <Paper
@@ -123,6 +171,11 @@ const OptionSet: React.FC<{
     >
       <Typography style={{ marginBottom: 10 }}>{formField?.label}</Typography>
       {optionFormFields}
+      <SingleFormFieldComponent
+        key="canEndUserAddCustomOptionsCheckbox"
+        question={canEndUserAddCustomOptionsCheckbox}
+        formFieldGroup={optionFormFieldGroup}
+      />
     </Paper>
   );
 };
