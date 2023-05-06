@@ -47,6 +47,8 @@ const SingleFormField: React.FC<{
     event: React.ChangeEvent<HTMLInputElement>
   ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentVal: any = event?.currentTarget?.value;
+    console.log("deleteMe currentVal is: ");
+    console.log(currentVal);
     updateStates(currentVal);
   };
 
@@ -57,6 +59,7 @@ const SingleFormField: React.FC<{
     if (newValue) {
       updateStates(newValue);
     } else {
+      console.log("deleteMe got here b1");
       updateStates(""); // otherwise, there is an error
     }
   };
@@ -75,6 +78,8 @@ const SingleFormField: React.FC<{
     defaultValidValue: boolean = false
   ) => {
     const newActualValue: {} = { [question.label]: currentVal };
+    // console.log("deleteMe newActualValue is: ");
+    // console.log(newActualValue);
     formFieldGroup?.setValues
       ? formFieldGroup.setValues((prevState: {}) => {
           return { ...prevState, ...newActualValue };
@@ -84,9 +89,15 @@ const SingleFormField: React.FC<{
     const currentFormIsInvalid = question.validatorMethod
       ? !question.validatorMethod(currentVal)
       : defaultValidValue;
-    formFieldGroup?.setIsInvalids &&
-    formFieldGroup?.isInvalids &&
-    question?.label
+
+    // console.log("deleteMe currentFormIsInvalid is: ");
+    // console.log(currentFormIsInvalid);
+
+    const validationStateAndLabelExist: boolean = Boolean(
+      formFieldGroup?.isInvalids && question?.label
+    );
+
+    validationStateAndLabelExist && formFieldGroup?.setIsInvalids
       ? formFieldGroup.setIsInvalids({
           ...formFieldGroup.isInvalids,
           [question.label]: currentFormIsInvalid,

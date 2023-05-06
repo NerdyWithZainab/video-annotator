@@ -3,6 +3,7 @@ import { forEach, get, map } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { useState } from "react";
 import { SingleFormField, Collection, FormFieldGroup } from "../../types";
+import { updateCollection } from "../../utilities/singleFormFieldUtils";
 import { isNonEmptyString } from "../../utilities/validators";
 import SingleFormFieldComponent from "../SingleFormField";
 
@@ -10,15 +11,24 @@ const OptionSet: React.FC<{
   formField: SingleFormField;
   collection: Collection;
   targetformFieldIdx: number;
-}> = ({ formField, collection, targetformFieldIdx }) => {
+  setCollection: (collection: Collection) => void;
+}> = ({ formField, collection, targetformFieldIdx, setCollection }) => {
   const options: string[] = get(formField, ["autocompleteOptions"], []);
   const usersCanAddCustomOptions: boolean = get(
     formField,
     ["usersCanAddCustomOptions"],
     false
   );
-  console.log("deleteMe options are: ");
-  console.log(options);
+
+  // console.log("deleteMe options are: ");
+  // console.log(options);
+  // console.log("deleteMe usersCanAddCustomOptions is: ");
+  // console.log(usersCanAddCustomOptions);
+  console.log("deleteMe collection is: ");
+  console.log(collection);
+
+  console.log("deleteMe targetformFieldIdx is: ");
+  console.log(targetformFieldIdx);
 
   const [optionValues, setOptionValues] = useState<{}>({});
   const [invalidOptions, setInvalidOptions] = useState<{}>({});
@@ -40,7 +50,32 @@ const OptionSet: React.FC<{
           })
         : undefined;
     });
-  }, [optionFormFieldGroup, options]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // @TODO update the parent collection
+    console.log("deleteMe optionFormGroup has been changed. The values are: ");
+    console.log(optionFormFieldGroup?.actualValues);
+    const updatedVals: string[] = Object.values(
+      optionFormFieldGroup?.actualValues || {}
+    );
+    // const questionKey: string = get(
+    //   collection,
+    //   ["intakeQuestions", targetformFieldIdx, "label"],
+    //   ""
+    // );
+    // console.log("deleteMe questionKey is: ");
+    // console.log(questionKey);
+    updateCollection(
+      collection,
+      targetformFieldIdx,
+      "autocompleteOptions",
+      updatedVals,
+      setCollection
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionFormFieldGroup]);
 
   const formFieldSet: SingleFormField[] = map(
     options,

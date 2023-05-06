@@ -38,5 +38,8 @@ export function updateCollection(
   const newIntakeQuestionSet: SingleFormField[] =
     collection?.intakeQuestions || [];
   newIntakeQuestionSet[questionIdx] = modifiedQuestion;
+
+  console.log("deleteMe newIntakeQuestionSet is: ");
+  console.log(newIntakeQuestionSet);
   setCollection({ ...collection, intakeQuestions: newIntakeQuestionSet });
 }
