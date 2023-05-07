@@ -1,4 +1,4 @@
-import { filter, forEach, get } from "lodash-es";
+import { filter, forEach, get, reduce } from "lodash-es";
 import formFieldConfig from "../formFieldConfig.json";
 import { SingleFormField, Collection, FormFieldGroup } from "../types";
 
@@ -38,10 +38,34 @@ export function updateCollection(
   setCollection({ ...collection, intakeQuestions: newIntakeQuestionSet });
 }
 
+export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
+  const preExistingActualVals = get(optionFormFieldGroup, ["actualValues"]);
+  console.log("deleteMe preExistingActualVals are: ");
+  console.log(preExistingActualVals);
+  const purgedActualVals = reduce(
+    preExistingActualVals,
+    (memo, currentVal, currentKey) => {
+      if (currentKey.startsWith("Option")) {
+        return { ...memo };
+      } else {
+        return { ...memo, [currentKey]: currentVal };
+      }
+    },
+    {}
+  );
+  console.log("deleteMe purgedActualVals are: ");
+  console.log(purgedActualVals);
+  optionFormFieldGroup?.setValues
+    ? optionFormFieldGroup.setValues(purgedActualVals)
+    : undefined;
+}
+
 export function updateOptionFormFieldGroupWithOptionList(
   options: string[],
   optionFormFieldGroup: FormFieldGroup
 ) {
+  //first, remove all existing options
+  clearAllOptionFields(optionFormFieldGroup);
   forEach(options, (option, optionIdx) => {
     const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option };
     optionFormFieldGroup?.setValues

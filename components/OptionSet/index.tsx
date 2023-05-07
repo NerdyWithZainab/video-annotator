@@ -29,11 +29,11 @@ const OptionSet: React.FC<{
   // console.log(options);
   // console.log("deleteMe usersCanAddCustomOptions is: ");
   // console.log(usersCanAddCustomOptions);
-  console.log("deleteMe collection is: ");
-  console.log(collection);
+  // console.log("deleteMe collection is: ");
+  // console.log(collection);
 
-  console.log("deleteMe targetformFieldIdx is: ");
-  console.log(targetformFieldIdx);
+  // console.log("deleteMe targetformFieldIdx is: ");
+  // console.log(targetformFieldIdx);
 
   const [optionValues, setOptionValues] = useState<{}>({});
   const [invalidOptions, setInvalidOptions] = useState<{}>({});
@@ -114,7 +114,13 @@ const OptionSet: React.FC<{
         <SingleFormFieldComponent
           key={key}
           question={optionFormField}
+          isDeletable={true}
           formFieldGroup={optionFormFieldGroup}
+          formGroupIdx={optionIdx}
+          targetformFieldIdx={targetformFieldIdx}
+          collection={collection}
+          setCollection={setCollection}
+          optionFormFieldGroup={optionFormFieldGroup}
         />
       </>
     );

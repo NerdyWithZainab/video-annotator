@@ -8,15 +8,31 @@ import {
 } from "@mui/material";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { get } from "lodash-es";
-import { FormFieldGroup, SingleFormField } from "../../types";
+import { FormFieldGroup, SingleFormField, Collection } from "../../types";
 import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import DeleteActionButton from "../DeleteActionButton";
 
 const SingleFormField: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup;
-}> = ({ question, formFieldGroup }) => {
+  isDeletable?: boolean;
+  formGroupIdx?: number;
+  collection?: Collection;
+  setCollection?: () => void;
+  targetformFieldIdx?: number;
+  optionFormFieldGroup?: FormFieldGroup;
+}> = ({
+  question,
+  formFieldGroup,
+  isDeletable = false, // @TODO implement this
+  formGroupIdx,
+  collection,
+  setCollection,
+  targetformFieldIdx,
+  optionFormFieldGroup,
+}) => {
   const intl: IntlShape = useIntl();
   const currentIsInvalid: boolean = get(
     formFieldGroup,
@@ -137,25 +153,37 @@ const SingleFormField: React.FC<{
       );
     case "Text":
       return (
-        <TextField
-          required={question?.isRequired}
-          fullWidth
-          data-testid={question?.testId}
-          error={currentIsInvalid}
-          variant="filled"
-          label={question?.label}
-          helperText={
-            currentIsInvalid
-              ? intl.formatMessage({
-                  id: question?.invalidInputMessage || "FIELD_CANNOT_BE_BLANK",
-                  defaultMessage: "Cannot be blank",
-                })
-              : ""
-          }
-          style={{ marginBottom: 10, maxWidth: 400 }}
-          onChange={handleTextChange}
-          value={get(formFieldGroup, ["actualValues", question?.label], "")}
-        ></TextField>
+        <span style={{ display: "inline-flex" }}>
+          <TextField
+            required={question?.isRequired}
+            fullWidth
+            data-testid={question?.testId}
+            error={currentIsInvalid}
+            variant="filled"
+            label={question?.label}
+            helperText={
+              currentIsInvalid
+                ? intl.formatMessage({
+                    id:
+                      question?.invalidInputMessage || "FIELD_CANNOT_BE_BLANK",
+                    defaultMessage: "Cannot be blank",
+                  })
+                : ""
+            }
+            style={{ marginBottom: 10, maxWidth: 400 }}
+            onChange={handleTextChange}
+            value={get(formFieldGroup, ["actualValues", question?.label], "")}
+          ></TextField>
+          <DeleteActionButton
+            collection={collection}
+            question={question}
+            formFieldGroup={formFieldGroup}
+            formGroupIdx={formGroupIdx}
+            setCollection={setCollection}
+            targetformFieldIdx={targetformFieldIdx}
+            optionFormFieldGroup={optionFormFieldGroup}
+          />
+        </span>
       );
     case "Checkbox":
       return (
