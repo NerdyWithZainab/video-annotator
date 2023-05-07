@@ -1,10 +1,13 @@
-import { Paper, Typography } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import { filter, forEach, get, map, reduce } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { useState } from "react";
-import { IntlShape, useIntl } from "react-intl";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { SingleFormField, Collection, FormFieldGroup } from "../../types";
-import { updateCollection } from "../../utilities/singleFormFieldUtils";
+import {
+  updateCollection,
+  updateOptionFormFieldGroupWithOptionList,
+} from "../../utilities/singleFormFieldUtils";
 import { isNonEmptyString } from "../../utilities/validators";
 import SingleFormFieldComponent from "../SingleFormField";
 
@@ -15,12 +18,12 @@ const OptionSet: React.FC<{
   setCollection: (collection: Collection) => void;
 }> = ({ formField, collection, targetformFieldIdx, setCollection }) => {
   const intl: IntlShape = useIntl();
-  const options: string[] = get(formField, ["autocompleteOptions"], []);
-  const usersCanAddCustomOptions: boolean = get(
-    formField,
-    ["usersCanAddCustomOptions"],
-    false
-  );
+  let options: string[] = get(formField, ["autocompleteOptions"], []);
+  // const usersCanAddCustomOptions: boolean = get(
+  //   formField,
+  //   ["usersCanAddCustomOptions"],
+  //   false
+  // );
 
   // console.log("deleteMe options are: ");
   // console.log(options);
@@ -44,15 +47,7 @@ const OptionSet: React.FC<{
   }, [invalidOptions, optionValues]);
 
   useEffect(() => {
-    // @TODO test whether this useEffect is even necessary.
-    forEach(options, (option, optionIdx) => {
-      const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option };
-      optionFormFieldGroup?.setValues
-        ? optionFormFieldGroup.setValues((prevState: {}) => {
-            return { ...prevState, ...newActualValue };
-          })
-        : undefined;
-    });
+    updateOptionFormFieldGroupWithOptionList(options, optionFormFieldGroup);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -92,25 +87,6 @@ const OptionSet: React.FC<{
       get(canEndUserAddCustomOptionsValsArr, [0], true),
       setCollection
     );
-    // const otherVals: {} = reduce(
-    //   optionFormFieldGroup?.actualValues || {},
-    //   (memo, optionFormGroupFieldValue, optionFormGroupFieldKey) => {
-    //     // console.log("deleteMe optionFormGroupFieldValue is: ");
-    //     // console.log(optionFormGroupFieldValue);
-    //     return !optionFormGroupFieldKey.startsWith("Option")
-    //       ? { ...memo, [optionFormGroupFieldKey]: optionFormGroupFieldValue }
-    //       : { ...memo };
-    //   },
-    //   {}
-    // );
-
-    // forEach(otherVals, (nonOptionVal, nonOptionKey) => {
-    //   console.log("deleteMe entry is: ");
-    //   console.log(entry);
-    //   console.log("deleteMe idx is: ");
-    //   console.log(idx);
-    //   updateCollection(collection, idx, entry, autoCompleteVals, setCollection);
-    // });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionFormFieldGroup]);
@@ -156,6 +132,11 @@ const OptionSet: React.FC<{
     shouldBeCheckboxes: [],
   };
 
+  const handleAddAnotherOption: () => void = () => {
+    options.push("");
+    updateOptionFormFieldGroupWithOptionList(options, optionFormFieldGroup);
+  };
+
   return (
     <Paper
       elevation={8}
@@ -171,6 +152,12 @@ const OptionSet: React.FC<{
     >
       <Typography style={{ marginBottom: 10 }}>{formField?.label}</Typography>
       {optionFormFields}
+      <Button variant="contained" onClick={handleAddAnotherOption}>
+        <FormattedMessage
+          id="ADD_ANOTHER_OPTION"
+          defaultMessage="Add another option"
+        />
+      </Button>
       <SingleFormFieldComponent
         key="canEndUserAddCustomOptionsCheckbox"
         question={canEndUserAddCustomOptionsCheckbox}
