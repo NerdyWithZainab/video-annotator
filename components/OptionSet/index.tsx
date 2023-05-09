@@ -101,7 +101,7 @@ const OptionSet: React.FC<{
         <SingleFormFieldComponent
           key={key}
           question={optionFormField}
-          isDeletable={true}
+          areAutocompleteOptionsDeletable={true}
           formFieldGroup={optionFormFieldGroup}
         />
       </>

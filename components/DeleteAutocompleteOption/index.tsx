@@ -6,8 +6,7 @@ import { FormFieldGroup, SingleFormField } from "../../types";
 import { filter, get, reduce } from "lodash-es";
 import { updateOptionFormFieldGroupWithOptionList } from "../../utilities/singleFormFieldUtils";
 
-const DeleteActionButton: React.FC<{
-  // @TODO LEFT OFF FOLLOWING THIS UP THE COMPONENT CHAIN AND GETTING RID OF UNECCESSARY PROPS
+const DeleteAutocompleteOption: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup;
 }> = (props) => {
@@ -54,4 +53,4 @@ const DeleteActionButton: React.FC<{
   );
 };
 
-export default DeleteActionButton;
+export default DeleteAutocompleteOption;

@@ -12,16 +12,16 @@ import { FormFieldGroup, SingleFormField, Collection } from "../../types";
 import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import DeleteActionButton from "../DeleteActionButton";
+import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
 
 const SingleFormField: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup;
-  isDeletable?: boolean;
+  areAutocompleteOptionsDeletable?: boolean;
 }> = ({
   question,
   formFieldGroup,
-  isDeletable = false, // @TODO implement this
+  areAutocompleteOptionsDeletable = false,
 }) => {
   const intl: IntlShape = useIntl();
   const currentIsInvalid: boolean = get(
@@ -152,8 +152,8 @@ const SingleFormField: React.FC<{
             onChange={handleTextChange}
             value={get(formFieldGroup, ["actualValues", question?.label], "")}
           ></TextField>
-          {isDeletable && (
-            <DeleteActionButton
+          {areAutocompleteOptionsDeletable && (
+            <DeleteAutocompleteOption
               question={question}
               formFieldGroup={formFieldGroup}
             />
