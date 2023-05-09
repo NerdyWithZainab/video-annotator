@@ -18,20 +18,10 @@ const SingleFormField: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup;
   isDeletable?: boolean;
-  formGroupIdx?: number;
-  collection?: Collection;
-  setCollection?: () => void;
-  targetformFieldIdx?: number;
-  optionFormFieldGroup?: FormFieldGroup;
 }> = ({
   question,
   formFieldGroup,
   isDeletable = false, // @TODO implement this
-  formGroupIdx,
-  collection,
-  setCollection,
-  targetformFieldIdx,
-  optionFormFieldGroup,
 }) => {
   const intl: IntlShape = useIntl();
   const currentIsInvalid: boolean = get(
@@ -55,16 +45,14 @@ const SingleFormField: React.FC<{
     ) {
       updateStates(dayjs(), false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [formFieldGroup, question?.label, question?.type]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTextChange: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentVal: any = event?.currentTarget?.value;
-    console.log("deleteMe currentVal is: ");
-    console.log(currentVal);
     updateStates(currentVal);
   };
 
@@ -75,7 +63,6 @@ const SingleFormField: React.FC<{
     if (newValue) {
       updateStates(newValue);
     } else {
-      console.log("deleteMe got here b1");
       updateStates(""); // otherwise, there is an error
     }
   };
@@ -90,12 +77,11 @@ const SingleFormField: React.FC<{
   };
 
   const updateStates: (currentVal: any, defaultValidValue?: boolean) => void = (
+    // @TODO move this to a util file?
     currentVal: any,
     defaultValidValue: boolean = false
   ) => {
     const newActualValue: {} = { [question.label]: currentVal };
-    // console.log("deleteMe newActualValue is: ");
-    // console.log(newActualValue);
     formFieldGroup?.setValues
       ? formFieldGroup.setValues((prevState: {}) => {
           return { ...prevState, ...newActualValue };
@@ -105,9 +91,6 @@ const SingleFormField: React.FC<{
     const currentFormIsInvalid = question.validatorMethod
       ? !question.validatorMethod(currentVal)
       : defaultValidValue;
-
-    // console.log("deleteMe currentFormIsInvalid is: ");
-    // console.log(currentFormIsInvalid);
 
     const validationStateAndLabelExist: boolean = Boolean(
       formFieldGroup?.isInvalids && question?.label
@@ -119,11 +102,6 @@ const SingleFormField: React.FC<{
           [question.label]: currentFormIsInvalid,
         })
       : undefined;
-
-    // console.log("deleteMe actualValues are: ");
-    // console.log(get(formFieldGroup, "actualValues"));
-    // console.log("deleteMe isInvalids is: ");
-    // console.log(get(formFieldGroup, "isInvalids"));
   };
 
   const autocompleteExtras: {} = question?.autocompleteExtras || {};
@@ -174,15 +152,12 @@ const SingleFormField: React.FC<{
             onChange={handleTextChange}
             value={get(formFieldGroup, ["actualValues", question?.label], "")}
           ></TextField>
-          <DeleteActionButton
-            collection={collection}
-            question={question}
-            formFieldGroup={formFieldGroup}
-            formGroupIdx={formGroupIdx}
-            setCollection={setCollection}
-            targetformFieldIdx={targetformFieldIdx}
-            optionFormFieldGroup={optionFormFieldGroup}
-          />
+          {isDeletable && (
+            <DeleteActionButton
+              question={question}
+              formFieldGroup={formFieldGroup}
+            />
+          )}
         </span>
       );
     case "Checkbox":

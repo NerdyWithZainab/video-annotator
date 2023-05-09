@@ -25,16 +25,6 @@ const OptionSet: React.FC<{
   //   false
   // );
 
-  // console.log("deleteMe options are: ");
-  // console.log(options);
-  // console.log("deleteMe usersCanAddCustomOptions is: ");
-  // console.log(usersCanAddCustomOptions);
-  // console.log("deleteMe collection is: ");
-  // console.log(collection);
-
-  // console.log("deleteMe targetformFieldIdx is: ");
-  // console.log(targetformFieldIdx);
-
   const [optionValues, setOptionValues] = useState<{}>({});
   const [invalidOptions, setInvalidOptions] = useState<{}>({});
   const optionFormFieldGroup: FormFieldGroup = useMemo(() => {
@@ -52,9 +42,6 @@ const OptionSet: React.FC<{
   }, []);
 
   useEffect(() => {
-    console.log("deleteMe optionFormFieldGroup?.actualValues is: ");
-    console.log(optionFormFieldGroup?.actualValues);
-
     const autoCompleteVals: string[] = filter(
       optionFormFieldGroup?.actualValues || {},
       (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
@@ -116,11 +103,6 @@ const OptionSet: React.FC<{
           question={optionFormField}
           isDeletable={true}
           formFieldGroup={optionFormFieldGroup}
-          formGroupIdx={optionIdx}
-          targetformFieldIdx={targetformFieldIdx}
-          collection={collection}
-          setCollection={setCollection}
-          optionFormFieldGroup={optionFormFieldGroup}
         />
       </>
     );
