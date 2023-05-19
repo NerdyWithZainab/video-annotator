@@ -16,7 +16,7 @@ import { isValidName } from "../../utilities/validators";
 import CustomError from "../Error";
 
 const CollectionDetailsEdit: React.FC<{
-  collection: Collection | undefined;
+  collection: Collection;
   setIsCollectionDetailsInEditMode: (val: boolean) => void;
 }> = ({ collection, setIsCollectionDetailsInEditMode }) => {
   const intl: IntlShape = useIntl();

@@ -49,7 +49,6 @@ const OptionSet: React.FC<{
   }, [invalidOptions, autocompleteValues]);
 
   useEffect(() => {
-    // console.log("deleteMe this happens c");
     updateOptionFormFieldGroupWithOptionList(options, optionFormFieldGroup);
 
     const canEndUserAddCustomOptionsVals =
@@ -73,9 +72,6 @@ const OptionSet: React.FC<{
   }, []);
 
   useEffect(() => {
-    // console.log("deleteMe this happens d");
-    // console.log("deleteMe collection before is: ");
-    // console.log(collection);
     const autoCompleteVals: string[] = filter(
       optionFormFieldGroup?.actualValues || {},
       (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
@@ -95,18 +91,13 @@ const OptionSet: React.FC<{
         optionFormFieldGroup,
         intl
       );
-    // console.log("deleteMe canEndUserAddCustomOptionsVals is: ");
-    // console.log(canEndUserAddCustomOptionsVals);
     updateCollection(
       collection,
-      targetformFieldIdx, // @TODO make sure that this is affecting the autocomplete question rather than the checkbox question itself
+      targetformFieldIdx,
       "usersCanAddCustomOptions",
       canEndUserAddCustomOptionsVals,
       setCollection
     );
-    // console.log("deleteMe collection after is: ");
-    // console.log(collection);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionFormFieldGroup]);
 

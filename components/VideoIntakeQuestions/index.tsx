@@ -45,23 +45,12 @@ const VideoIntakeQuestions: React.FC<{
         return true;
       }, // @TODO should be a dropdown,
       shouldBeCheckboxes: ["isRequired"],
-      autocompleteOptions: ["options"], // @TODO should have ability to add more options
+      autocompleteOptions: ["options"],
     };
   }, []);
   useEffect(() => {
-    // setIntakeQuestions([...(collection?.intakeQuestions || [])]);
     setIntakeQuestions(collection?.intakeQuestions || []);
   }, [collection]);
-
-  // const handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const currentEvent = event;
-  //   console.log("deleteMe currentEvent is: ");
-  //   console.log(currentEvent);
-  //   // @TODO flesh this out. See if you can make it handle everything with question key + index being passed in as well?
-  //   // @TODO setCollection(modifiedCollection)
-  // };
 
   const createNewIntakeQuestion: () => void = () => {
     try {

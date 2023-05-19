@@ -35,15 +35,6 @@ const SingleVideoIntakeQuestion: React.FC<{
   collection,
   setCollection,
 }) => {
-  // console.log("deleteMe intakeQuestionEl is: ");
-  // console.log(intakeQuestionEl);
-  // console.log("deleteMe wholeQuestion is: ");
-  // console.log(wholeQuestion);
-  // console.log("deleteMe intakeQuestionKey is: " + intakeQuestionKey);
-  // console.log("deleteMe colleciton is: ");
-  // console.log(collection);
-  // console.log("deleteMe formFieldConfig is: ");
-  // console.log(formFieldConfig);
   const types: string[] =
     map(formFieldConfig, (configEntry) => configEntry?.type) || [];
 

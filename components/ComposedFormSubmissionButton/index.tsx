@@ -8,7 +8,7 @@ import { measureMemory } from "vm";
 
 const ComposedFormSubmissionButton: React.FC<{
   questions: SingleFormField[];
-  formFieldGroup: FormFieldGroup | {};
+  formFieldGroup: FormFieldGroup;
 }> = ({ questions, formFieldGroup }) => {
   const [allRequiredValid, setAllRequiredValid] = useState<boolean>(true);
 

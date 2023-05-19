@@ -12,29 +12,11 @@ const VideoIntakePreview: React.FC<{
   collection: Collection;
   formValues: any;
 }> = ({ collection, formValues }) => {
-  console.log("deleteMe collection in VideoIntakePreview upon rendering is: ");
-  console.log(collection);
-  // useEffect(() => {
-  //   console.log("deleteMe got here b3 and collection is now");
-  //   console.log(collection);
-  //   // console.log("deleteMe VideoIntakePreview - formValues:", formValues);
-  // }, [formValues]);
-
   const formFieldGroup: FormFieldGroup | {} = get(
     collection,
     "formFieldGroup",
     {}
   );
-  // console.log("deleteMe a1 formFieldGroup is: ");
-  // console.log(formFieldGroup);
-
-  // const acutalVals: {} = get(formFieldGroup, ["actualValues"], {});
-
-  // useEffect(() => {
-  //   console.log("deleteMe got here b4");
-  //   console.log("deleteMe VideoIntakePreview - formFieldGroup:", acutalVals);
-  //   // @TODO update collection??
-  // }, [acutalVals]);
 
   return (
     <InfoPanel
