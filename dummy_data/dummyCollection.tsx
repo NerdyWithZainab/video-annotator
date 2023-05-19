@@ -95,7 +95,7 @@ export const shamCollection: Collection = {
     // thirdQuestion,
     // fourthQuestion,
     fifthQuestion,
-    // sixthQuestion,
+    sixthQuestion,
   ],
   excludeFromDetailList: [
     "intakeQuestions",

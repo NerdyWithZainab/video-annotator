@@ -51,23 +51,23 @@ const OptionSet: React.FC<{
   useEffect(() => {
     updateOptionFormFieldGroupWithOptionList(options, optionFormFieldGroup);
 
+    const newKey: string = intl.formatMessage({
+      id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
+      defaultMessage:
+        "Can video annotators in this collection add their own options?",
+    });
+
     const canEndUserAddCustomOptionsVals =
       calculateWhetherCustomOptionValuesArePermitted(
         optionFormFieldGroup,
         intl
       );
 
-    const newKey: string = intl.formatMessage({
-      id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
-      defaultMessage:
-        "Can video annotators in this collection add their own options?",
-    });
     if (optionFormFieldGroup?.setValues) {
       optionFormFieldGroup.setValues((prevState: {}) => {
         return { ...prevState, [newKey]: canEndUserAddCustomOptionsVals };
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

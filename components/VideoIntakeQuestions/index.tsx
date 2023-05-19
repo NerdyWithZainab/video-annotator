@@ -54,8 +54,14 @@ const VideoIntakeQuestions: React.FC<{
 
   const createNewIntakeQuestion: () => void = () => {
     try {
-      collection.intakeQuestions = [...(intakeQuestions || []), newQuestion]; // @TODO lookup whether this is bad practice using currently existing state in the setter for the new state... I vaguely remember something like using previous value for this?
-      setCollection(collection);
+      const updatedIntakeQuestions: SingleFormField[] = [
+        ...(intakeQuestions || []),
+        newQuestion,
+      ]; // @TODO lookup whether this is bad practice using currently existing state in the setter for the new state... I vaguely remember something like using previous value for this?
+      // setCollection(collection);
+      setCollection((prevState: any) => {
+        return { ...prevState, intakeQuestions: updatedIntakeQuestions };
+      });
     } catch (error: any) {
       setError(error?.message);
     }
