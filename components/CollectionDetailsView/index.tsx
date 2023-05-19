@@ -10,7 +10,7 @@ import {
 } from "../../utilities/textUtils";
 
 const CollectionDetailsView: React.FC<{
-  collection: Collection;
+  collection: Collection | undefined;
   setIsCollectionDetailsInEditMode: (val: boolean) => void;
 }> = ({ collection, setIsCollectionDetailsInEditMode }) => {
   return (

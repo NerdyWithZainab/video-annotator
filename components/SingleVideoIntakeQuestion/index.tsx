@@ -110,6 +110,7 @@ const SingleVideoIntakeQuestion: React.FC<{
     <Grid item lg={12} sm={12}>
       {shouldBeOptionField && (
         <OptionSet
+          key={intakeQuestionIdx}
           formField={wholeQuestion}
           collection={collection}
           targetformFieldIdx={intakeQuestionIdx}

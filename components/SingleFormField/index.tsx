@@ -8,21 +8,36 @@ import {
 } from "@mui/material";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { get } from "lodash-es";
-import { FormFieldGroup, SingleFormField, Collection } from "../../types";
-import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import { FormFieldGroup, SingleFormField } from "../../types";
+import { ReactNode, SyntheticEvent, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
+import { updateCollection } from "../../utilities/singleFormFieldUtils";
 
 const SingleFormField: React.FC<{
   question: SingleFormField;
-  formFieldGroup: FormFieldGroup;
+  formFieldGroup: FormFieldGroup | {};
   areAutocompleteOptionsDeletable?: boolean;
 }> = ({
   question,
   formFieldGroup,
   areAutocompleteOptionsDeletable = false,
 }) => {
+  console.log("deleteMe current question is: ");
+  console.log(question);
+  console.log("deleteMe actualValues are: ");
+  console.log("deleteMe boomie is: ");
+  console.log(get(formFieldGroup, ["actualValues"]));
+  const actualVals: {} = get(formFieldGroup, ["actualValues"]);
+  console.log("deleteMe actualVals g1 is: ");
+  console.log(actualVals);
+  let currentVal: any = get(actualVals, [question.label]);
+  if (!currentVal) {
+    currentVal = get(actualVals, ["actualValues", question.label]);
+  }
+  console.log("deleteMe currentVal f1 is: ");
+  console.log(currentVal);
   const intl: IntlShape = useIntl();
   const currentIsInvalid: boolean = get(
     formFieldGroup,
@@ -36,6 +51,7 @@ const SingleFormField: React.FC<{
       question?.type === "Checkbox" &&
       !get(formFieldGroup, ["actualValues", question?.label])
     ) {
+      // console.log("deleteMe this happens a");
       updateStates(false, false);
     }
 
@@ -45,9 +61,35 @@ const SingleFormField: React.FC<{
     ) {
       updateStates(dayjs(), false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [formFieldGroup, question?.label, question?.type]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // let currentVal: any = null;
+
+  useEffect(() => {
+    console.log(
+      "deleteMe this happens e, meaning that formFieldGroup: " +
+        formFieldGroup?.title +
+        " has changed."
+    );
+    const currentVal: any = get(formFieldGroup, [
+      "actualValues",
+      question?.label,
+    ]);
+    console.log("deleteMe currentVal is: ");
+    console.log(currentVal);
+  }, [formFieldGroup, question?.label]);
+
+  // useEffect(() => {
+  //   // console.log("deleteMe this happens b and currentVal is: ");
+  //   // console.log(currentVal);
+  //   if (question?.type === "Checkbox") {
+  //     updateStates(currentVal, false);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentVal]);
 
   const handleTextChange: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -61,8 +103,18 @@ const SingleFormField: React.FC<{
     newValue: any
   ) => void = (event: SyntheticEvent<Element, Event>, newValue: any) => {
     if (newValue) {
+      console.log("deleteMe newValue is: ");
+      console.log(newValue);
       updateStates(newValue);
+      // const deleteMeTmp: any = get(
+      //   formFieldGroup,
+      //   ["actualValues", question?.label],
+      //   ""
+      // );
+      // console.log("deleteMe boomie is: ");
+      // console.log(deleteMeTmp);
     } else {
+      console.log("deleteMe got here a1 and shouldn't right now");
       updateStates(""); // otherwise, there is an error
     }
   };
@@ -82,11 +134,48 @@ const SingleFormField: React.FC<{
     defaultValidValue: boolean = false
   ) => {
     const newActualValue: {} = { [question.label]: currentVal };
-    formFieldGroup?.setValues
-      ? formFieldGroup.setValues((prevState: {}) => {
-          return { ...prevState, ...newActualValue };
-        })
-      : undefined; // I was getting silly linter errors if I didn't do something like this.
+    console.log("deleteMe newActualValue is: ");
+    console.log(newActualValue);
+    console.log(
+      "deleteMe about to update formFieldGroup: " +
+        get(formFieldGroup, ["title"])
+    );
+    const setVals: any = get(formFieldGroup, ["setValues"], null);
+    if (Boolean(setVals)) {
+      console.log("deleteMe about to call set values for said formFieldGroup");
+      console.log("deleteMe formFieldGroup before is: "); // @TODO LEFT OFF HERE
+      console.log(formFieldGroup);
+      setVals((prevState: {}) => {
+        console.log("deleteMe got here h1 prevState is: ");
+        console.log(prevState);
+        const preVals: any = get(prevState, ["actualValues"], null);
+        console.log("deleteMe preVals are: ");
+        console.log(preVals);
+        const returnVal: {} = {
+          ...prevState,
+          // actualValues: {
+          // @TODO this area is suspicious. It's a candidate for the actualValues nested insertion
+          // ...preVals,
+          [question.label]: currentVal,
+          // },
+        };
+        console.log("deleteMe returnVal is: ");
+        console.log(returnVal);
+        return returnVal;
+      });
+      console.log("deleteMe done done");
+      console.log("deleteMe formFieldGroup after is: ");
+      console.log(formFieldGroup);
+      // updateCollection()
+    }
+    // formFieldGroup?.setValues
+    //   ? formFieldGroup.setValues((prevState: {}) => {
+    //       return { ...prevState, ...newActualValue };
+    //     })
+    //   : undefined; // I was getting silly linter errors if I didn't do something like this.
+
+    console.log("deleteMe formFieldGroup?.actualValues is: ");
+    console.log(formFieldGroup?.actualValues);
 
     const currentFormIsInvalid = question.validatorMethod
       ? !question.validatorMethod(currentVal)
@@ -168,11 +257,7 @@ const SingleFormField: React.FC<{
           <FormControlLabel
             style={{ marginRight: 10 }}
             control={<Checkbox />}
-            value={get(
-              formFieldGroup,
-              ["actualValues", question?.label],
-              false
-            )}
+            value={get(formFieldGroup, ["actualValues", question.label])}
             onChange={handleCheckChange}
             label={question?.label}
           />
@@ -187,7 +272,7 @@ const SingleFormField: React.FC<{
             onChange={(newValue) => {
               handleDateChange(newValue);
             }}
-            value={get(formFieldGroup, ["actualValues", question?.label], "")}
+            value={get(formFieldGroup, ["actualValues", question?.label])}
           ></DatePicker>
         </div>
       );

@@ -25,10 +25,10 @@ const VideoIntakeQuestions: React.FC<{
   >(undefined);
   const [error, setError] = useState<string>("");
 
-  const isRequiredLabel: string = intl.formatMessage({
-    id: "IS_QUESTION_REQUIRED",
-    defaultMessage: "Should the question be required?",
-  });
+  // const isRequiredLabel: string = intl.formatMessage({
+  //   id: "IS_QUESTION_REQUIRED",
+  //   defaultMessage: "Should the question be required?",
+  // });
 
   const newQuestion: SingleFormField = useMemo(() => {
     // const [currentVal, setCurrentVal] = useState<any>();
@@ -49,18 +49,19 @@ const VideoIntakeQuestions: React.FC<{
     };
   }, []);
   useEffect(() => {
-    setIntakeQuestions([...(collection?.intakeQuestions || [])]);
+    // setIntakeQuestions([...(collection?.intakeQuestions || [])]);
+    setIntakeQuestions(collection?.intakeQuestions || []);
   }, [collection]);
 
-  const handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const currentEvent = event;
-    console.log("deleteMe currentEvent is: ");
-    console.log(currentEvent);
-    // @TODO flesh this out. See if you can make it handle everything with question key + index being passed in as well?
-    // @TODO setCollection(modifiedCollection)
-  };
+  // const handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const currentEvent = event;
+  //   console.log("deleteMe currentEvent is: ");
+  //   console.log(currentEvent);
+  //   // @TODO flesh this out. See if you can make it handle everything with question key + index being passed in as well?
+  //   // @TODO setCollection(modifiedCollection)
+  // };
 
   const createNewIntakeQuestion: () => void = () => {
     try {
@@ -85,6 +86,7 @@ const VideoIntakeQuestions: React.FC<{
                 </Typography>
               )}
               <SingleVideoIntakeQuestion
+                key={intakeQuestionKey}
                 intakeQuestionEl={intakeQuestionEl}
                 intakeQuestionKey={intakeQuestionKey}
                 wholeQuestion={wholeQuestion}

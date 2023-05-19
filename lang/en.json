@@ -104,6 +104,7 @@
   "FIELD_CANNOT_BE_BLANK": "Field cannot be blank",
   "THIS_FIELD_IS_REQUIRED": "This field is required",
   "CAN_END_USER_ADD_CUSTOM_OPTIONS": "Can the people annotating videos in this collection add their own candidates to this list? You as the collection owner will be able to approve or remove these later.",
+  "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT": "Can video annotators in this collection add their own options?",
   "ADD_ANOTHER_OPTION": "Add another option",
   "DELETE": "Delete"
 }

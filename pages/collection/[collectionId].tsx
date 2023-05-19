@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-
 import { Grid } from "@mui/material";
-
 import CollectionDetailsEdit from "../../components/CollectionDetailsEdit";
 import CollectionDetailsView from "../../components/CollectionDetailsView";
 import VideoIntakePreview from "../../components/VideoIntakePreview";
 import VideoIntakeQuestions from "../../components/VideoIntakeQuestions";
-
 import { Collection, FormFieldGroup } from "../../types";
 import { shamCollection } from "../../dummy_data/dummyCollection";
+import { updateCollection } from "../../utilities/singleFormFieldUtils";
 
 const SingleCollection: React.FC = () => {
+  console.log("deleteMe SingleCollection renders");
   const [formValues, setFormValues] = useState<{}>({});
   const [areFormValuesInvalid, setAreFormValuesInvalid] = useState<{}>({});
   const [collection, setCollection] = useState<Collection>();
@@ -18,44 +17,54 @@ const SingleCollection: React.FC = () => {
     useState<boolean>(false);
 
   useEffect(() => {
-    setCollection(shamCollection);
+    const initialCollection = { ...shamCollection };
+    initialCollection.formFieldGroup = formFieldGroup;
+    setCollection(initialCollection);
   }, []);
 
-  const shamFormFieldGroup: FormFieldGroup = {
+  const formFieldGroup: FormFieldGroup = {
+    title: "FormFieldGroupForTheWholeDummyCollection",
     setValues: setFormValues,
-    actualValues: formValues,
+    actualValues: formValues, // @TODO this is a candidate as well
     isInvalids: areFormValuesInvalid,
     setIsInvalids: setAreFormValuesInvalid,
   };
-  shamCollection.formFieldGroup = shamFormFieldGroup;
-  // setCollection(shamCollection);
+
+  useEffect(() => {
+    console.log("deleteMe got here d1. actualValues is now: ");
+    console.log(formFieldGroup?.actualValues);
+    setCollection((prevState: any) => {
+      return { ...prevState, formFieldGroup: formFieldGroup };
+    });
+  }, [formFieldGroup?.actualValues]);
 
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
-      {/* <Grid item sm={12} md={3}></Grid> */}
       <Grid item sm={12} md={12}>
-        {isCollectionDetailsInEditMode && (
+        {isCollectionDetailsInEditMode ? (
           <CollectionDetailsEdit
-            collection={shamCollection}
+            collection={collection}
             setIsCollectionDetailsInEditMode={setIsCollectionDetailsInEditMode}
-          ></CollectionDetailsEdit>
-        )}
-        {!isCollectionDetailsInEditMode && (
+          />
+        ) : (
           <CollectionDetailsView
-            collection={shamCollection}
+            collection={collection}
             setIsCollectionDetailsInEditMode={setIsCollectionDetailsInEditMode}
-          ></CollectionDetailsView>
+          />
         )}
       </Grid>
-      {/* <Grid item sm={12} md={3}></Grid> */}
       <Grid item sm={12} md={4}>
-        <VideoIntakeQuestions
-          collection={collection}
-          setCollection={setCollection}
-        />
+        {collection && (
+          <VideoIntakeQuestions
+            collection={collection}
+            setCollection={setCollection}
+          />
+        )}
       </Grid>
       <Grid item sm={12} md={8}>
-        <VideoIntakePreview collection={shamCollection} />
+        {collection && (
+          <VideoIntakePreview collection={collection} formValues={formValues} />
+        )}
       </Grid>
     </Grid>
   );
