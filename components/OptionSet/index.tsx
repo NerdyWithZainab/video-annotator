@@ -131,31 +131,19 @@ const OptionSet: React.FC<{
     );
   });
 
-  // const canEndUserAddCustomOptionsCheckbox: SingleFormField = {
-  //   label: intl.formatMessage({
-  //     id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
-  //     defaultMessage:
-  //       "Can video annotators in this collection add their own options?",
-  //   }),
-  //   type: "Checkbox",
-  //   language: formField?.language,
-  //   isRequired: true,
-  //   shouldBeCheckboxes: [],
-  // };
-
   const handleAddAnotherOption: () => void = () => {
     options.push("");
     updateOptionFormFieldGroupWithOptionList(options, optionFormFieldGroup);
   };
 
-  const handleCheckChange: (event: any) => void = (event: any) => {
+  const handleCheckChange: (event: any) => void = (_event: any) => {
+    const newActualValue: {} = { [checkBoxLabel]: !canAddOptions }; // !canAddOptions instead of canAddOptions because it hasn't re-rendered yet
     setCanAddOptions((prev) => !prev);
-    const newActualValue: {} = { [checkBoxLabel]: !canAddOptions }; // !canAddOptions because it hasn't re-rendered yet
-    optionFormFieldGroup?.setValues
-      ? optionFormFieldGroup.setValues((prevState: {}) => {
-          return { ...prevState, ...newActualValue };
-        })
-      : undefined; // I was getting silly linter errors if I didn't do something like this.
+    if (optionFormFieldGroup?.setValues) {
+      optionFormFieldGroup.setValues((prevState: {}) => {
+        return { ...prevState, ...newActualValue };
+      });
+    }
   };
 
   return (
