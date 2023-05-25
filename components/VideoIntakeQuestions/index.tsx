@@ -11,28 +11,17 @@ import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 
 const VideoIntakeQuestions: React.FC<{
   collection: Collection;
-  setCollection: (collection: Collection) => void;
+  setCollection: (collection: any) => void;
 }> = ({ collection, setCollection }) => {
-  const intl: IntlShape = useIntl();
-
   const [intakeQuestions, setIntakeQuestions] = useState<
     SingleFormField[] | undefined
   >(undefined);
-  // const [questionContent, setQuestionContent] = useState<{}>({});
-  // const [questionContentIsValid, setQuestionContentIsValid] = useState<{}>({});
   const [intakeQuestionsInvalid, setIntakeQuestionsInvalid] = useState<
     QuestionValidity[] | undefined
   >(undefined);
   const [error, setError] = useState<string>("");
 
-  const isRequiredLabel: string = intl.formatMessage({
-    id: "IS_QUESTION_REQUIRED",
-    defaultMessage: "Should the question be required?",
-  });
-
   const newQuestion: SingleFormField = useMemo(() => {
-    // const [currentVal, setCurrentVal] = useState<any>();
-    // const [isValid, setIsValid] = useState<boolean>(true);
     return {
       label: "Change Me",
       type: "Change Me",
@@ -45,27 +34,22 @@ const VideoIntakeQuestions: React.FC<{
         return true;
       }, // @TODO should be a dropdown,
       shouldBeCheckboxes: ["isRequired"],
-      autocompleteOptions: ["options"], // @TODO should have ability to add more options
+      autocompleteOptions: ["options"],
     };
   }, []);
   useEffect(() => {
-    setIntakeQuestions([...(collection?.intakeQuestions || [])]);
+    setIntakeQuestions(collection?.intakeQuestions || []);
   }, [collection]);
-
-  const handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const currentEvent = event;
-    console.log("deleteMe currentEvent is: ");
-    console.log(currentEvent);
-    // @TODO flesh this out. See if you can make it handle everything with question key + index being passed in as well?
-    // @TODO setCollection(modifiedCollection)
-  };
 
   const createNewIntakeQuestion: () => void = () => {
     try {
-      collection.intakeQuestions = [...(intakeQuestions || []), newQuestion]; // @TODO lookup whether this is bad practice using currently existing state in the setter for the new state... I vaguely remember something like using previous value for this?
-      setCollection(collection);
+      const updatedIntakeQuestions: SingleFormField[] = [
+        ...(intakeQuestions || []),
+        newQuestion,
+      ];
+      setCollection((prevState: any) => {
+        return { ...prevState, intakeQuestions: updatedIntakeQuestions };
+      });
     } catch (error: any) {
       setError(error?.message);
     }
@@ -85,6 +69,7 @@ const VideoIntakeQuestions: React.FC<{
                 </Typography>
               )}
               <SingleVideoIntakeQuestion
+                key={intakeQuestionKey}
                 intakeQuestionEl={intakeQuestionEl}
                 intakeQuestionKey={intakeQuestionKey}
                 wholeQuestion={wholeQuestion}

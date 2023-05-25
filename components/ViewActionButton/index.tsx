@@ -8,9 +8,7 @@ const ViewActionButton: React.FC<{ props: { id: string | number } }> = (
 ) => {
   const intl: IntlShape = useIntl();
   // @TODO add button click handler and possibly prevent propagation
-  const handleViewClick = async () => {
-    // console.log("deleteMe got here handleViewClick entered");
-  };
+  const handleViewClick = async () => {};
   return (
     <Tooltip title={intl.formatMessage({ id: "VIEW", defaultMessage: "View" })}>
       <ViewIcon onClick={handleViewClick} />

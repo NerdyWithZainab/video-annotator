@@ -1,15 +1,19 @@
 import { Grid } from "@mui/material";
 import { get, map } from "lodash-es";
-import { shamCollection } from "../../dummy_data/dummyCollection";
-import { Collection } from "../../types";
+import { Collection, FormFieldGroup } from "../../types";
 import ComposedFormSubmissionButton from "../ComposedFormSubmissionButton";
 import InfoPanel from "../InfoPanel";
 import InfoPanelBody from "../InfoPanel/InfoPanelBody";
 import SingleFormField from "../SingleFormField";
 
-const VideoIntakePreview: React.FC<{ collection: Collection }> = ({
-  collection,
-}) => {
+const VideoIntakePreview: React.FC<{
+  collection: Collection;
+}> = ({ collection }) => {
+  const formFieldGroup: FormFieldGroup | undefined = get(
+    collection,
+    "formFieldGroup"
+  );
+
   return (
     <InfoPanel
       titleId="VIDEO_INTAKE_PREVIEW"
@@ -27,18 +31,20 @@ const VideoIntakePreview: React.FC<{ collection: Collection }> = ({
             <Grid item lg={12} sm={12}>
               <SingleFormField
                 question={intakeQuestion}
-                formFieldGroup={get(collection, "formFieldGroup", {})}
+                formFieldGroup={formFieldGroup}
                 key={intakeQuestion?.label}
               />
             </Grid>
           );
         })}
-        <Grid item lg={12} sm={12}>
-          <ComposedFormSubmissionButton
-            questions={shamCollection?.intakeQuestions || []}
-            formFieldGroup={shamCollection?.formFieldGroup || {}}
-          />
-        </Grid>
+        {collection?.formFieldGroup && (
+          <Grid item lg={12} sm={12}>
+            <ComposedFormSubmissionButton
+              questions={collection?.intakeQuestions || []}
+              formFieldGroup={collection?.formFieldGroup}
+            />
+          </Grid>
+        )}
       </Grid>
     </InfoPanel>
   );

@@ -1,10 +1,9 @@
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { Collection, FormFieldGroup, SingleFormField } from "../../types";
+import { FormFieldGroup, SingleFormField } from "../../types";
 import CustomError from "../Error";
 import { map, filter, reduce } from "lodash-es";
-import { measureMemory } from "vm";
 
 const ComposedFormSubmissionButton: React.FC<{
   questions: SingleFormField[];

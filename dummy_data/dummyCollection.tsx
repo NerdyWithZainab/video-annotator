@@ -68,9 +68,6 @@ const fifthQuestion: SingleFormField = {
     "Diggins, John",
   ],
   usersCanAddCustomOptions: true,
-  // autocompleteExtras: {
-  //   freeSolo: true,
-  // },
 };
 
 const sixthQuestion: SingleFormField = {
@@ -98,7 +95,7 @@ export const shamCollection: Collection = {
     // thirdQuestion,
     // fourthQuestion,
     fifthQuestion,
-    // sixthQuestion,
+    sixthQuestion,
   ],
   excludeFromDetailList: [
     "intakeQuestions",

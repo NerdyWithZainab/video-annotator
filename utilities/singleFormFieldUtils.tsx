@@ -1,4 +1,5 @@
 import { filter, forEach, get, reduce } from "lodash-es";
+import { IntlShape } from "react-intl";
 import formFieldConfig from "../formFieldConfig.json";
 import { SingleFormField, Collection, FormFieldGroup } from "../types";
 
@@ -20,14 +21,14 @@ export function updateCollection(
   questionIdx: number,
   questionKey: string,
   newVal: any,
-  setCollection: (collection: Collection) => void
+  setCollection: (collection: any) => void
 ) {
   const targetQuestion: SingleFormField = get(
     collection,
     ["intakeQuestions", questionIdx],
     {}
   );
-  const modifiedQuestion = {
+  const modifiedQuestion: any = {
     ...targetQuestion,
     [questionKey]: newVal,
   };
@@ -35,13 +36,45 @@ export function updateCollection(
     collection?.intakeQuestions || [];
   newIntakeQuestionSet[questionIdx] = modifiedQuestion;
 
-  setCollection({ ...collection, intakeQuestions: newIntakeQuestionSet });
+  setCollection((prevState: any) => {
+    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
+  });
+}
+
+export function updateFormFieldStates(
+  currentVal: any,
+  defaultValidValue: boolean = false,
+  formFieldGroup: FormFieldGroup | undefined,
+  question: SingleFormField
+) {
+  const setVals: any = get(formFieldGroup, ["setValues"], null);
+  if (Boolean(setVals)) {
+    setVals((prevState: {}) => {
+      const returnVal: {} = {
+        ...prevState,
+        [question.label]: currentVal,
+      };
+      return returnVal;
+    });
+  }
+  const currentFormIsInvalid = question.validatorMethod
+    ? !question.validatorMethod(currentVal)
+    : defaultValidValue;
+
+  const validationStateAndLabelExist: boolean = Boolean(
+    formFieldGroup?.isInvalids && question?.label
+  );
+
+  validationStateAndLabelExist && formFieldGroup?.setIsInvalids
+    ? formFieldGroup.setIsInvalids({
+        ...formFieldGroup.isInvalids,
+        [question.label]: currentFormIsInvalid,
+      })
+    : undefined;
 }
 
 export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
   const preExistingActualVals = get(optionFormFieldGroup, ["actualValues"]);
-  console.log("deleteMe preExistingActualVals are: ");
-  console.log(preExistingActualVals);
   const purgedActualVals = reduce(
     preExistingActualVals,
     (memo, currentVal, currentKey) => {
@@ -53,8 +86,6 @@ export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
     },
     {}
   );
-  console.log("deleteMe purgedActualVals are: ");
-  console.log(purgedActualVals);
   optionFormFieldGroup?.setValues
     ? optionFormFieldGroup.setValues(purgedActualVals)
     : undefined;
@@ -67,11 +98,35 @@ export function updateOptionFormFieldGroupWithOptionList(
   //first, remove all existing options
   clearAllOptionFields(optionFormFieldGroup);
   forEach(options, (option, optionIdx) => {
-    const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option };
+    const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option }; // @TODO somehow shunt part of this to en.json
     optionFormFieldGroup?.setValues
       ? optionFormFieldGroup.setValues((prevState: {}) => {
           return { ...prevState, ...newActualValue };
         })
       : undefined;
   });
+}
+
+export function calculateWhetherCustomOptionValuesArePermitted(
+  optionFormFieldGroup: FormFieldGroup,
+  intl: IntlShape
+) {
+  const canEndUserAddCustomOptionsValsArr: string[] = filter(
+    optionFormFieldGroup?.actualValues || {},
+    (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
+      const targetString: string = intl.formatMessage({
+        id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
+        defaultMessage:
+          "Can video annotators in this collection add their own options?",
+      });
+      return optionFormFieldGroupKey.startsWith(targetString);
+    }
+  );
+  const canEndUserAddCustomOptionsVals = get(
+    canEndUserAddCustomOptionsValsArr,
+    [0],
+    true
+  );
+
+  return canEndUserAddCustomOptionsVals;
 }
