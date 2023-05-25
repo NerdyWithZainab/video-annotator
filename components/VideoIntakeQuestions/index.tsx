@@ -11,28 +11,17 @@ import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 
 const VideoIntakeQuestions: React.FC<{
   collection: Collection;
-  setCollection: (collection: Collection) => void;
+  setCollection: (collection: any) => void;
 }> = ({ collection, setCollection }) => {
-  const intl: IntlShape = useIntl();
-
   const [intakeQuestions, setIntakeQuestions] = useState<
     SingleFormField[] | undefined
   >(undefined);
-  // const [questionContent, setQuestionContent] = useState<{}>({});
-  // const [questionContentIsValid, setQuestionContentIsValid] = useState<{}>({});
   const [intakeQuestionsInvalid, setIntakeQuestionsInvalid] = useState<
     QuestionValidity[] | undefined
   >(undefined);
   const [error, setError] = useState<string>("");
 
-  // const isRequiredLabel: string = intl.formatMessage({
-  //   id: "IS_QUESTION_REQUIRED",
-  //   defaultMessage: "Should the question be required?",
-  // });
-
   const newQuestion: SingleFormField = useMemo(() => {
-    // const [currentVal, setCurrentVal] = useState<any>();
-    // const [isValid, setIsValid] = useState<boolean>(true);
     return {
       label: "Change Me",
       type: "Change Me",
@@ -57,8 +46,7 @@ const VideoIntakeQuestions: React.FC<{
       const updatedIntakeQuestions: SingleFormField[] = [
         ...(intakeQuestions || []),
         newQuestion,
-      ]; // @TODO lookup whether this is bad practice using currently existing state in the setter for the new state... I vaguely remember something like using previous value for this?
-      // setCollection(collection);
+      ];
       setCollection((prevState: any) => {
         return { ...prevState, intakeQuestions: updatedIntakeQuestions };
       });

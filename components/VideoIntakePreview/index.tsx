@@ -1,7 +1,5 @@
 import { Grid } from "@mui/material";
 import { get, map } from "lodash-es";
-import { useEffect } from "react";
-// import { shamCollection } from "../../dummy_data/dummyCollection";
 import { Collection, FormFieldGroup } from "../../types";
 import ComposedFormSubmissionButton from "../ComposedFormSubmissionButton";
 import InfoPanel from "../InfoPanel";
@@ -43,7 +41,7 @@ const VideoIntakePreview: React.FC<{
           <Grid item lg={12} sm={12}>
             <ComposedFormSubmissionButton
               questions={collection?.intakeQuestions || []}
-              formFieldGroup={collection?.formFieldGroup} // @TODO maybe change this from sham to whatever the passed-in collection is? Think about this and test it before you do it.
+              formFieldGroup={collection?.formFieldGroup}
             />
           </Grid>
         )}

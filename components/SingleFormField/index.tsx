@@ -24,11 +24,6 @@ const SingleFormField: React.FC<{
   formFieldGroup,
   areAutocompleteOptionsDeletable = false,
 }) => {
-  const actualVals: {} = get(formFieldGroup, ["actualValues"]);
-  let currentVal: any = get(actualVals, [question.label]);
-  if (!currentVal) {
-    currentVal = get(actualVals, ["actualValues", question.label]);
-  }
   const intl: IntlShape = useIntl();
   const currentIsInvalid: boolean = get(
     formFieldGroup,
@@ -53,13 +48,6 @@ const SingleFormField: React.FC<{
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   const currentVal: any = get(formFieldGroup, [
-  //     "actualValues",
-  //     question?.label,
-  //   ]);
-  // }, [formFieldGroup, question?.label]);
 
   const handleTextChange: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -180,7 +168,7 @@ const SingleFormField: React.FC<{
             return (
               <TextField
                 {...params}
-                required={question?.isRequired}
+                required={question?.isRequired} // @TODO figure out why this isn't behaving as expected
                 label={question?.label}
                 error={currentIsInvalid}
                 helperText={
@@ -199,8 +187,6 @@ const SingleFormField: React.FC<{
           options={question?.autocompleteOptions || []}
           // required={question?.isRequired}
           data-testid={question?.testId}
-          // variant="filled"
-          // label={question?.label}
           style={{ marginBottom: 10, maxWidth: 400 }}
           value={get(formFieldGroup, ["actualValues", question?.label], "")}
           onChange={handleAutocompleteChange}

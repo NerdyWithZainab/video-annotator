@@ -67,13 +67,7 @@ const SingleCollection: React.FC = () => {
             )}
           </Grid>
           <Grid item sm={12} md={8}>
-            {collection && (
-              <VideoIntakePreview
-                collection={collection}
-                formFiledGroup={formFieldGroup}
-                formValues={formValues}
-              />
-            )}
+            {collection && <VideoIntakePreview collection={collection} />}
           </Grid>
         </>
       )}

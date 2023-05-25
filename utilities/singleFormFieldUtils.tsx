@@ -36,7 +36,6 @@ export function updateCollection(
     collection?.intakeQuestions || [];
   newIntakeQuestionSet[questionIdx] = modifiedQuestion;
 
-  // setCollection({ ...collection, intakeQuestions: newIntakeQuestionSet });
   setCollection((prevState: any) => {
     return { ...prevState, intakeQuestions: newIntakeQuestionSet };
   });
