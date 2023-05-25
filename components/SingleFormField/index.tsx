@@ -13,11 +13,11 @@ import { ReactNode, SyntheticEvent, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
-import { updateCollection } from "../../utilities/singleFormFieldUtils";
+import { updateFormFieldStates } from "../../utilities/singleFormFieldUtils";
 
 const SingleFormField: React.FC<{
   question: SingleFormField;
-  formFieldGroup: FormFieldGroup | {};
+  formFieldGroup: FormFieldGroup | undefined;
   areAutocompleteOptionsDeletable?: boolean;
 }> = ({
   question,
@@ -42,84 +42,50 @@ const SingleFormField: React.FC<{
       question?.type === "Checkbox" &&
       !get(formFieldGroup, ["actualValues", question?.label])
     ) {
-      // console.log("deleteMe this happens a");
-      updateStates(false, false);
+      updateFormFieldStates(false, false, formFieldGroup, question);
     }
 
     if (
       question?.type === "Date" &&
       !get(formFieldGroup, ["actualValues", question?.label])
     ) {
-      updateStates(dayjs(), false);
+      updateFormFieldStates(dayjs(), false, formFieldGroup, question);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const currentVal: any = get(formFieldGroup, [
-      "actualValues",
-      question?.label,
-    ]);
-  }, [formFieldGroup, question?.label]);
+  // useEffect(() => {
+  //   const currentVal: any = get(formFieldGroup, [
+  //     "actualValues",
+  //     question?.label,
+  //   ]);
+  // }, [formFieldGroup, question?.label]);
 
   const handleTextChange: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentVal: any = event?.currentTarget?.value;
-    updateStates(currentVal);
+    updateFormFieldStates(currentVal, false, formFieldGroup, question);
   };
 
   const handleAutocompleteChange: (
     event: SyntheticEvent<Element, Event>,
     newValue: any
-  ) => void = (event: SyntheticEvent<Element, Event>, newValue: any) => {
+  ) => void = (_event: SyntheticEvent<Element, Event>, newValue: any) => {
     if (newValue) {
-      updateStates(newValue);
+      updateFormFieldStates(newValue, false, formFieldGroup, question);
     } else {
-      updateStates(""); // otherwise, there is an error
+      updateFormFieldStates("", false, formFieldGroup, question); // otherwise, there is an error
     }
   };
 
   const handleCheckChange: (event: any) => void = (event: any) => {
     const currentVal: any = event?.target?.checked;
-    updateStates(currentVal);
+    updateFormFieldStates(currentVal, false, formFieldGroup, question);
   };
 
   const handleDateChange: (newValue: {}) => void = (newValue: {}) => {
-    updateStates(newValue);
-  };
-
-  const updateStates: (currentVal: any, defaultValidValue?: boolean) => void = (
-    // @TODO move this to a util file?
-    currentVal: any,
-    defaultValidValue: boolean = false
-  ) => {
-    const newActualValue: {} = { [question.label]: currentVal };
-    const setVals: any = get(formFieldGroup, ["setValues"], null);
-    if (Boolean(setVals)) {
-      setVals((prevState: {}) => {
-        const preVals: any = get(prevState, ["actualValues"], null);
-        const returnVal: {} = {
-          ...prevState,
-          [question.label]: currentVal,
-        };
-        return returnVal;
-      });
-    }
-    const currentFormIsInvalid = question.validatorMethod
-      ? !question.validatorMethod(currentVal)
-      : defaultValidValue;
-
-    const validationStateAndLabelExist: boolean = Boolean(
-      formFieldGroup?.isInvalids && question?.label
-    );
-
-    validationStateAndLabelExist && formFieldGroup?.setIsInvalids
-      ? formFieldGroup.setIsInvalids({
-          ...formFieldGroup.isInvalids,
-          [question.label]: currentFormIsInvalid,
-        })
-      : undefined;
+    updateFormFieldStates(newValue, false, formFieldGroup, question);
   };
 
   const autocompleteExtras: {} = question?.autocompleteExtras || {};
@@ -170,7 +136,7 @@ const SingleFormField: React.FC<{
             onChange={handleTextChange}
             value={get(formFieldGroup, ["actualValues", question?.label], "")}
           ></TextField>
-          {areAutocompleteOptionsDeletable && (
+          {areAutocompleteOptionsDeletable && formFieldGroup && (
             <DeleteAutocompleteOption
               question={question}
               formFieldGroup={formFieldGroup}

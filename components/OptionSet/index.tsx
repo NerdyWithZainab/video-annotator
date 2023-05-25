@@ -174,18 +174,12 @@ const OptionSet: React.FC<{
         </Button>
       </Paper>
       <div style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
-        {/* <SingleFormFieldComponent
-          key="canEndUserAddCustomOptionsCheckbox"
-          question={canEndUserAddCustomOptionsCheckbox}
-          formFieldGroup={optionFormFieldGroup}
-        /> */}
         <div
           style={{ display: "flex", alignItems: "center", marginBottom: 10 }}
         >
           <FormControlLabel
             style={{ marginRight: 10 }}
             control={<Checkbox checked={canAddOptions} />}
-            // value={true}
             value={get(
               optionFormFieldGroup,
               ["actualValues", checkBoxLabel],

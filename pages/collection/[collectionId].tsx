@@ -70,6 +70,7 @@ const SingleCollection: React.FC = () => {
             {collection && (
               <VideoIntakePreview
                 collection={collection}
+                formFiledGroup={formFieldGroup}
                 formValues={formValues}
               />
             )}

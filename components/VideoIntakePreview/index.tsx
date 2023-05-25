@@ -10,12 +10,10 @@ import SingleFormField from "../SingleFormField";
 
 const VideoIntakePreview: React.FC<{
   collection: Collection;
-  formValues: any;
-}> = ({ collection, formValues }) => {
-  const formFieldGroup: FormFieldGroup | {} = get(
+}> = ({ collection }) => {
+  const formFieldGroup: FormFieldGroup | undefined = get(
     collection,
-    "formFieldGroup",
-    {}
+    "formFieldGroup"
   );
 
   return (
@@ -41,12 +39,14 @@ const VideoIntakePreview: React.FC<{
             </Grid>
           );
         })}
-        <Grid item lg={12} sm={12}>
-          <ComposedFormSubmissionButton
-            questions={collection?.intakeQuestions || []}
-            formFieldGroup={collection?.formFieldGroup || {}} // @TODO maybe change this from sham to whatever the passed-in collection is? Think about this and test it before you do it.
-          />
-        </Grid>
+        {collection?.formFieldGroup && (
+          <Grid item lg={12} sm={12}>
+            <ComposedFormSubmissionButton
+              questions={collection?.intakeQuestions || []}
+              formFieldGroup={collection?.formFieldGroup} // @TODO maybe change this from sham to whatever the passed-in collection is? Think about this and test it before you do it.
+            />
+          </Grid>
+        )}
       </Grid>
     </InfoPanel>
   );

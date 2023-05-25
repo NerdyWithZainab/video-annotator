@@ -42,6 +42,38 @@ export function updateCollection(
   });
 }
 
+export function updateFormFieldStates(
+  currentVal: any,
+  defaultValidValue: boolean = false,
+  formFieldGroup: FormFieldGroup | undefined,
+  question: SingleFormField
+) {
+  const setVals: any = get(formFieldGroup, ["setValues"], null);
+  if (Boolean(setVals)) {
+    setVals((prevState: {}) => {
+      const returnVal: {} = {
+        ...prevState,
+        [question.label]: currentVal,
+      };
+      return returnVal;
+    });
+  }
+  const currentFormIsInvalid = question.validatorMethod
+    ? !question.validatorMethod(currentVal)
+    : defaultValidValue;
+
+  const validationStateAndLabelExist: boolean = Boolean(
+    formFieldGroup?.isInvalids && question?.label
+  );
+
+  validationStateAndLabelExist && formFieldGroup?.setIsInvalids
+    ? formFieldGroup.setIsInvalids({
+        ...formFieldGroup.isInvalids,
+        [question.label]: currentFormIsInvalid,
+      })
+    : undefined;
+}
+
 export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
   const preExistingActualVals = get(optionFormFieldGroup, ["actualValues"]);
   const purgedActualVals = reduce(
