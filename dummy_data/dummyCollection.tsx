@@ -15,21 +15,21 @@ const firstQuestion: SingleFormField = {
   testId: "url",
   doNotDisplay: defaultDoNotDisplays,
   invalidInputMessage: "MUST_BE_VALID_URL",
-  validatorMethod: isValidUrl,
+  validatorMethods: [isValidUrl],
   shouldBeCheckboxes: ["isRequired"],
 };
 
 const secondQuestion: SingleFormField = {
-  // @TODO make autocomplete
   label: "Tournament Name",
-  type: "Text",
+  type: "Autocomplete",
   language: "English",
   isRequired: true,
   testId: "tournament",
-  doNotDisplay: defaultDoNotDisplays,
-  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
-  validatorMethod: isNonEmptyString,
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteExtras"],
   shouldBeCheckboxes: ["isRequired"],
+  validatorMethods: [isNonEmptyString],
+  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  autocompleteOptions: [],
 };
 
 const thirdQuestion: SingleFormField = {
@@ -39,6 +39,7 @@ const thirdQuestion: SingleFormField = {
   isRequired: true,
   testId: "isGi",
   doNotDisplay: defaultDoNotDisplays,
+  validatorMethods: [],
   shouldBeCheckboxes: ["isRequired"],
 };
 
@@ -48,6 +49,7 @@ const fourthQuestion: SingleFormField = {
   language: "English",
   testId: "matchDate",
   doNotDisplay: defaultDoNotDisplays,
+  validatorMethods: [],
   shouldBeCheckboxes: ["isRequired"],
 };
 
@@ -59,7 +61,7 @@ const fifthQuestion: SingleFormField = {
   testId: "athleteLeftName",
   doNotDisplay: [...defaultDoNotDisplays, "autocompleteExtras"],
   shouldBeCheckboxes: ["isRequired"],
-  validatorMethod: isNonEmptyString,
+  validatorMethods: [isNonEmptyString],
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
   autocompleteOptions: [
     "Fisher, Mark",
@@ -78,9 +80,21 @@ const sixthQuestion: SingleFormField = {
   testId: "age",
   doNotDisplay: defaultDoNotDisplays,
   shouldBeCheckboxes: ["isRequired"],
-  // validatorMethod: isNonEmptyString,
+  validatorMethods: [],
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
   isRequired: false,
+};
+
+const seventhQuestion: SingleFormField = {
+  label: "mystery string",
+  type: "Text",
+  language: "English",
+  isRequired: true,
+  testId: "url",
+  doNotDisplay: defaultDoNotDisplays,
+  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  validatorMethods: [],
+  shouldBeCheckboxes: ["isRequired"],
 };
 
 export const shamCollection: Collection = {
@@ -91,11 +105,12 @@ export const shamCollection: Collection = {
   language: "English",
   intakeQuestions: [
     // firstQuestion,
-    // secondQuestion,
+    secondQuestion,
     // thirdQuestion,
     // fourthQuestion,
     fifthQuestion,
-    sixthQuestion,
+    // sixthQuestion,
+    seventhQuestion,
   ],
   excludeFromDetailList: [
     "intakeQuestions",

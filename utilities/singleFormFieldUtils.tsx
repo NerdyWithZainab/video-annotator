@@ -1,7 +1,8 @@
-import { filter, forEach, get, reduce } from "lodash-es";
+import { filter, forEach, get, map, reduce } from "lodash-es";
 import { IntlShape } from "react-intl";
 import formFieldConfig from "../formFieldConfig.json";
 import { SingleFormField, Collection, FormFieldGroup } from "../types";
+import { isNonEmptyString } from "./validators";
 
 export function calculateCurrentAttributesToDisplay(question: SingleFormField) {
   const currentTypeConfig = filter(formFieldConfig, (entry) => {
@@ -57,9 +58,23 @@ export function updateFormFieldStates(
       return returnVal;
     });
   }
-  const currentFormIsInvalid = question.validatorMethod
-    ? !question.validatorMethod(currentVal)
-    : defaultValidValue;
+
+  let currentValidatorMethods = question.validatorMethods;
+  if (question?.isRequired) {
+    currentValidatorMethods?.push(isNonEmptyString);
+  }
+
+  const validCounter: number = reduce(
+    currentValidatorMethods,
+    (memo, validatorMethod) => {
+      return memo + Number(validatorMethod(currentVal));
+    },
+    0
+  ); // || defaultValidValue; // @TODO if the map value evaluates to false, will the default give us what we expect?
+  const currentFormIsInvalid: boolean =
+    validCounter < (currentValidatorMethods?.length || 0);
+  // ? !question.validatorMethod(currentVal)
+  // : defaultValidValue;
 
   const validationStateAndLabelExist: boolean = Boolean(
     formFieldGroup?.isInvalids && question?.label

@@ -66,6 +66,7 @@ const SingleVideoIntakeQuestion: React.FC<{
     onTheDisplayListForThisQuestionType;
 
   const intl: IntlShape = useIntl();
+
   const handleChange: (event: any) => void = (event: any) => {
     // if the change is in the TYPE field, this should
     // 1) automatically modify other parts of the SingleFormField
@@ -77,6 +78,16 @@ const SingleVideoIntakeQuestion: React.FC<{
       intakeQuestionIdx,
       intakeQuestionKey,
       currentVal,
+      setCollection
+    );
+  };
+
+  const handleCheckChange: (event: any) => void = (_event: any) => {
+    updateCollection(
+      collection,
+      intakeQuestionIdx,
+      intakeQuestionKey,
+      !intakeQuestionEl,
       setCollection
     );
   };
@@ -160,9 +171,9 @@ const SingleVideoIntakeQuestion: React.FC<{
       {shouldBeCheckbox && (
         <FormControlLabel
           style={{ marginRight: 10 }}
-          control={<Checkbox />} // @TODO LEFT OFF HERE
+          control={<Checkbox checked={intakeQuestionEl} />}
           value={intakeQuestionEl}
-          onChange={handleChange}
+          onChange={handleCheckChange}
           label={convertCamelCaseToCapitalCase(intakeQuestionKey)}
         />
       )}

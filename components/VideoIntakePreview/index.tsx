@@ -28,7 +28,7 @@ const VideoIntakePreview: React.FC<{
       <Grid container>
         {map(collection?.intakeQuestions, (intakeQuestion) => {
           return (
-            <Grid item lg={12} sm={12}>
+            <Grid item lg={12} sm={12} key={intakeQuestion?.label}>
               <SingleFormField
                 question={intakeQuestion}
                 formFieldGroup={formFieldGroup}
