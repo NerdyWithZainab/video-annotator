@@ -34,11 +34,10 @@
       "type",
       "language",
       "isRequired",
-      "autocompleteOptions",
-      "usersCanAddCustomOptions"
+      "autocompleteOptions"
     ],
-    "validationMethod": "isValidEmail",
-    "invalidInputMessage": "MUST_BE_VALID_EMAIL"
+    "validationMethod": "isNonEmptyString",
+    "invalidInputMessage": "FIELD_CANNOT_BE_BLANK"
   },
   {
     "type": "Number",

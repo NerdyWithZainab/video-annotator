@@ -30,9 +30,11 @@ const VideoIntakeQuestions: React.FC<{
       testId: "change me",
       doNotDisplay: ["testId", "doNotDisplay", "shouldBeCheckboxes"],
       invalidInputMessage: "change me",
-      validatorMethod: (tmp) => {
-        return true;
-      }, // @TODO should be a dropdown,
+      validatorMethods: [
+        (tmp) => {
+          return true;
+        },
+      ], // @TODO should be a dropdown,
       shouldBeCheckboxes: ["isRequired"],
       autocompleteOptions: ["options"],
     };

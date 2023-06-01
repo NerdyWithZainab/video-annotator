@@ -5,6 +5,10 @@ export const defaultDoNotDisplays: string[] = [
   "testId",
   "doNotDisplay",
   "shouldBeCheckboxes",
+
+  "invalidInputMessage",
+  "validatorMethods",
+  "shouldBeCheckboxes",
 ];
 
 const firstQuestion: SingleFormField = {
@@ -25,7 +29,7 @@ const secondQuestion: SingleFormField = {
   language: "English",
   isRequired: true,
   testId: "tournament",
-  doNotDisplay: [...defaultDoNotDisplays, "autocompleteExtras"],
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
   shouldBeCheckboxes: ["isRequired"],
   validatorMethods: [isNonEmptyString],
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
@@ -59,7 +63,7 @@ const fifthQuestion: SingleFormField = {
   language: "English",
   isRequired: true,
   testId: "athleteLeftName",
-  doNotDisplay: [...defaultDoNotDisplays, "autocompleteExtras"],
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
   shouldBeCheckboxes: ["isRequired"],
   validatorMethods: [isNonEmptyString],
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
@@ -105,10 +109,10 @@ export const shamCollection: Collection = {
   language: "English",
   intakeQuestions: [
     // firstQuestion,
-    secondQuestion,
+    // secondQuestion,
     // thirdQuestion,
     // fourthQuestion,
-    fifthQuestion,
+    // fifthQuestion,
     // sixthQuestion,
     seventhQuestion,
   ],
