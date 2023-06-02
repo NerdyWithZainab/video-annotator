@@ -100,13 +100,6 @@ const SingleVideoIntakeQuestion: React.FC<{
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
-    console.log(
-      "deleteMe handleCheckChange in SingleVideoIntakeQuestion entered and question is: "
-    );
-    console.log(intakeQuestionKey);
-    console.log("deleteMe and wholeQuestion is: ");
-    console.log(wholeQuestion);
-
     if (intakeQuestionKey === "isRequired" && !intakeQuestionEl === false) {
       // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
       updateIsRequiredUncheck(

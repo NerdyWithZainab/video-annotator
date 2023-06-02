@@ -60,7 +60,7 @@ export function updateFormFieldStates(
   }
 
   let currentValidatorMethods = question.validatorMethods;
-  if (question?.isRequired) {
+  if (question?.isRequired && question?.type !== "Checkbox") {
     currentValidatorMethods?.push(isNonEmptyString);
   }
 

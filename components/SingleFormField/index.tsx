@@ -69,8 +69,6 @@ const SingleFormField: React.FC<{
 
   const handleCheckChange: (event: any) => void = (event: any) => {
     const currentVal: any = event?.target?.checked;
-    console.log("deleteMe question in handleCheckChange is: ");
-    console.log(question);
     updateFormFieldStates(currentVal, false, formFieldGroup, question);
   };
 

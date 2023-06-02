@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { FormFieldGroup, SingleFormField } from "../../types";
 import CustomError from "../Error";
 import { map, filter, reduce } from "lodash-es";
+import { calculateAllRequiredsHaveValues } from "../../utilities/composedFormSubmissionButtonUtils";
 
 const ComposedFormSubmissionButton: React.FC<{
   questions: SingleFormField[];
@@ -21,33 +22,10 @@ const ComposedFormSubmissionButton: React.FC<{
     );
 
     setAllRequiredValid(
-      totalInvalidCount < 1 && allRequiredsHaveValues(questions, formFieldGroup)
+      totalInvalidCount < 1 &&
+        calculateAllRequiredsHaveValues(questions, formFieldGroup)
     );
   }, [questions, formFieldGroup, allRequiredValid]);
-
-  const allRequiredsHaveValues: (
-    questions: SingleFormField[],
-    formFieldGroup: FormFieldGroup
-  ) => boolean = (
-    questions: SingleFormField[],
-    formFieldGroup: FormFieldGroup
-  ) => {
-    const requiredQuestions: any[] =
-      filter(questions, (question) => {
-        return question?.isRequired;
-      }) || [];
-    const requiredQuestionLabels: any[] =
-      map(requiredQuestions, (requiredQuestion) => requiredQuestion?.label) ||
-      [];
-    const existingValues: string[] = formFieldGroup?.actualValues
-      ? Object.keys(formFieldGroup.actualValues)
-      : [];
-    const missingRequiredLabels: string[] = filter(
-      requiredQuestionLabels,
-      (requiredQuestionLabel) => !existingValues.includes(requiredQuestionLabel)
-    );
-    return missingRequiredLabels.length < 1;
-  };
 
   const handleFormSubmission: () => void = () => {
     console.log("deleteMe handleFormSubmission entered");
