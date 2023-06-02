@@ -108,8 +108,8 @@ export const shamCollection: Collection = {
   isPrivate: false,
   language: "English",
   intakeQuestions: [
-    firstQuestion,
-    // secondQuestion,
+    // firstQuestion,
+    secondQuestion,
     // thirdQuestion,
     // fourthQuestion,
     // fifthQuestion,
