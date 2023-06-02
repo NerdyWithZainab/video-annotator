@@ -2,7 +2,7 @@ import { filter, forEach, get, map, reduce } from "lodash-es";
 import { IntlShape } from "react-intl";
 import formFieldConfig from "../formFieldConfig.json";
 import { SingleFormField, Collection, FormFieldGroup } from "../types";
-import { isNonEmptyString } from "./validators";
+import { isNonEmptyString, isValidEmail } from "./validators";
 
 export function calculateCurrentAttributesToDisplay(question: SingleFormField) {
   const currentTypeConfig = filter(formFieldConfig, (entry) => {
@@ -187,7 +187,10 @@ export function updateIsRequiredUncheck(
   const filteredMethods = filter(
     currentValidatorMethods,
     (currentValidatorMethod) => {
-      return currentValidatorMethod !== isNonEmptyString;
+      return (
+        currentValidatorMethod !== isNonEmptyString //||
+        // currentValidatorMethod !== isValidEmail
+      );
     }
   );
   console.log("deleteMe filteredMethods are: ");
