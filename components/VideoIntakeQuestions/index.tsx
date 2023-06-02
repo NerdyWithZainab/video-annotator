@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 
 import { map, get } from "lodash-es";
 
-import { Collection, SingleFormField, QuestionValidity } from "../../types";
+import {
+  Collection,
+  SingleFormField,
+  QuestionValidity,
+  FormFieldGroup,
+} from "../../types";
 import { Button, Grid, Typography } from "@mui/material";
 import { IntlShape, FormattedMessage, useIntl } from "react-intl";
 import CustomError from "../Error";
@@ -12,7 +17,8 @@ import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 const VideoIntakeQuestions: React.FC<{
   collection: Collection;
   setCollection: (collection: any) => void;
-}> = ({ collection, setCollection }) => {
+  formFieldGroup: FormFieldGroup;
+}> = ({ collection, setCollection, formFieldGroup }) => {
   const [intakeQuestions, setIntakeQuestions] = useState<
     SingleFormField[] | undefined
   >(undefined);
@@ -79,6 +85,7 @@ const VideoIntakeQuestions: React.FC<{
                 intakeQuestionIdx={intakeQuestionIdx}
                 collection={collection}
                 setCollection={setCollection}
+                formFieldGroup={formFieldGroup}
               />
             </>
           );

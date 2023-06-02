@@ -2,19 +2,19 @@
   {
     "type": "URL",
     "attributesToDisplay": ["label", "type", "language", "isRequired"],
-    "validationMethod": "isValidUrl",
+    "validationMethods": ["isValidUrl"],
     "invalidInputMessage": "MUST_BE_VALID_URL"
   },
   {
     "type": "Text",
     "attributesToDisplay": ["label", "type", "language", "isRequired"],
-    "validationMethod": "isNonEmptyString",
+    "validationMethods": ["isNonEmptyString"],
     "invalidInputMessage": "FIELD_CANNOT_BE_BLANK"
   },
   {
     "type": "Email",
     "attributesToDisplay": ["label", "type", "language", "isRequired"],
-    "validationMethod": "isValidEmail",
+    "validationMethods": ["isValidEmail"],
     "invalidInputMessage": "MUST_BE_VALID_EMAIL"
   },
   {
@@ -24,7 +24,7 @@
   {
     "type": "Date",
     "attributesToDisplay": ["label", "type", "language", "isRequired"],
-    "validationMethod": "isNonFalsy",
+    "validationMethods": ["isNonFalsy"],
     "invalidInputMessage": "THIS_FIELD_IS_REQUIRED"
   },
   {
@@ -36,13 +36,13 @@
       "isRequired",
       "autocompleteOptions"
     ],
-    "validationMethod": "isNonEmptyString",
+    "validationMethods": ["isNonEmptyString"],
     "invalidInputMessage": "FIELD_CANNOT_BE_BLANK"
   },
   {
     "type": "Number",
     "attributesToDisplay": ["label", "type", "language", "isRequired"],
-    "validationMethod": "isNumber",
+    "validationMethods": ["isNumber"],
     "invalidInputMessage": "MUST_BE_VALID_NUMBER"
   }
 ]

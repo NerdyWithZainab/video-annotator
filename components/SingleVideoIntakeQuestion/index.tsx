@@ -7,16 +7,23 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { get, map } from "lodash-es";
+import { filter, get, map } from "lodash-es";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import { Collection, QuestionValidity, SingleFormField } from "../../types";
+import {
+  Collection,
+  FormFieldGroup,
+  QuestionValidity,
+  SingleFormField,
+} from "../../types";
 import { convertCamelCaseToCapitalCase } from "../../utilities/textUtils";
 import formFieldConfig from "../../formFieldConfig.json";
 import {
   calculateCurrentAttributesToDisplay,
   updateCollection,
+  updateFormFieldStates,
 } from "../../utilities/singleFormFieldUtils";
 import OptionSet from "../OptionSet";
+import { isNonEmptyString } from "../../utilities/validators";
 
 const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionEl: any;
@@ -25,7 +32,8 @@ const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionsInvalid: QuestionValidity[] | undefined;
   intakeQuestionIdx: number;
   collection: Collection;
-  setCollection: (collection: Collection) => void;
+  setCollection: (collection: any) => void;
+  formFieldGroup: FormFieldGroup;
 }> = ({
   intakeQuestionEl,
   intakeQuestionKey,
@@ -34,6 +42,7 @@ const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionIdx,
   collection,
   setCollection,
+  formFieldGroup,
 }) => {
   const types: string[] =
     map(formFieldConfig, (configEntry) => configEntry?.type) || [];
@@ -68,6 +77,8 @@ const SingleVideoIntakeQuestion: React.FC<{
   const intl: IntlShape = useIntl();
 
   const handleChange: (event: any) => void = (event: any) => {
+    // console.log("deleteMe intakeQuestionKey is: ");
+    // console.log(intakeQuestionKey);
     // if the change is in the TYPE field, this should
     // 1) automatically modify other parts of the SingleFormField
     // 2) change what options are visible/available in the video intake questions section
@@ -80,16 +91,80 @@ const SingleVideoIntakeQuestion: React.FC<{
       currentVal,
       setCollection
     );
+    // if (intakeQuestionKey === "isRequired") {
+    //   console.log("deleteMe an isRequired was changed. Whole question is: ");
+    //   console.log(wholeQuestion);
+    // }
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
-    updateCollection(
-      collection,
-      intakeQuestionIdx,
-      intakeQuestionKey,
-      !intakeQuestionEl,
-      setCollection
+    console.log(
+      "deleteMe handleCheckChange in SingleVideoIntakeQuestion entered and question is: "
     );
+    console.log(intakeQuestionKey);
+    console.log("deleteMe and wholeQuestion is: ");
+    console.log(wholeQuestion);
+
+    if (intakeQuestionKey === "isRequired" && !intakeQuestionEl === false) {
+      // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
+      if (
+        formFieldGroup &&
+        formFieldGroup.setIsInvalids &&
+        wholeQuestion &&
+        wholeQuestion.label
+      ) {
+        formFieldGroup.setIsInvalids({
+          ...formFieldGroup.isInvalids,
+          [wholeQuestion.label]: false,
+        });
+      }
+
+      const targetQuestion: SingleFormField = get(
+        collection,
+        ["intakeQuestions", intakeQuestionIdx],
+        {}
+      );
+      console.log("deleteMe targetQuestion is: ");
+      console.log(targetQuestion);
+      const currentValidatorMethods: ((input: any) => boolean)[] = get(
+        targetQuestion,
+        ["validatorMethods"],
+        []
+      );
+      console.log("deleteMe currentValidatorMethods are: ");
+      console.log(currentValidatorMethods);
+
+      const filteredMethods = filter(
+        currentValidatorMethods,
+        (currentValidatorMethod) => {
+          return currentValidatorMethod !== isNonEmptyString;
+        }
+      );
+      console.log("deleteMe filteredMethods are: ");
+      console.log(filteredMethods);
+
+      const modifiedQuestion: any = {
+        ...targetQuestion,
+        [intakeQuestionKey]: !intakeQuestionEl,
+        validatorMethods: filteredMethods,
+      };
+
+      const newIntakeQuestionSet: SingleFormField[] =
+        collection?.intakeQuestions || [];
+      newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
+
+      setCollection((prevState: any) => {
+        return { ...prevState, intakeQuestions: newIntakeQuestionSet };
+      });
+    } else {
+      updateCollection(
+        collection,
+        intakeQuestionIdx,
+        intakeQuestionKey,
+        !intakeQuestionEl,
+        setCollection
+      );
+    }
   };
 
   const typeElements = map(types, (type: string) => {

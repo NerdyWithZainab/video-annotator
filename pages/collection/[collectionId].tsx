@@ -59,10 +59,11 @@ const SingleCollection: React.FC = () => {
             )}
           </Grid>
           <Grid item sm={12} md={4}>
-            {collection && (
+            {collection && formFieldGroup && (
               <VideoIntakeQuestions
                 collection={collection}
                 setCollection={setCollection}
+                formFieldGroup={formFieldGroup}
               />
             )}
           </Grid>
