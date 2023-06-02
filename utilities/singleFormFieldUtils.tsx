@@ -148,6 +148,62 @@ export function calculateWhetherCustomOptionValuesArePermitted(
   return canEndUserAddCustomOptionsVals;
 }
 
-export function updateIsRequiredUncheck() {
-  //@TODO add me
+export function updateIsRequiredUncheck(
+  formFieldGroup: FormFieldGroup,
+  wholeQuestion: SingleFormField,
+  collection: Collection,
+  intakeQuestionIdx: number,
+  intakeQuestionKey: string,
+  intakeQuestionEl: any,
+  setCollection: (collection: any) => void
+) {
+  if (
+    formFieldGroup &&
+    formFieldGroup.setIsInvalids &&
+    wholeQuestion &&
+    wholeQuestion.label
+  ) {
+    formFieldGroup.setIsInvalids({
+      ...formFieldGroup.isInvalids,
+      [wholeQuestion.label]: false,
+    });
+  }
+
+  const targetQuestion: SingleFormField = get(
+    collection,
+    ["intakeQuestions", intakeQuestionIdx],
+    {}
+  );
+  console.log("deleteMe targetQuestion is: ");
+  console.log(targetQuestion);
+  const currentValidatorMethods: ((input: any) => boolean)[] = get(
+    targetQuestion,
+    ["validatorMethods"],
+    []
+  );
+  console.log("deleteMe currentValidatorMethods are: ");
+  console.log(currentValidatorMethods);
+
+  const filteredMethods = filter(
+    currentValidatorMethods,
+    (currentValidatorMethod) => {
+      return currentValidatorMethod !== isNonEmptyString;
+    }
+  );
+  console.log("deleteMe filteredMethods are: ");
+  console.log(filteredMethods);
+
+  const modifiedQuestion: any = {
+    ...targetQuestion,
+    [intakeQuestionKey]: !intakeQuestionEl,
+    validatorMethods: filteredMethods,
+  };
+
+  const newIntakeQuestionSet: SingleFormField[] =
+    collection?.intakeQuestions || [];
+  newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
+
+  setCollection((prevState: any) => {
+    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
+  });
 }

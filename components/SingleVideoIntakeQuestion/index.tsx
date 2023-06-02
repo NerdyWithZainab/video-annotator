@@ -21,6 +21,7 @@ import {
   calculateCurrentAttributesToDisplay,
   updateCollection,
   updateFormFieldStates,
+  updateIsRequiredUncheck,
 } from "../../utilities/singleFormFieldUtils";
 import OptionSet from "../OptionSet";
 import { isNonEmptyString } from "../../utilities/validators";
@@ -107,55 +108,59 @@ const SingleVideoIntakeQuestion: React.FC<{
 
     if (intakeQuestionKey === "isRequired" && !intakeQuestionEl === false) {
       // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
-      if (
-        formFieldGroup &&
-        formFieldGroup.setIsInvalids &&
-        wholeQuestion &&
-        wholeQuestion.label
-      ) {
-        formFieldGroup.setIsInvalids({
-          ...formFieldGroup.isInvalids,
-          [wholeQuestion.label]: false,
-        });
-      }
-
-      const targetQuestion: SingleFormField = get(
+      updateIsRequiredUncheck(
+        formFieldGroup,
+        wholeQuestion,
         collection,
-        ["intakeQuestions", intakeQuestionIdx],
-        {}
+        intakeQuestionIdx,
+        intakeQuestionKey,
+        intakeQuestionEl,
+        setCollection
       );
-      console.log("deleteMe targetQuestion is: ");
-      console.log(targetQuestion);
-      const currentValidatorMethods: ((input: any) => boolean)[] = get(
-        targetQuestion,
-        ["validatorMethods"],
-        []
-      );
-      console.log("deleteMe currentValidatorMethods are: ");
-      console.log(currentValidatorMethods);
-
-      const filteredMethods = filter(
-        currentValidatorMethods,
-        (currentValidatorMethod) => {
-          return currentValidatorMethod !== isNonEmptyString;
-        }
-      );
-      console.log("deleteMe filteredMethods are: ");
-      console.log(filteredMethods);
-
-      const modifiedQuestion: any = {
-        ...targetQuestion,
-        [intakeQuestionKey]: !intakeQuestionEl,
-        validatorMethods: filteredMethods,
-      };
-
-      const newIntakeQuestionSet: SingleFormField[] =
-        collection?.intakeQuestions || [];
-      newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
-
-      setCollection((prevState: any) => {
-        return { ...prevState, intakeQuestions: newIntakeQuestionSet };
-      });
+      // if (
+      //   formFieldGroup &&
+      //   formFieldGroup.setIsInvalids &&
+      //   wholeQuestion &&
+      //   wholeQuestion.label
+      // ) {
+      //   formFieldGroup.setIsInvalids({
+      //     ...formFieldGroup.isInvalids,
+      //     [wholeQuestion.label]: false,
+      //   });
+      // }
+      // const targetQuestion: SingleFormField = get(
+      //   collection,
+      //   ["intakeQuestions", intakeQuestionIdx],
+      //   {}
+      // );
+      // console.log("deleteMe targetQuestion is: ");
+      // console.log(targetQuestion);
+      // const currentValidatorMethods: ((input: any) => boolean)[] = get(
+      //   targetQuestion,
+      //   ["validatorMethods"],
+      //   []
+      // );
+      // console.log("deleteMe currentValidatorMethods are: ");
+      // console.log(currentValidatorMethods);
+      // const filteredMethods = filter(
+      //   currentValidatorMethods,
+      //   (currentValidatorMethod) => {
+      //     return currentValidatorMethod !== isNonEmptyString;
+      //   }
+      // );
+      // console.log("deleteMe filteredMethods are: ");
+      // console.log(filteredMethods);
+      // const modifiedQuestion: any = {
+      //   ...targetQuestion,
+      //   [intakeQuestionKey]: !intakeQuestionEl,
+      //   validatorMethods: filteredMethods,
+      // };
+      // const newIntakeQuestionSet: SingleFormField[] =
+      //   collection?.intakeQuestions || [];
+      // newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
+      // setCollection((prevState: any) => {
+      //   return { ...prevState, intakeQuestions: newIntakeQuestionSet };
+      // });
     } else {
       updateCollection(
         collection,
