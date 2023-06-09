@@ -67,6 +67,20 @@ const SingleFormField: React.FC<{
     }
   };
 
+  const handleAutocompleteClose: (
+    event: React.SyntheticEvent,
+    reason: string
+  ) => void = (event: React.SyntheticEvent, reason: string) => {
+    if (!question?.usersCanAddCustomOptions) {
+      const currentOpt: string = get(
+        formFieldGroup,
+        ["actualValues", question?.label],
+        ""
+      );
+    }
+    console.log("deleteMe handleAutocompleteClose called");
+  };
+
   const handleCheckChange: (event: any) => void = (event: any) => {
     const currentVal: any = event?.target?.checked;
     updateFormFieldStates(currentVal, false, formFieldGroup, question);
@@ -187,6 +201,8 @@ const SingleFormField: React.FC<{
           options={question?.autocompleteOptions || []}
           // required={question?.isRequired}
           data-testid={question?.testId}
+          // clearOnBlur={true}
+          onClose={handleAutocompleteClose}
           style={{ marginBottom: 10, maxWidth: 400 }}
           value={get(formFieldGroup, ["actualValues", question?.label], "")}
           onChange={handleAutocompleteChange}

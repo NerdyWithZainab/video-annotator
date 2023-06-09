@@ -1,5 +1,9 @@
 import { FormFieldGroup, SingleFormField, Collection } from "../types";
-import { isNonEmptyString, isValidUrl } from "../utilities/validators";
+import {
+  isNonEmptyString,
+  isValidOption,
+  isValidUrl,
+} from "../utilities/validators";
 
 export const defaultDoNotDisplays: string[] = [
   "testId",
@@ -66,7 +70,7 @@ const fifthQuestion: SingleFormField = {
   doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
   shouldBeCheckboxes: ["isRequired"],
   validatorMethods: [isNonEmptyString],
-  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  invalidInputMessage: "INPUT_INVALID",
   autocompleteOptions: [
     "Fisher, Mark",
     "Deodara, Dirt",
@@ -85,7 +89,7 @@ const sixthQuestion: SingleFormField = {
   doNotDisplay: defaultDoNotDisplays,
   shouldBeCheckboxes: ["isRequired"],
   validatorMethods: [],
-  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  invalidInputMessage: "INPUT_INVALID",
   isRequired: false,
 };
 
@@ -110,9 +114,9 @@ export const shamCollection: Collection = {
   intakeQuestions: [
     // firstQuestion,
     // secondQuestion,
-    thirdQuestion,
+    // thirdQuestion,
     // fourthQuestion,
-    // fifthQuestion,
+    fifthQuestion,
     // sixthQuestion,
     // seventhQuestion,
   ],

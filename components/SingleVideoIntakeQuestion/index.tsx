@@ -22,7 +22,9 @@ import {
   updateCollection,
   updateFormFieldStates,
   updateIsRequiredChecked,
-  updateIsRequiredUncheck,
+  updateIsRequiredUnchecked,
+  updateUsersCanAddCustomOptionsChecked,
+  updateUsersCanAddCustomOptionsUnchecked,
 } from "../../utilities/singleFormFieldUtils";
 import OptionSet from "../OptionSet";
 import { isNonEmptyString } from "../../utilities/validators";
@@ -102,7 +104,7 @@ const SingleVideoIntakeQuestion: React.FC<{
   const handleCheckChange: (event: any) => void = (_event: any) => {
     if (intakeQuestionKey === "isRequired" && !intakeQuestionEl === false) {
       // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
-      updateIsRequiredUncheck(
+      updateIsRequiredUnchecked(
         formFieldGroup,
         wholeQuestion,
         collection,
@@ -116,6 +118,32 @@ const SingleVideoIntakeQuestion: React.FC<{
       !intakeQuestionEl === true
     ) {
       updateIsRequiredChecked(
+        formFieldGroup,
+        wholeQuestion,
+        collection,
+        intakeQuestionIdx,
+        intakeQuestionKey,
+        intakeQuestionEl,
+        setCollection
+      );
+    } else if (
+      intakeQuestionKey === "usersCanAddCustomOptions" &&
+      !intakeQuestionEl === true
+    ) {
+      updateUsersCanAddCustomOptionsChecked(
+        formFieldGroup,
+        wholeQuestion,
+        collection,
+        intakeQuestionIdx,
+        intakeQuestionKey,
+        intakeQuestionEl,
+        setCollection
+      );
+    } else if (
+      intakeQuestionKey === "usersCanAddCustomOptions" &&
+      !intakeQuestionEl === false
+    ) {
+      updateUsersCanAddCustomOptionsUnchecked(
         formFieldGroup,
         wholeQuestion,
         collection,

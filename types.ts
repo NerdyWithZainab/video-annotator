@@ -26,7 +26,7 @@ export interface SingleFormField {
   testId?: string;
   doNotDisplay?: string[];
   invalidInputMessage?: string;
-  validatorMethods: ((input: any) => boolean)[];
+  validatorMethods: ((input: any, optionalInput?: any) => boolean)[];
   shouldBeCheckboxes: string[];
   autocompleteOptions?: string[];
   usersCanAddCustomOptions?: boolean;

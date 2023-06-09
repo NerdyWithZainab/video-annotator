@@ -62,3 +62,7 @@ export function isValidUrl(url: string): boolean {
   );
   return Boolean(somethingHasBeenTyped && re.test(url.toLowerCase()));
 }
+
+export function isValidOption(currentOpt: string, validOpts: string[]) {
+  return validOpts.includes(currentOpt);
+}
