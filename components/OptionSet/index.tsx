@@ -14,6 +14,8 @@ import {
   calculateWhetherCustomOptionValuesArePermitted,
   updateCollection,
   updateOptionFormFieldGroupWithOptionList,
+  updateUsersCanAddCustomOptionsChecked,
+  updateUsersCanAddCustomOptionsUnchecked,
 } from "../../utilities/singleFormFieldUtils";
 import { isNonEmptyString } from "../../utilities/validators";
 import InfoIcon from "../InfoIcon";
@@ -22,9 +24,9 @@ import SingleFormFieldComponent from "../SingleFormField";
 const OptionSet: React.FC<{
   formField: SingleFormField;
   collection: Collection;
-  targetformFieldIdx: number;
+  targetFormFieldIdx: number;
   setCollection: (collection: Collection) => void;
-}> = ({ formField, collection, targetformFieldIdx, setCollection }) => {
+}> = ({ formField, collection, targetFormFieldIdx, setCollection }) => {
   const intl: IntlShape = useIntl();
   const checkBoxLabel: string = intl.formatMessage({
     id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
@@ -80,7 +82,7 @@ const OptionSet: React.FC<{
     );
     updateCollection(
       collection,
-      targetformFieldIdx,
+      targetFormFieldIdx,
       "autocompleteOptions",
       autoCompleteVals,
       setCollection
@@ -93,7 +95,7 @@ const OptionSet: React.FC<{
       );
     updateCollection(
       collection,
-      targetformFieldIdx,
+      targetFormFieldIdx,
       "usersCanAddCustomOptions",
       canEndUserAddCustomOptionsVals,
       setCollection
@@ -111,9 +113,9 @@ const OptionSet: React.FC<{
         isRequired: true,
         shouldBeCheckboxes: [],
         invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
-        validatorMethod: isNonEmptyString,
+        validatorMethods: [isNonEmptyString],
       };
-      return currentFormFieldForOption; // @TODO fix
+      return currentFormFieldForOption; // @TODO fix... no longer sure what's wrong with this.
     }
   );
 
@@ -137,12 +139,40 @@ const OptionSet: React.FC<{
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
+    console.log("deleteMe handleCheckChange entered");
     const newActualValue: {} = { [checkBoxLabel]: !canAddOptions }; // !canAddOptions instead of canAddOptions because it hasn't re-rendered yet
     setCanAddOptions((prev) => !prev);
     if (optionFormFieldGroup?.setValues) {
       optionFormFieldGroup.setValues((prevState: {}) => {
         return { ...prevState, ...newActualValue };
       });
+    }
+    if (
+      // intakeQuestionKey === "usersCanAddCustomOptions" &&
+      !canAddOptions === true
+    ) {
+      updateUsersCanAddCustomOptionsChecked(
+        optionFormFieldGroup,
+        formField,
+        collection,
+        targetFormFieldIdx,
+        "usersCanAddCustomOptions",
+        !canAddOptions,
+        setCollection
+      );
+    } else if (
+      // intakeQuestionKey === "usersCanAddCustomOptions" &&
+      !canAddOptions === false
+    ) {
+      updateUsersCanAddCustomOptionsUnchecked(
+        optionFormFieldGroup,
+        formField,
+        collection,
+        targetFormFieldIdx,
+        "usersCanAddCustomOptions",
+        !canAddOptions,
+        setCollection
+      );
     }
   };
 

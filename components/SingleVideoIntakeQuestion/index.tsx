@@ -102,6 +102,7 @@ const SingleVideoIntakeQuestion: React.FC<{
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
+    console.log("deleteMe handleCheckChange entered");
     if (intakeQuestionKey === "isRequired" && !intakeQuestionEl === false) {
       // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
       updateIsRequiredUnchecked(
@@ -118,32 +119,6 @@ const SingleVideoIntakeQuestion: React.FC<{
       !intakeQuestionEl === true
     ) {
       updateIsRequiredChecked(
-        formFieldGroup,
-        wholeQuestion,
-        collection,
-        intakeQuestionIdx,
-        intakeQuestionKey,
-        intakeQuestionEl,
-        setCollection
-      );
-    } else if (
-      intakeQuestionKey === "usersCanAddCustomOptions" &&
-      !intakeQuestionEl === true
-    ) {
-      updateUsersCanAddCustomOptionsChecked(
-        formFieldGroup,
-        wholeQuestion,
-        collection,
-        intakeQuestionIdx,
-        intakeQuestionKey,
-        intakeQuestionEl,
-        setCollection
-      );
-    } else if (
-      intakeQuestionKey === "usersCanAddCustomOptions" &&
-      !intakeQuestionEl === false
-    ) {
-      updateUsersCanAddCustomOptionsUnchecked(
         formFieldGroup,
         wholeQuestion,
         collection,
@@ -186,7 +161,7 @@ const SingleVideoIntakeQuestion: React.FC<{
           key={intakeQuestionIdx}
           formField={wholeQuestion}
           collection={collection}
-          targetformFieldIdx={intakeQuestionIdx}
+          targetFormFieldIdx={intakeQuestionIdx}
           setCollection={setCollection}
         />
       )}
