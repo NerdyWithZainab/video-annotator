@@ -165,52 +165,17 @@ export function updateIsRequiredUnchecked(
   intakeQuestionEl: any,
   setCollection: (collection: any) => void
 ) {
-  if (
-    formFieldGroup &&
-    formFieldGroup.setIsInvalids &&
-    wholeQuestion &&
-    wholeQuestion.label
-  ) {
-    formFieldGroup.setIsInvalids({
-      ...formFieldGroup.isInvalids,
-      [wholeQuestion.label]: false, // @TODO this might be too soft-coded. Maybe make explicit that this is the "isRequired" key?
-    });
-  }
-
-  const targetQuestion: SingleFormField = get(
+  updateCheckboxGeneral(
+    formFieldGroup,
+    wholeQuestion,
     collection,
-    ["intakeQuestions", intakeQuestionIdx],
-    {}
+    intakeQuestionIdx,
+    intakeQuestionKey,
+    intakeQuestionEl,
+    setCollection,
+    false,
+    isNonEmptyString
   );
-  const currentValidatorMethods: ((input: any) => boolean)[] = get(
-    targetQuestion,
-    ["validatorMethods"],
-    []
-  );
-
-  const filteredMethods = filter(
-    currentValidatorMethods,
-    (currentValidatorMethod) => {
-      return (
-        currentValidatorMethod !== isNonEmptyString //||
-        // currentValidatorMethod !== isValidEmail
-      );
-    }
-  );
-
-  const modifiedQuestion: any = {
-    ...targetQuestion,
-    [intakeQuestionKey]: !intakeQuestionEl,
-    validatorMethods: filteredMethods,
-  };
-
-  const newIntakeQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
-  newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
-
-  setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
-  });
 }
 
 export function updateIsRequiredChecked(
@@ -222,55 +187,17 @@ export function updateIsRequiredChecked(
   intakeQuestionEl: any,
   setCollection: (collection: any) => void
 ) {
-  if (
-    formFieldGroup &&
-    formFieldGroup.setIsInvalids &&
-    wholeQuestion &&
-    wholeQuestion.label
-  ) {
-    formFieldGroup.setIsInvalids({
-      ...formFieldGroup.isInvalids,
-      [wholeQuestion.label]: true, // @TODO this might be too soft-coded. Maybe make explicit that this is the "isRequired" key?
-    });
-  }
-
-  const targetQuestion: SingleFormField = get(
+  updateCheckboxGeneral(
+    formFieldGroup,
+    wholeQuestion,
     collection,
-    ["intakeQuestions", intakeQuestionIdx],
-    {}
+    intakeQuestionIdx,
+    intakeQuestionKey,
+    intakeQuestionEl,
+    setCollection,
+    true,
+    isNonEmptyString
   );
-  console.log("deleteMe targetQuestion is: ");
-  console.log(targetQuestion);
-  const currentValidatorMethods: ((input: any) => boolean)[] = get(
-    targetQuestion,
-    ["validatorMethods"],
-    []
-  );
-
-  const filteredMethods: ((input: any) => boolean)[] = filter(
-    currentValidatorMethods,
-    (currentValidatorMethod) => {
-      return currentValidatorMethod !== isNonEmptyString;
-    }
-  );
-
-  const validatorMethodsWithIsNonEmptyStringReinstated: ((
-    input: any
-  ) => boolean)[] = [...filteredMethods, isNonEmptyString];
-
-  const modifiedQuestion: any = {
-    ...targetQuestion,
-    [intakeQuestionKey]: !intakeQuestionEl,
-    validatorMethods: validatorMethodsWithIsNonEmptyStringReinstated,
-  };
-
-  const newIntakeQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
-  newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
-
-  setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
-  });
 }
 
 export function updateUsersCanAddCustomOptionsUnchecked(
@@ -282,62 +209,17 @@ export function updateUsersCanAddCustomOptionsUnchecked(
   intakeQuestionEl: any,
   setCollection: (collection: any) => void
 ) {
-  console.log("deleteMe updateUsersCanAddCustomOptionsChecked entered");
-  if (
-    formFieldGroup &&
-    formFieldGroup.setIsInvalids &&
-    wholeQuestion &&
-    wholeQuestion.label
-  ) {
-    console.log("deleteMe got here a1");
-    formFieldGroup.setIsInvalids({
-      ...formFieldGroup.isInvalids,
-      [wholeQuestion.label]: true, // @TODO this might be too soft-coded. Maybe make explicit that this is the "isRequired" key?
-    });
-  }
-
-  const targetQuestion: SingleFormField = get(
+  updateCheckboxGeneral(
+    formFieldGroup,
+    wholeQuestion,
     collection,
-    ["intakeQuestions", intakeQuestionIdx],
-    {}
+    intakeQuestionIdx,
+    intakeQuestionKey,
+    intakeQuestionEl,
+    setCollection,
+    true,
+    isValidOption
   );
-  console.log("deleteMe targetQuestion is: ");
-  console.log(targetQuestion);
-  const currentValidatorMethods: ((input: any) => boolean)[] = get(
-    targetQuestion,
-    ["validatorMethods"],
-    []
-  );
-  console.log("deleteMe currentValidatorMethods are: ");
-  console.log(currentValidatorMethods);
-
-  const filteredMethods: ((input: any) => boolean)[] = filter(
-    currentValidatorMethods,
-    (currentValidatorMethod) => {
-      return currentValidatorMethod !== isValidOption;
-    }
-  );
-  console.log("deleteMe filteredMethods are: ");
-  console.log(filteredMethods);
-
-  const validatorMethodsWithIsValidOptionReinstated: ((
-    input: any,
-    opts?: any
-  ) => boolean)[] = [...filteredMethods, isValidOption];
-
-  const modifiedQuestion: any = {
-    ...targetQuestion,
-    [intakeQuestionKey]: !intakeQuestionEl,
-    validatorMethods: validatorMethodsWithIsValidOptionReinstated,
-  };
-
-  const newIntakeQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
-  newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
-
-  setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
-  });
 }
 
 export function updateUsersCanAddCustomOptionsChecked(
@@ -349,49 +231,17 @@ export function updateUsersCanAddCustomOptionsChecked(
   intakeQuestionEl: any,
   setCollection: (collection: any) => void
 ) {
-  if (
-    formFieldGroup &&
-    formFieldGroup.setIsInvalids &&
-    wholeQuestion &&
-    wholeQuestion.label
-  ) {
-    formFieldGroup.setIsInvalids({
-      ...formFieldGroup.isInvalids,
-      [wholeQuestion.label]: false, // @TODO this might be too soft-coded. Maybe make explicit that this is the "isRequired" key?
-    });
-  }
-
-  const targetQuestion: SingleFormField = get(
+  updateCheckboxGeneral(
+    formFieldGroup,
+    wholeQuestion,
     collection,
-    ["intakeQuestions", intakeQuestionIdx],
-    {}
+    intakeQuestionIdx,
+    intakeQuestionKey,
+    intakeQuestionEl,
+    setCollection,
+    false,
+    isValidOption
   );
-  const currentValidatorMethods: ((input: any) => boolean)[] = get(
-    targetQuestion,
-    ["validatorMethods"],
-    []
-  );
-
-  const filteredMethods = filter(
-    currentValidatorMethods,
-    (currentValidatorMethod) => {
-      return currentValidatorMethod !== isValidOption;
-    }
-  );
-
-  const modifiedQuestion: any = {
-    ...targetQuestion,
-    [intakeQuestionKey]: !intakeQuestionEl,
-    validatorMethods: filteredMethods,
-  };
-
-  const newIntakeQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
-  newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
-
-  setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
-  });
 }
 
 export function updateCheckboxGeneral(
