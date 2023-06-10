@@ -102,7 +102,6 @@ const SingleVideoIntakeQuestion: React.FC<{
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
-    console.log("deleteMe handleCheckChange entered");
     if (intakeQuestionKey === "isRequired" && !intakeQuestionEl === false) {
       // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
       updateIsRequiredUnchecked(
@@ -147,12 +146,6 @@ const SingleVideoIntakeQuestion: React.FC<{
   });
 
   const shouldBeOptionField = intakeQuestionKey === "autocompleteOptions";
-  // const options: string[] = get(wholeQuestion, ["autocompleteOptions"], []);
-
-  // const setOptions: (input: any) => void = get(collection, [
-  //   "formFieldGroup",
-  //   "setValues",
-  // ]);
 
   return (
     <Grid item lg={12} sm={12}>

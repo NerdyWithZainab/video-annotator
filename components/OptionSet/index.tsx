@@ -139,7 +139,6 @@ const OptionSet: React.FC<{
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
-    console.log("deleteMe handleCheckChange entered");
     const newActualValue: {} = { [checkBoxLabel]: !canAddOptions }; // !canAddOptions instead of canAddOptions because it hasn't re-rendered yet
     setCanAddOptions((prev) => !prev);
     if (optionFormFieldGroup?.setValues) {
@@ -147,10 +146,7 @@ const OptionSet: React.FC<{
         return { ...prevState, ...newActualValue };
       });
     }
-    if (
-      // intakeQuestionKey === "usersCanAddCustomOptions" &&
-      !canAddOptions === true
-    ) {
+    if (!canAddOptions === true) {
       updateUsersCanAddCustomOptionsChecked(
         optionFormFieldGroup,
         formField,
@@ -160,10 +156,7 @@ const OptionSet: React.FC<{
         !canAddOptions,
         setCollection
       );
-    } else if (
-      // intakeQuestionKey === "usersCanAddCustomOptions" &&
-      !canAddOptions === false
-    ) {
+    } else if (!canAddOptions === false) {
       updateUsersCanAddCustomOptionsUnchecked(
         optionFormFieldGroup,
         formField,

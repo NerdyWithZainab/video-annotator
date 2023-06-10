@@ -255,6 +255,29 @@ export function updateCheckboxGeneral(
   checkVal: boolean,
   vaildatorMethodToFilter: (input: any, optionalInput?: any) => boolean
 ) {
+  const currentValForAutocomplete: string = get(
+    collection,
+    ["formFieldGroup", "actualValues", wholeQuestion?.label],
+    ""
+  );
+  console.log("deleteMe wholeQuestion?.label is: ");
+  console.log(wholeQuestion?.label);
+
+  const isCustomOptionsUnchecked: boolean =
+    intakeQuestionKey === "usersCanAddCustomOptions" && checkVal; // checkVal is true when unchecked currently. Wut. I dunno.
+  const customOptValidityVal: boolean = isCustomOptionsUnchecked
+    ? vaildatorMethodToFilter(
+        currentValForAutocomplete,
+        wholeQuestion?.autocompleteOptions
+      )
+    : true;
+  let validityValue: boolean =
+    intakeQuestionKey === "isRequired" ? checkVal : customOptValidityVal;
+  console.log("deleteMe validityValue is: ");
+  console.log(validityValue);
+  console.log("deleteMe intakeQuestionKey is: ");
+  console.log(intakeQuestionKey);
+
   const shouldReinstateValidator: boolean = checkVal === true;
   if (
     formFieldGroup &&
@@ -264,7 +287,7 @@ export function updateCheckboxGeneral(
   ) {
     formFieldGroup.setIsInvalids({
       ...formFieldGroup.isInvalids,
-      [wholeQuestion.label]: checkVal,
+      [wholeQuestion.label]: validityValue,
     });
   }
 
@@ -304,6 +327,31 @@ export function updateCheckboxGeneral(
   newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
 
   setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
+    let firstTimeIsCustomOptionsUncheckedInvalid = {};
+    if (
+      Object.keys(formFieldGroup?.isInvalids || {}).length === 0 &&
+      isCustomOptionsUnchecked
+    ) {
+      // this is such a hack and I hate that it seems necessary
+      firstTimeIsCustomOptionsUncheckedInvalid = {
+        [wholeQuestion?.label]: !validityValue,
+      };
+    }
+    const modifiedIsInvalids: any = {
+      ...collection?.formFieldGroup?.isInvalids,
+      ...formFieldGroup?.isInvalids,
+      ...firstTimeIsCustomOptionsUncheckedInvalid,
+    };
+
+    const modifiedFormFieldGroup: any = {
+      ...collection?.formFieldGroup,
+      isInvalids: modifiedIsInvalids,
+    };
+
+    return {
+      ...prevState,
+      intakeQuestions: newIntakeQuestionSet,
+      formFieldGroup: modifiedFormFieldGroup,
+    };
   });
 }
