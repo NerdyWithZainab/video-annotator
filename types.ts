@@ -33,8 +33,8 @@ export interface SingleFormField {
   autocompleteExtras?: {};
 }
 
-export interface QuestionValidity {
-  label: boolean;
-  type: boolean;
-  language: boolean;
-}
+// export interface QuestionValidity {
+//   label: boolean;
+//   type: boolean;
+//   language: boolean;
+// }

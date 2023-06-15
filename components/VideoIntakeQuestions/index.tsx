@@ -13,46 +13,42 @@ import { IntlShape, FormattedMessage, useIntl } from "react-intl";
 import CustomError from "../Error";
 import InfoPanel from "../InfoPanel";
 import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
+import { defaultDoNotDisplays } from "../../dummy_data/dummyCollection";
 
 const VideoIntakeQuestions: React.FC<{
   collection: Collection;
   setCollection: (collection: any) => void;
   formFieldGroup: FormFieldGroup;
 }> = ({ collection, setCollection, formFieldGroup }) => {
-  const [intakeQuestions, setIntakeQuestions] = useState<
-    SingleFormField[] | undefined
-  >(undefined);
-  const [intakeQuestionsInvalid, setIntakeQuestionsInvalid] = useState<
-    QuestionValidity[] | undefined
-  >(undefined);
+  console.log("deleteMe VideoIntakeQuestions re-renders");
+  // const [intakeQuestions, setIntakeQuestions] = useState<
+  //   SingleFormField[] | undefined
+  // >(undefined);
+  // const [intakeQuestionsInvalid, setIntakeQuestionsInvalid] = useState<
+  //   QuestionValidity[] | undefined
+  // >(undefined);
   const [error, setError] = useState<string>("");
 
   const newQuestion: SingleFormField = useMemo(() => {
     return {
       label: "Change Me",
-      type: "Change Me",
+      type: "Text",
       language: "English",
       isRequired: false,
-      testId: "change me",
-      doNotDisplay: ["testId", "doNotDisplay", "shouldBeCheckboxes"],
-      invalidInputMessage: "change me",
-      validatorMethods: [
-        (tmp) => {
-          return true;
-        },
-      ], // @TODO should be a dropdown,
+      doNotDisplay: defaultDoNotDisplays,
+      invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+      validatorMethods: [],
       shouldBeCheckboxes: ["isRequired"],
-      autocompleteOptions: ["options"],
     };
   }, []);
-  useEffect(() => {
-    setIntakeQuestions(collection?.intakeQuestions || []);
-  }, [collection]);
+  // useEffect(() => {
+  //   setIntakeQuestions(collection?.intakeQuestions || []);
+  // }, [collection]);
 
   const createNewIntakeQuestion: () => void = () => {
     try {
       const updatedIntakeQuestions: SingleFormField[] = [
-        ...(intakeQuestions || []),
+        ...(collection?.intakeQuestions || []),
         newQuestion,
       ];
       setCollection((prevState: any) => {
@@ -64,8 +60,11 @@ const VideoIntakeQuestions: React.FC<{
   };
 
   const intakeQuestionElements = map(
-    intakeQuestions,
+    collection?.intakeQuestions || [],
     (intakeQuestion, intakeQuestionIdx) => {
+      const intakeQuesionsInvalid = collection?.formFieldGroup?.isInvalids;
+      console.log("deleteMe intakeQuesionsInvalid is: ");
+      console.log(intakeQuesionsInvalid);
       return map(
         intakeQuestion,
         (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
@@ -81,7 +80,7 @@ const VideoIntakeQuestions: React.FC<{
                 intakeQuestionEl={intakeQuestionEl}
                 intakeQuestionKey={intakeQuestionKey}
                 wholeQuestion={wholeQuestion}
-                intakeQuestionsInvalid={intakeQuestionsInvalid}
+                intakeQuestionsInvalid={intakeQuesionsInvalid}
                 intakeQuestionIdx={intakeQuestionIdx}
                 collection={collection}
                 setCollection={setCollection}
@@ -102,7 +101,7 @@ const VideoIntakeQuestions: React.FC<{
       styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
-        {intakeQuestions && intakeQuestionElements}
+        {collection?.intakeQuestions && intakeQuestionElements}
         <Grid item lg={12} sm={12}>
           <Button
             style={{ marginBottom: 10 }}

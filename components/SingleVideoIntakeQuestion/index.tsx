@@ -12,7 +12,7 @@ import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import {
   Collection,
   FormFieldGroup,
-  QuestionValidity,
+  // QuestionValidity,
   SingleFormField,
 } from "../../types";
 import { convertCamelCaseToCapitalCase } from "../../utilities/textUtils";
@@ -33,7 +33,7 @@ const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionEl: any;
   intakeQuestionKey: string;
   wholeQuestion: SingleFormField;
-  intakeQuestionsInvalid: QuestionValidity[] | undefined;
+  intakeQuestionsInvalid: any; // @TODO fix
   intakeQuestionIdx: number;
   collection: Collection;
   setCollection: (collection: any) => void;
@@ -162,10 +162,7 @@ const SingleVideoIntakeQuestion: React.FC<{
         <TextField
           fullWidth
           data-testid={intakeQuestionKey + "-" + intakeQuestionEl}
-          error={get(intakeQuestionsInvalid, [
-            intakeQuestionIdx,
-            intakeQuestionKey,
-          ])}
+          error={get(intakeQuestionsInvalid, [intakeQuestionKey])}
           variant="filled"
           label={
             <FormattedMessage
@@ -175,7 +172,7 @@ const SingleVideoIntakeQuestion: React.FC<{
           }
           required
           helperText={
-            get(intakeQuestionsInvalid, [intakeQuestionIdx, intakeQuestionKey])
+            get(intakeQuestionsInvalid, [intakeQuestionKey])
               ? intl.formatMessage(
                   {
                     id: "GENERIC_CANNOT_BE_BLANK",
