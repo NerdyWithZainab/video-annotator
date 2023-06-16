@@ -28,12 +28,16 @@ import {
 } from "../../utilities/singleFormFieldUtils";
 import OptionSet from "../OptionSet";
 import { isNonEmptyString } from "../../utilities/validators";
+import {
+  transformQuestion,
+  updateSingleQuestionInCollection,
+} from "../../utilities/videoIntakeQuestionUtils";
 
 const SingleVideoIntakeQuestion: React.FC<{
   intakeQuestionEl: any;
   intakeQuestionKey: string;
   wholeQuestion: SingleFormField;
-  intakeQuestionsInvalid: any; // @TODO fix
+  intakeQuestionsInvalid: {};
   intakeQuestionIdx: number;
   collection: Collection;
   setCollection: (collection: any) => void;
@@ -80,6 +84,28 @@ const SingleVideoIntakeQuestion: React.FC<{
 
   const intl: IntlShape = useIntl();
 
+  const handleQuestionChange: (event: any) => void = (event: any) => {
+    const currentVal: any = event?.currentTarget?.value || event?.target?.value;
+    console.log("deleteMe currentVal is: ");
+    console.log(currentVal);
+
+    const transformedQuestion: SingleFormField = transformQuestion(
+      wholeQuestion,
+      currentVal
+    );
+    console.log("deleteMe wholeQuestion is: ");
+    console.log(wholeQuestion);
+    console.log("deleteMe transformedQuestion is: ");
+    console.log(transformedQuestion);
+
+    updateSingleQuestionInCollection(
+      collection,
+      setCollection,
+      intakeQuestionIdx,
+      transformedQuestion
+    );
+  };
+
   const handleChange: (event: any) => void = (event: any) => {
     // console.log("deleteMe intakeQuestionKey is: ");
     // console.log(intakeQuestionKey);
@@ -88,6 +114,7 @@ const SingleVideoIntakeQuestion: React.FC<{
     // 2) change what options are visible/available in the video intake questions section
 
     const currentVal: any = event?.currentTarget?.value || event?.target?.value;
+
     updateCollection(
       collection,
       intakeQuestionIdx,
@@ -95,10 +122,6 @@ const SingleVideoIntakeQuestion: React.FC<{
       currentVal,
       setCollection
     );
-    // if (intakeQuestionKey === "isRequired") {
-    //   console.log("deleteMe an isRequired was changed. Whole question is: ");
-    //   console.log(wholeQuestion);
-    // }
   };
 
   const handleCheckChange: (event: any) => void = (_event: any) => {
@@ -197,7 +220,7 @@ const SingleVideoIntakeQuestion: React.FC<{
             id={intakeQuestionKey + "-" + intakeQuestionEl + "-select"}
             value={intakeQuestionEl}
             label="TODO deleteMe"
-            onChange={handleChange}
+            onChange={handleQuestionChange} //this is currently assuming that the only dropdown is a question type change
             style={{ marginBottom: 10 }}
           >
             {types && typeElements}

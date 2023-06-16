@@ -65,5 +65,6 @@ export function isValidUrl(url: string): boolean {
 
 export function isValidOption(currentOpt: string, validOpts: string[]) {
   if (!currentOpt) return false;
+  if (!validOpts) return false;
   return validOpts.includes(currentOpt);
 }

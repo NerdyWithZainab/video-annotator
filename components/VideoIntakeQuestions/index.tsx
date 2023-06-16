@@ -62,9 +62,8 @@ const VideoIntakeQuestions: React.FC<{
   const intakeQuestionElements = map(
     collection?.intakeQuestions || [],
     (intakeQuestion, intakeQuestionIdx) => {
-      const intakeQuesionsInvalid = collection?.formFieldGroup?.isInvalids;
-      console.log("deleteMe intakeQuesionsInvalid is: ");
-      console.log(intakeQuesionsInvalid);
+      const intakeQuesionsInvalid: {} =
+        collection?.formFieldGroup?.isInvalids || {};
       return map(
         intakeQuestion,
         (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {

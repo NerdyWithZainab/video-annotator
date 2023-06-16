@@ -84,7 +84,6 @@ const sixthQuestion: SingleFormField = {
   label: "Age",
   type: "Number",
   language: "English",
-  // isRequired: true,
   testId: "age",
   doNotDisplay: defaultDoNotDisplays,
   shouldBeCheckboxes: ["isRequired"],
@@ -101,7 +100,7 @@ const seventhQuestion: SingleFormField = {
   testId: "url",
   doNotDisplay: defaultDoNotDisplays,
   invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
-  validatorMethods: [],
+  validatorMethods: [isNonEmptyString],
   shouldBeCheckboxes: ["isRequired"],
 };
 
@@ -116,7 +115,7 @@ export const shamCollection: Collection = {
     // secondQuestion,
     // thirdQuestion,
     // fourthQuestion,
-    fifthQuestion,
+    // fifthQuestion,
     // sixthQuestion,
     // seventhQuestion,
   ],
