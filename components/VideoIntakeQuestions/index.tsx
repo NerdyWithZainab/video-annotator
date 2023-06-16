@@ -9,23 +9,15 @@ import CustomError from "../Error";
 import InfoPanel from "../InfoPanel";
 import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 import { defaultDoNotDisplays } from "../../dummy_data/dummyCollection";
-import { deleteSingleQuestionInCollection } from "../../utilities/videoIntakeQuestionUtils";
 
 const VideoIntakeQuestions: React.FC<{
   collection: Collection;
   setCollection: (collection: any) => void;
   formFieldGroup: FormFieldGroup;
 }> = ({ collection, setCollection, formFieldGroup }) => {
-  // console.log("deleteMe VideoIntakeQuestions re-renders");
-  // console.log("deleteMe collection upon new re-render is: ");
-  // console.log(collection);
   const [intakeQuestions, setIntakeQuestions] = useState<
     SingleFormField[] | undefined
   >(undefined);
-  // const [intakeQuestionsInvalid, setIntakeQuestionsInvalid] = useState<
-  //   QuestionValidity[] | undefined
-  // >(undefined);
-  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
   const [error, setError] = useState<string>("");
 
   const newQuestion: SingleFormField = useMemo(() => {
@@ -42,24 +34,11 @@ const VideoIntakeQuestions: React.FC<{
   }, []);
 
   useEffect(() => {
-    console.log("deleteMe intakeQuestions changed");
     setCollection((prevState: any) => {
       return { ...prevState, intakeQuestions: intakeQuestions };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intakeQuestions]);
-
-  // useEffect(() => {
-  //   console.log(
-  //     "deleteMe got here a2 and useEffect triggered. Collection is now:"
-  //   );
-  //   console.log(collection);
-  //   if (deleteIndex != null && deleteIndex > -1) {
-  //     console.log("deleteMe got here a1 and deleteIndex is: " + deleteIndex);
-  //     deleteSingleQuestionInCollection(collection, setCollection, deleteIndex);
-  //     setDeleteIndex(null);
-  //   }
-  // }, [collection, deleteIndex, setCollection]);
+  }, [intakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
 
   const deleteIntakeQuestion: (questionIdx: number) => void = (questionIdx) => {
     setIntakeQuestions((prevState) => {
@@ -80,13 +59,6 @@ const VideoIntakeQuestions: React.FC<{
           return [newQuestion];
         }
       });
-      // const updatedIntakeQuestions: SingleFormField[] = [
-      //   ...(collection?.intakeQuestions || []),
-      //   newQuestion,
-      // ];
-      // setCollection((prevState: any) => {
-      //   return { ...prevState, intakeQuestions: updatedIntakeQuestions };
-      // });
     } catch (error: any) {
       setError(error?.message);
     }
