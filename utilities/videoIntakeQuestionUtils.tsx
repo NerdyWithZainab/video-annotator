@@ -1,7 +1,7 @@
 import { Tulpen_One } from "@next/font/google";
 import { defaultDoNotDisplays } from "../dummy_data/dummyCollection";
 import { Collection, SingleFormField } from "../types";
-import { isNonEmptyString, isValidUrl } from "./validators";
+import { isNonEmptyString, isValidEmail, isValidUrl } from "./validators";
 
 export function transformQuestion(
   question: SingleFormField,
@@ -24,6 +24,15 @@ export function transformQuestion(
             doNotDisplay: defaultDoNotDisplays,
             invalidInputMessage: "MUST_BE_VALID_URL",
             validatorMethods: [isValidUrl],
+          };
+        case "Email":
+          return {
+            ...baseQuestion,
+            type: "Email",
+            isRequired: question.isRequired || false,
+            doNotDisplay: defaultDoNotDisplays,
+            invalidInputMessage: "MUST_BE_VALID_EMAIL",
+            validatorMethods: [isValidEmail],
           };
         case "Autocomplete":
           return {

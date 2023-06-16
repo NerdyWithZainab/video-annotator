@@ -101,6 +101,28 @@ const SingleFormField: React.FC<{
           value={get(formFieldGroup, ["actualValues", question?.label], "")}
         ></TextField>
       );
+    case "Email":
+      return (
+        <TextField
+          required={question?.isRequired}
+          fullWidth
+          data-testid={question?.testId}
+          error={currentIsInvalid}
+          variant="filled"
+          label={question?.label}
+          helperText={
+            currentIsInvalid
+              ? intl.formatMessage({
+                  id: question?.invalidInputMessage || "FIELD_CANNOT_BE_BLANK",
+                  defaultMessage: "Cannot be blank",
+                })
+              : ""
+          }
+          style={{ marginBottom: 10, maxWidth: 400 }}
+          onChange={handleTextChange}
+          value={get(formFieldGroup, ["actualValues", question?.label], "")}
+        ></TextField>
+      );
     case "Text":
       return (
         <span style={{ display: "inline-flex" }}>
