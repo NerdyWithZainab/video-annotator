@@ -1,4 +1,5 @@
 import { Tulpen_One } from "@next/font/google";
+import { get } from "lodash-es";
 import { defaultDoNotDisplays } from "../dummy_data/dummyCollection";
 import { Collection, SingleFormField } from "../types";
 import { isNonEmptyString, isValidEmail, isValidUrl } from "./validators";
@@ -98,6 +99,25 @@ export function updateSingleQuestionInCollection(
   const modifiedQuestionSet: SingleFormField[] =
     collection?.intakeQuestions || [];
   modifiedQuestionSet[questionIdx] = newQuestion;
+  setCollection((prevState: any) => {
+    return { ...prevState, intakeQuestions: modifiedQuestionSet };
+  });
+}
+
+export function deleteSingleQuestionInCollection(
+  collection: Collection,
+  setCollection: (input: any) => void,
+  questionIdx: number
+) {
+  const originalQuestionSet: SingleFormField[] = get(
+    collection,
+    ["intakeQuestions"],
+    []
+  );
+  console.log("deleteMe originalQuestionSet is: ");
+  console.log(originalQuestionSet);
+  const modifiedQuestionSet = originalQuestionSet?.splice(questionIdx, 1);
+  // modifiedQuestionSet[questionIdx] = newQuestion;
   setCollection((prevState: any) => {
     return { ...prevState, intakeQuestions: modifiedQuestionSet };
   });

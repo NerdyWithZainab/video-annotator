@@ -80,7 +80,7 @@
   "NAME_OF_EVENT": "Name of event",
   "IS_COLLECTION_PRIVATE": "Is the collection private?",
   "SOMETHING_WENT_WRONG_CONTACT_DEVELOPER": "Something went wrong. Alert a developer by <a href='/me'>leaving feedback</a>",
-  "IS_PRIVATE_DESCRIPTION": "If selected, other users will be able to discover your collection, as well as view and edit the videos within the collection as their privileges permit. They will not be able to edit the questions that appear during video intake.",
+  "IS_PRIVATE_DESCRIPTION": "If selected, other users will not be able to discover your collection, nor view and edit the videos within the collection as their privileges permit. In either case, they will not be able to edit the questions that appear during video intake.",
   "DONE": "Done",
   "UNKNOWN_LABEL": "Unknown Label",
   "ADD_ANOTHER_QUESTION": "Add another question",
@@ -104,8 +104,9 @@
   "FIELD_CANNOT_BE_BLANK": "Field cannot be blank",
   "INPUT_INVALID": "Field cannot be blank or invalid",
   "THIS_FIELD_IS_REQUIRED": "This field is required",
-  "CAN_END_USER_ADD_CUSTOM_OPTIONS": "Can the people annotating videos in this collection add their own candidates to this list? You as the collection owner will be able to approve or remove these later.",
+  "CAN_END_USER_ADD_CUSTOM_OPTIONS": "Can the people annotating videos in this collection add their own candidates to this list? You as the collection owner will be able to approve or remove them later.",
   "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT": "Can video annotators in this collection add their own options?",
   "ADD_ANOTHER_OPTION": "Add another option",
-  "DELETE": "Delete"
+  "DELETE": "Delete",
+  "REMOVE_QUESTION": "Remove this question"
 }

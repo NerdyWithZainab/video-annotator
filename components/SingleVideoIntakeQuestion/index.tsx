@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   Grid,
@@ -29,6 +30,7 @@ import {
 import OptionSet from "../OptionSet";
 import { isNonEmptyString } from "../../utilities/validators";
 import {
+  deleteSingleQuestionInCollection,
   transformQuestion,
   updateSingleQuestionInCollection,
 } from "../../utilities/videoIntakeQuestionUtils";
@@ -171,72 +173,74 @@ const SingleVideoIntakeQuestion: React.FC<{
   const shouldBeOptionField = intakeQuestionKey === "autocompleteOptions";
 
   return (
-    <Grid item lg={12} sm={12}>
-      {shouldBeOptionField && (
-        <OptionSet
-          key={intakeQuestionIdx}
-          formField={wholeQuestion}
-          collection={collection}
-          targetFormFieldIdx={intakeQuestionIdx}
-          setCollection={setCollection}
-        />
-      )}
-      {shouldBeTextField && (
-        <TextField
-          fullWidth
-          data-testid={intakeQuestionKey + "-" + intakeQuestionEl}
-          error={get(intakeQuestionsInvalid, [intakeQuestionKey])}
-          variant="filled"
-          label={
-            <FormattedMessage
-              id={intakeQuestionKey.toUpperCase().replace(" ", "_")}
-              defaultMessage="Unknown question key"
-            />
-          }
-          required
-          helperText={
-            get(intakeQuestionsInvalid, [intakeQuestionKey])
-              ? intl.formatMessage(
-                  {
-                    id: "GENERIC_CANNOT_BE_BLANK",
-                    defaultMessage: "Field cannot be blank",
-                  },
-                  { name: "Question" + intakeQuestionKey } // @TODO internationalize this, too
-                )
-              : ""
-          }
-          style={{ marginBottom: 10, maxWidth: 400 }}
-          onChange={handleChange}
-          value={intakeQuestionEl}
-        ></TextField>
-      )}
-      {shouldBeTypeDropdown && (
-        <>
-          <InputLabel id={intakeQuestionKey + "-" + intakeQuestionEl}>
-            <FormattedMessage id="TYPE" defaultMessage="Type" />
-          </InputLabel>
-          <Select
-            labelId={intakeQuestionKey + "-" + intakeQuestionEl}
-            id={intakeQuestionKey + "-" + intakeQuestionEl + "-select"}
+    <>
+      <Grid item lg={12} sm={12}>
+        {shouldBeOptionField && (
+          <OptionSet
+            key={intakeQuestionIdx}
+            formField={wholeQuestion}
+            collection={collection}
+            targetFormFieldIdx={intakeQuestionIdx}
+            setCollection={setCollection}
+          />
+        )}
+        {shouldBeTextField && (
+          <TextField
+            fullWidth
+            data-testid={intakeQuestionKey + "-" + intakeQuestionEl}
+            error={get(intakeQuestionsInvalid, [intakeQuestionKey])}
+            variant="filled"
+            label={
+              <FormattedMessage
+                id={intakeQuestionKey.toUpperCase().replace(" ", "_")}
+                defaultMessage="Unknown question key"
+              />
+            }
+            required
+            helperText={
+              get(intakeQuestionsInvalid, [intakeQuestionKey])
+                ? intl.formatMessage(
+                    {
+                      id: "GENERIC_CANNOT_BE_BLANK",
+                      defaultMessage: "Field cannot be blank",
+                    },
+                    { name: "Question" + intakeQuestionKey } // @TODO internationalize this, too
+                  )
+                : ""
+            }
+            style={{ marginBottom: 10, maxWidth: 400 }}
+            onChange={handleChange}
             value={intakeQuestionEl}
-            label="TODO deleteMe"
-            onChange={handleQuestionChange} //this is currently assuming that the only dropdown is a question type change
-            style={{ marginBottom: 10 }}
-          >
-            {types && typeElements}
-          </Select>
-        </>
-      )}
-      {shouldBeCheckbox && (
-        <FormControlLabel
-          style={{ marginRight: 10 }}
-          control={<Checkbox checked={intakeQuestionEl} />}
-          value={intakeQuestionEl}
-          onChange={handleCheckChange}
-          label={convertCamelCaseToCapitalCase(intakeQuestionKey)}
-        />
-      )}
-    </Grid>
+          ></TextField>
+        )}
+        {shouldBeTypeDropdown && (
+          <>
+            <InputLabel id={intakeQuestionKey + "-" + intakeQuestionEl}>
+              <FormattedMessage id="TYPE" defaultMessage="Type" />
+            </InputLabel>
+            <Select
+              labelId={intakeQuestionKey + "-" + intakeQuestionEl}
+              id={intakeQuestionKey + "-" + intakeQuestionEl + "-select"}
+              value={intakeQuestionEl}
+              label="TODO deleteMe"
+              onChange={handleQuestionChange} //this is currently assuming that the only dropdown is a question type change
+              style={{ marginBottom: 10 }}
+            >
+              {types && typeElements}
+            </Select>
+          </>
+        )}
+        {shouldBeCheckbox && (
+          <FormControlLabel
+            style={{ marginRight: 10 }}
+            control={<Checkbox checked={intakeQuestionEl} />}
+            value={intakeQuestionEl}
+            onChange={handleCheckChange}
+            label={convertCamelCaseToCapitalCase(intakeQuestionKey)}
+          />
+        )}
+      </Grid>
+    </>
   );
 };
 
