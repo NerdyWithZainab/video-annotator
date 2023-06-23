@@ -9,7 +9,7 @@ import {
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { get } from "lodash-es";
 import { FormFieldGroup, SingleFormField } from "../../types";
-import { ReactNode, SyntheticEvent, useEffect } from "react";
+import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
@@ -25,6 +25,7 @@ const SingleFormField: React.FC<{
   areAutocompleteOptionsDeletable = false,
 }) => {
   const intl: IntlShape = useIntl();
+  const [localVal, setLocalVal] = useState<string | null>(null);
   const currentIsInvalid: boolean = get(
     formFieldGroup,
     ["isInvalids", question?.label],
@@ -53,7 +54,8 @@ const SingleFormField: React.FC<{
     event: React.ChangeEvent<HTMLInputElement>
   ) => void = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentVal: any = event?.currentTarget?.value;
-    updateFormFieldStates(currentVal, false, formFieldGroup, question);
+    setLocalVal(currentVal);
+    updateFormFieldStates(currentVal, false, formFieldGroup, question); // Note that this controlled stuff needs to be set AFTER the local useState. Otherwise, there are weird cursor placement issues. See https://dev.to/kwirke/solving-caret-jumping-in-react-inputs-36ic
   };
 
   const handleAutocompleteChange: (
@@ -98,7 +100,7 @@ const SingleFormField: React.FC<{
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleTextChange}
-          value={get(formFieldGroup, ["actualValues", question?.label], "")}
+          value={localVal}
         ></TextField>
       );
     case "Email":
@@ -120,7 +122,7 @@ const SingleFormField: React.FC<{
           }
           style={{ marginBottom: 10, maxWidth: 400 }}
           onChange={handleTextChange}
-          value={get(formFieldGroup, ["actualValues", question?.label], "")}
+          value={localVal}
         ></TextField>
       );
     case "Text":
@@ -144,7 +146,7 @@ const SingleFormField: React.FC<{
             }
             style={{ marginBottom: 10, maxWidth: 400 }}
             onChange={handleTextChange}
-            value={get(formFieldGroup, ["actualValues", question?.label], "")}
+            value={localVal}
           ></TextField>
           {areAutocompleteOptionsDeletable && formFieldGroup && (
             <DeleteAutocompleteOption
