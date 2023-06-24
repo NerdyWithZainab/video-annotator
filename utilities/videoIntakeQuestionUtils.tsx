@@ -43,7 +43,7 @@ export function transformQuestion(
             doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
             invalidInputMessage: "INPUT_INVALID",
             validatorMethods: [isNonEmptyString],
-            autocompleteOptions: ["Option 1 - change me"],
+            autocompleteOptions: [],
             useCanAddCustomOptions: true,
           };
         case "Checkbox":

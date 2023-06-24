@@ -9,10 +9,13 @@ import { updateOptionFormFieldGroupWithOptionList } from "../../utilities/single
 const DeleteAutocompleteOption: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup;
+  setNewOptions: ((input: any) => void) | null;
 }> = (props) => {
+  // console.log("deleteMe question in DeleteAutocompleteOption is: ");
+  // console.log(props?.question);
   const intl: IntlShape = useIntl();
 
-  const handleDeleteClick: () => void = () => {
+  const handleDeleteClick: () => void = async () => {
     const currentActualValues = get(props, ["formFieldGroup", "actualValues"]);
     const filteredAcutalValues = reduce(
       currentActualValues,
@@ -35,10 +38,13 @@ const DeleteAutocompleteOption: React.FC<{
       }
     );
     if (props.formFieldGroup) {
-      updateOptionFormFieldGroupWithOptionList(
-        autoCompleteVals,
-        props.formFieldGroup
-      );
+      if (props?.setNewOptions) {
+        props.setNewOptions(autoCompleteVals);
+      }
+      // await updateOptionFormFieldGroupWithOptionList(
+      //   autoCompleteVals,
+      //   props.formFieldGroup
+      // );
     }
   };
 

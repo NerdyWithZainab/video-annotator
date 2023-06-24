@@ -18,14 +18,17 @@ import { updateFormFieldStates } from "../../utilities/singleFormFieldUtils";
 const SingleFormField: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup | undefined;
+  setNewOptions?: ((input: any) => void) | null;
   areAutocompleteOptionsDeletable?: boolean;
 }> = ({
   question,
   formFieldGroup,
+  setNewOptions = null,
   areAutocompleteOptionsDeletable = false,
 }) => {
   const intl: IntlShape = useIntl();
   const [localVal, setLocalVal] = useState<string | null>(null);
+  // const [newOptions, setNewOptions] = useState<any>(null);
   const currentIsInvalid: boolean = get(
     formFieldGroup,
     ["isInvalids", question?.label],
@@ -56,6 +59,15 @@ const SingleFormField: React.FC<{
     const currentVal: any = event?.currentTarget?.value;
     setLocalVal(currentVal);
     updateFormFieldStates(currentVal, false, formFieldGroup, question); // Note that this controlled stuff needs to be set AFTER the local useState. Otherwise, there are weird cursor placement issues. See https://dev.to/kwirke/solving-caret-jumping-in-react-inputs-36ic
+    if (setNewOptions) {
+      setNewOptions((prevState: {}) => {
+        const returnVal: {} = {
+          ...prevState,
+          [question.label]: currentVal,
+        };
+        return returnVal;
+      });
+    }
   };
 
   const handleAutocompleteChange: (
@@ -152,6 +164,7 @@ const SingleFormField: React.FC<{
             <DeleteAutocompleteOption
               question={question}
               formFieldGroup={formFieldGroup}
+              setNewOptions={setNewOptions}
             />
           )}
         </span>

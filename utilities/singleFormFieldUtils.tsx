@@ -116,20 +116,45 @@ export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
     : undefined;
 }
 
-export function updateOptionFormFieldGroupWithOptionList(
+export async function updateOptionFormFieldGroupWithOptionList(
   options: string[],
   optionFormFieldGroup: FormFieldGroup
 ) {
   //first, remove all existing options
+  // console.log("deleteMe optionFormFieldGroup is: ");
+  // console.log(optionFormFieldGroup);
   clearAllOptionFields(optionFormFieldGroup);
+  // console.log("deleteMe optionFormFieldGroup after clearing is now: ");
+  // console.log(optionFormFieldGroup);
   forEach(options, (option, optionIdx) => {
+    // @TODO refashion this using generateOptionObjectsFromList method
     const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option }; // @TODO somehow shunt part of this to en.json
-    optionFormFieldGroup?.setValues
-      ? optionFormFieldGroup.setValues((prevState: {}) => {
-          return { ...prevState, ...newActualValue };
-        })
-      : undefined;
+    // console.log(
+    //   "deleteMe newActualValue in updateOptionFormFieldGroupWithOptionList is: "
+    // );
+    // console.log(newActualValue);
+    if (optionFormFieldGroup?.setValues) {
+      optionFormFieldGroup.setValues((prevState: {}) => {
+        return { ...prevState, ...newActualValue };
+      });
+    }
   });
+  // console.log("deleteMe optionFormFieldGroup after repopulating is now: ");
+  // console.log(optionFormFieldGroup);
+}
+
+export function generateOptionObjectsFromList(
+  optList: string[],
+  optLabel: string
+) {
+  let optionObject: {} = {};
+  forEach(optList, (option, optionIdx) => {
+    optionObject = {
+      ...optionObject,
+      [optLabel + " " + Number(Number(optionIdx) + 1)]: option,
+    };
+  });
+  return optionObject;
 }
 
 export function calculateWhetherCustomOptionValuesArePermitted(
