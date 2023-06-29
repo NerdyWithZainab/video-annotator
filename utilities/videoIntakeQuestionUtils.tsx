@@ -42,7 +42,7 @@ export function transformQuestion(
             isRequired: question.isRequired || false,
             doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
             invalidInputMessage: "INPUT_INVALID",
-            validatorMethods: [isNonEmptyString],
+            validatorMethods: [],
             autocompleteOptions: ["Option 1 - change me"],
             useCanAddCustomOptions: true,
           };
