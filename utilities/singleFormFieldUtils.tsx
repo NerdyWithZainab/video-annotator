@@ -98,12 +98,15 @@ export function updateFormFieldStates(
     : undefined;
 }
 
-export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
-  const preExistingActualVals = get(optionFormFieldGroup, ["actualValues"]);
+export function clearAllOptionFields(
+  preExistingVals: {},
+  optionQueryStr: string
+) {
+  // const preExistingActualVals = get(optionFormFieldGroup, ["actualValues"]);
   const purgedActualVals = reduce(
-    preExistingActualVals,
+    preExistingVals,
     (memo, currentVal, currentKey) => {
-      if (currentKey.startsWith("Option")) {
+      if (currentKey.startsWith(optionQueryStr)) {
         return { ...memo };
       } else {
         return { ...memo, [currentKey]: currentVal };
@@ -111,9 +114,10 @@ export function clearAllOptionFields(optionFormFieldGroup: FormFieldGroup) {
     },
     {}
   );
-  optionFormFieldGroup?.setValues
-    ? optionFormFieldGroup.setValues(purgedActualVals)
-    : undefined;
+  return purgedActualVals;
+  // optionFormFieldGroup?.setValues
+  //   ? optionFormFieldGroup.setValues(purgedActualVals)
+  //   : undefined;
 }
 
 export function updateOptionFormFieldGroupWithOptionList(
@@ -121,14 +125,37 @@ export function updateOptionFormFieldGroupWithOptionList(
   optionFormFieldGroup: FormFieldGroup
 ) {
   //first, remove all existing options
-  clearAllOptionFields(optionFormFieldGroup);
+  const cleanedActualVals: {} = clearAllOptionFields(
+    get(optionFormFieldGroup, ["actualValues"]),
+    "Option"
+  );
+  if (optionFormFieldGroup.setValues) {
+    optionFormFieldGroup.setValues(cleanedActualVals);
+  }
+  console.log("deleteMe options are: ");
+  console.log(options);
   forEach(options, (option, optionIdx) => {
+    console.log("deleteMe option and optionIndex going into the loop are: ");
+    console.log(option);
+    console.log(optionIdx);
     const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option }; // @TODO somehow shunt part of this to en.json
-    optionFormFieldGroup?.setValues
-      ? optionFormFieldGroup.setValues((prevState: {}) => {
-          return { ...prevState, ...newActualValue };
-        })
-      : undefined;
+    console.log("deleteMe newActualValue is: ");
+    console.log(newActualValue);
+    if (optionFormFieldGroup.setValues) {
+      console.log("deleteMe got here setValues exists");
+      optionFormFieldGroup.setValues((prevState: {}) => {
+        const returnVal = { ...prevState, ...newActualValue };
+        console.log("deleteMe returnVal is: ");
+        console.log(returnVal);
+        // return { ...prevState, ...newActualValue };
+        return returnVal;
+      });
+    }
+    // optionFormFieldGroup?.setValues
+    //   ? optionFormFieldGroup.setValues((prevState: {}) => {
+    //       return { ...prevState, ...newActualValue };
+    //     })
+    //   : undefined;
   });
 }
 

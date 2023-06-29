@@ -1,19 +1,26 @@
+import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+
 import {
   Autocomplete,
   AutocompleteRenderInputParams,
   Checkbox,
   FormControlLabel,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import { get } from "lodash-es";
-import { FormFieldGroup, SingleFormField } from "../../types";
-import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { filter, get, reduce } from "lodash-es";
 import dayjs from "dayjs";
-import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
-import { updateFormFieldStates } from "../../utilities/singleFormFieldUtils";
+
+// import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
+import { FormFieldGroup, SingleFormField } from "../../types";
+import {
+  updateFormFieldStates,
+  updateOptionFormFieldGroupWithOptionList,
+} from "../../utilities/singleFormFieldUtils";
 
 const SingleFormField: React.FC<{
   question: SingleFormField;
@@ -79,6 +86,46 @@ const SingleFormField: React.FC<{
   };
 
   const autocompleteExtras: {} = question?.autocompleteExtras || {};
+
+  const handleDeleteClick: () => void = () => {
+    const currentActualValues = get(formFieldGroup, ["actualValues"]);
+    const filteredAcutalValues = reduce(
+      currentActualValues,
+      (memo, currentActualValue, currentKey) => {
+        if (question?.label !== currentKey) {
+          return { ...memo, [currentKey]: currentActualValue };
+        } else {
+          return { ...memo };
+        }
+      },
+      {}
+    );
+
+    // Now, we have to rename some of the labels, because, say, if Option 2 got removed, the old Option 3 should become the new Option 2.
+
+    const autoCompleteVals: string[] = filter(
+      filteredAcutalValues || {},
+      (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
+        return optionFormFieldGroupKey.startsWith("Option"); // @TODO prevent the collection owner from making labels that start with Option??? Or at least test for wonky behavior
+      }
+    );
+    if (formFieldGroup) {
+      updateOptionFormFieldGroupWithOptionList(
+        autoCompleteVals,
+        formFieldGroup
+      );
+      // console.log("deleteMe autoCompleteVals are: ");
+      // console.log(autoCompleteVals);
+      // console.log("deleteMe question is: ");
+      // console.log(question);
+
+      // const targetAutoCompleteValsIdx: number =
+      //   (Number(question?.label?.replace("Option ", "")) || 0) - 1;
+      // setLocalVal(autoCompleteVals[targetAutoCompleteValsIdx]);
+
+      // @TODO you have to setLocalVal(currentVal); somehow
+    }
+  };
 
   switch (question?.type) {
     case "URL":
@@ -146,13 +193,20 @@ const SingleFormField: React.FC<{
             }
             style={{ marginBottom: 10, maxWidth: 400 }}
             onChange={handleTextChange}
-            value={localVal}
+            // value={localVal}
+            value={get(formFieldGroup, ["actualValues", question?.label], "")}
           ></TextField>
           {areAutocompleteOptionsDeletable && formFieldGroup && (
-            <DeleteAutocompleteOption
-              question={question}
-              formFieldGroup={formFieldGroup}
-            />
+            <Tooltip
+              title={intl.formatMessage({
+                id: "DELETE",
+                defaultMessage: "Delete",
+              })}
+            >
+              <span style={{ marginTop: 14, marginLeft: 3 }}>
+                <DeleteIcon onClick={handleDeleteClick} />
+              </span>
+            </Tooltip>
           )}
         </span>
       );
