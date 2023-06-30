@@ -110,19 +110,21 @@ export const shamCollection: Collection = {
   nameOfEvent: "Move",
   isPrivate: false,
   language: "English",
-  intakeQuestions: [
-    // firstQuestion,
-    // secondQuestion,
-    // thirdQuestion,
-    // fourthQuestion,
-    // fifthQuestion,
-    // sixthQuestion,
-    // seventhQuestion,
+  videoIntakeQuestions: [
+    firstQuestion,
+    secondQuestion,
+    thirdQuestion,
+    fourthQuestion,
+    fifthQuestion,
+    sixthQuestion,
+    seventhQuestion,
   ],
   excludeFromDetailList: [
-    "intakeQuestions",
+    "videoIntakeQuestions",
+    "individualIntakeQuestions",
     "excludeFromDetailList",
-    "formFieldGroup",
+    "videoQuestionsFormFieldGroup",
+    "individualQuestionsFormFieldGroup",
   ],
   // formFieldGroup: shamFormFieldGroup // gets populated elsewhere now because passing useStates through different components was silly
 };

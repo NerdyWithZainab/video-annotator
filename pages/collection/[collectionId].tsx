@@ -39,7 +39,7 @@ const SingleCollection: React.FC = () => {
 
   const videoQuestionsFormFieldGroup: FormFieldGroup = useMemo(() => {
     return {
-      title: "FormFieldGroupForTheWholeDummyCollection",
+      title: "VideoFormFieldGroupForTheWholeDummyCollection",
       setValues: setVideoQuestionFormValues,
       actualValues: videoQuestionFormValues,
       isInvalids: arevideoQuestionFormValuesInvalid,
@@ -49,7 +49,7 @@ const SingleCollection: React.FC = () => {
 
   const individualQuestionsFormFieldGroup: FormFieldGroup = useMemo(() => {
     return {
-      title: "FormFieldGroupForTheWholeDummyCollection",
+      title: "IndividualFormFieldGroupForTheWholeDummyCollection",
       setValues: setIndividualQuestionFormValues,
       actualValues: individualQuestionFormValues,
       isInvalids: areindividualQuestionFormValuesInvalid,
@@ -59,11 +59,17 @@ const SingleCollection: React.FC = () => {
 
   useEffect(() => {
     setCollection((prevState: any) => {
-      return { ...prevState, formFieldGroup: videoQuestionsFormFieldGroup };
+      return {
+        ...prevState,
+        videoQuestionsFormFieldGroup: videoQuestionsFormFieldGroup,
+        individualQuestionsFormFieldGroup: individualQuestionsFormFieldGroup,
+      };
     });
   }, [
     videoQuestionsFormFieldGroup,
     videoQuestionsFormFieldGroup?.actualValues,
+    individualQuestionsFormFieldGroup,
+    individualQuestionsFormFieldGroup?.actualValues,
   ]);
 
   return (

@@ -124,7 +124,8 @@ const SingleVideoIntakeQuestion: React.FC<{
       intakeQuestionIdx,
       intakeQuestionKey,
       currentVal,
-      setCollection
+      setCollection,
+      "videoIntakeQuestions"
     );
   };
 
@@ -138,7 +139,8 @@ const SingleVideoIntakeQuestion: React.FC<{
         intakeQuestionIdx,
         intakeQuestionKey,
         intakeQuestionEl,
-        setCollection
+        setCollection,
+        "videoIntakeQuestions"
       );
     } else if (
       intakeQuestionKey === "isRequired" &&
@@ -151,7 +153,8 @@ const SingleVideoIntakeQuestion: React.FC<{
         intakeQuestionIdx,
         intakeQuestionKey,
         intakeQuestionEl,
-        setCollection
+        setCollection,
+        "videoIntakeQuestions"
       );
     } else {
       updateCollection(
@@ -159,7 +162,8 @@ const SingleVideoIntakeQuestion: React.FC<{
         intakeQuestionIdx,
         intakeQuestionKey,
         !intakeQuestionEl,
-        setCollection
+        setCollection,
+        "videoIntakeQuestions"
       );
     }
   };
@@ -184,6 +188,7 @@ const SingleVideoIntakeQuestion: React.FC<{
             collection={collection}
             targetFormFieldIdx={intakeQuestionIdx}
             setCollection={setCollection}
+            whichIntakeQuestions={"videoIntakeQuestions"}
           />
         )}
         {shouldBeTextField && (

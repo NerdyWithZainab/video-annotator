@@ -22,19 +22,23 @@ export function updateCollection(
   questionIdx: number,
   questionKey: string,
   newVal: any,
-  setCollection: (collection: any) => void
+  setCollection: (collection: any) => void,
+  whichIntakeQuestions: string
 ) {
   const targetQuestion: SingleFormField = get(
     collection,
-    ["intakeQuestions", questionIdx],
+    [whichIntakeQuestions, questionIdx],
     {}
   );
   const modifiedQuestion: any = {
     ...targetQuestion,
     [questionKey]: newVal,
   };
-  const newIntakeQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
+  const newIntakeQuestionSet: SingleFormField[] = get(
+    collection,
+    [whichIntakeQuestions],
+    []
+  );
   newIntakeQuestionSet[questionIdx] = modifiedQuestion;
 
   setCollection((prevState: any) => {
@@ -168,7 +172,8 @@ export function updateIsRequiredUnchecked(
   intakeQuestionIdx: number,
   intakeQuestionKey: string,
   intakeQuestionEl: any,
-  setCollection: (collection: any) => void
+  setCollection: (collection: any) => void,
+  whichIntakeQuestions: string
 ) {
   updateCheckboxGeneral(
     formFieldGroup,
@@ -179,7 +184,8 @@ export function updateIsRequiredUnchecked(
     intakeQuestionEl,
     setCollection,
     false,
-    isNonEmptyString
+    isNonEmptyString,
+    whichIntakeQuestions
   );
 }
 
@@ -190,7 +196,8 @@ export function updateIsRequiredChecked(
   intakeQuestionIdx: number,
   intakeQuestionKey: string,
   intakeQuestionEl: any,
-  setCollection: (collection: any) => void
+  setCollection: (collection: any) => void,
+  whichIntakeQuestions: string
 ) {
   updateCheckboxGeneral(
     formFieldGroup,
@@ -201,7 +208,8 @@ export function updateIsRequiredChecked(
     intakeQuestionEl,
     setCollection,
     true,
-    isNonEmptyString
+    isNonEmptyString,
+    whichIntakeQuestions
   );
 }
 
@@ -251,6 +259,7 @@ export function updateUsersCanAddCustomOptionsChecked(
 
 export function updateCheckboxGeneral(
   formFieldGroup: FormFieldGroup,
+  formFieldGroupString: string,
   wholeQuestion: SingleFormField,
   collection: Collection,
   intakeQuestionIdx: number,
@@ -258,11 +267,12 @@ export function updateCheckboxGeneral(
   intakeQuestionEl: any,
   setCollection: (collection: any) => void,
   checkVal: boolean,
-  vaildatorMethodToFilter: (input: any, optionalInput?: any) => boolean
+  vaildatorMethodToFilter: (input: any, optionalInput?: any) => boolean,
+  whichIntakeQuestions: string
 ) {
   const currentValForAutocomplete: string = get(
     collection,
-    ["formFieldGroup", "actualValues", wholeQuestion?.label],
+    [formFieldGroupString, "actualValues", wholeQuestion?.label],
     ""
   );
   console.log("deleteMe wholeQuestion?.label is: ");
@@ -298,7 +308,7 @@ export function updateCheckboxGeneral(
 
   const targetQuestion: SingleFormField = get(
     collection,
-    ["intakeQuestions", intakeQuestionIdx],
+    [whichIntakeQuestions, intakeQuestionIdx],
     {}
   );
   const currentValidatorMethods: ((input: any) => boolean)[] = get(
@@ -327,8 +337,11 @@ export function updateCheckboxGeneral(
       : filteredMethods,
   };
 
-  const newIntakeQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
+  const newIntakeQuestionSet: SingleFormField[] = get(
+    collection,
+    [whichIntakeQuestions],
+    []
+  );
   newIntakeQuestionSet[intakeQuestionIdx] = modifiedQuestion;
 
   setCollection((prevState: any) => {
@@ -343,19 +356,19 @@ export function updateCheckboxGeneral(
       };
     }
     const modifiedIsInvalids: any = {
-      ...collection?.intakeQuestionsformFieldGroup?.isInvalids,
+      ...get(collection, [formFieldGroupString, "isInvalids"]),
       ...formFieldGroup?.isInvalids,
       ...firstTimeIsCustomOptionsUncheckedInvalid,
     };
 
     const modifiedFormFieldGroup: any = {
-      ...collection?.intakeQuestionsformFieldGroup,
+      ...get(collection, [formFieldGroupString]),
       isInvalids: modifiedIsInvalids,
     };
 
     return {
       ...prevState,
-      intakeQuestions: newIntakeQuestionSet,
+      [whichIntakeQuestions]: newIntakeQuestionSet,
       formFieldGroup: modifiedFormFieldGroup,
     };
   });

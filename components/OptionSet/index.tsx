@@ -26,7 +26,14 @@ const OptionSet: React.FC<{
   collection: Collection;
   targetFormFieldIdx: number;
   setCollection: (collection: Collection) => void;
-}> = ({ formField, collection, targetFormFieldIdx, setCollection }) => {
+  whichIntakeQuestions: string;
+}> = ({
+  formField,
+  collection,
+  targetFormFieldIdx,
+  setCollection,
+  whichIntakeQuestions,
+}) => {
   const intl: IntlShape = useIntl();
   const checkBoxLabel: string = intl.formatMessage({
     id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
@@ -85,7 +92,8 @@ const OptionSet: React.FC<{
       targetFormFieldIdx,
       "autocompleteOptions",
       autoCompleteVals,
-      setCollection
+      setCollection,
+      whichIntakeQuestions
     );
 
     const canEndUserAddCustomOptionsVals =
@@ -98,7 +106,8 @@ const OptionSet: React.FC<{
       targetFormFieldIdx,
       "usersCanAddCustomOptions",
       canEndUserAddCustomOptionsVals,
-      setCollection
+      setCollection,
+      whichIntakeQuestions
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionFormFieldGroup]);

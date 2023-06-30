@@ -26,7 +26,7 @@ const VideoIntakePreview: React.FC<{
         bodyDefault="Contributors to your collection will see the following questions when they submit new videos to the collection: "
       />
       <Grid container>
-        {map(collection?.intakeQuestions, (intakeQuestion) => {
+        {map(collection?.videoIntakeQuestions, (intakeQuestion) => {
           return (
             <Grid item lg={12} sm={12} key={intakeQuestion?.label}>
               <SingleFormField
@@ -37,11 +37,11 @@ const VideoIntakePreview: React.FC<{
             </Grid>
           );
         })}
-        {collection?.intakeQuestionsformFieldGroup && (
+        {collection?.videoQuestionsFormFieldGroup && (
           <Grid item lg={12} sm={12}>
             <ComposedFormSubmissionButton
-              questions={collection?.intakeQuestions || []}
-              formFieldGroup={collection?.intakeQuestionsformFieldGroup}
+              questions={collection?.videoIntakeQuestions || []}
+              formFieldGroup={collection?.videoQuestionsFormFieldGroup}
             />
           </Grid>
         )}

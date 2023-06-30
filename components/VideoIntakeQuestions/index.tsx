@@ -15,7 +15,7 @@ const VideoIntakeQuestions: React.FC<{
   setCollection: (collection: any) => void;
   formFieldGroup: FormFieldGroup;
 }> = ({ collection, setCollection, formFieldGroup }) => {
-  const [intakeQuestions, setIntakeQuestions] = useState<
+  const [videoIntakeQuestions, setVideoIntakeQuestions] = useState<
     SingleFormField[] | undefined
   >(undefined);
   const [error, setError] = useState<string>("");
@@ -35,24 +35,24 @@ const VideoIntakeQuestions: React.FC<{
 
   useEffect(() => {
     setCollection((prevState: any) => {
-      return { ...prevState, intakeQuestions: intakeQuestions };
+      return { ...prevState, videoIntakeQuestions: videoIntakeQuestions };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
+  }, [videoIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
 
   const deleteIntakeQuestion: (questionIdx: number) => void = (questionIdx) => {
-    setIntakeQuestions((prevState) => {
-      const newIntakeQuestions: SingleFormField[] =
+    setVideoIntakeQuestions((prevState) => {
+      const newVideoIntakeQuestions: SingleFormField[] =
         prevState?.filter((_entry, idx) => {
           return idx !== questionIdx;
         }) || [];
-      return newIntakeQuestions;
+      return newVideoIntakeQuestions;
     });
   };
 
   const createNewIntakeQuestion: () => void = () => {
     try {
-      setIntakeQuestions((prevState: any) => {
+      setVideoIntakeQuestions((prevState: any) => {
         if (prevState) {
           return [...prevState, newQuestion];
         } else {
@@ -65,10 +65,10 @@ const VideoIntakeQuestions: React.FC<{
   };
 
   const intakeQuestionElements = map(
-    collection?.intakeQuestions || [],
+    collection?.videoIntakeQuestions || [],
     (intakeQuestion, intakeQuestionIdx) => {
       const intakeQuesionsInvalid: {} =
-        collection?.intakeQuestionsformFieldGroup?.isInvalids || {};
+        collection?.videoQuestionsFormFieldGroup?.isInvalids || {};
       return map(
         intakeQuestion,
         (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
@@ -120,7 +120,7 @@ const VideoIntakeQuestions: React.FC<{
       styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
-        {collection?.intakeQuestions && intakeQuestionElements}
+        {collection?.videoIntakeQuestions && intakeQuestionElements}
         <Grid item lg={12} sm={12}>
           <Button
             style={{ marginBottom: 10 }}

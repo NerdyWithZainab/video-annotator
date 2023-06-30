@@ -108,11 +108,12 @@ export function updateSingleQuestionInCollection(
 export function deleteSingleQuestionInCollection(
   collection: Collection,
   setCollection: (input: any) => void,
-  questionIdx: number
+  questionIdx: number,
+  whichIntakeQuestion: string
 ) {
   const originalQuestionSet: SingleFormField[] = get(
     collection,
-    ["intakeQuestions"],
+    [whichIntakeQuestion],
     []
   );
   console.log("deleteMe originalQuestionSet is: ");
@@ -120,6 +121,6 @@ export function deleteSingleQuestionInCollection(
   const modifiedQuestionSet = originalQuestionSet?.splice(questionIdx, 1);
   // modifiedQuestionSet[questionIdx] = newQuestion;
   setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: modifiedQuestionSet };
+    return { ...prevState, [whichIntakeQuestion]: modifiedQuestionSet };
   });
 }
