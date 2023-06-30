@@ -4,10 +4,11 @@ export interface Collection {
   nameOfEvent: string;
   isPrivate: boolean;
   language: string;
-  intakeQuestions?: SingleFormField[];
+  videoIntakeQuestions?: SingleFormField[];
+  individualIntakeQuestions?: SingleFormField[];
   excludeFromDetailList: string[];
-  intakeQuestionsformFieldGroup?: FormFieldGroup;
-  individualsFormFieldGroup?: FormFieldGroup;
+  videoQuestionsFormFieldGroup?: FormFieldGroup;
+  individualQuestionsFormFieldGroup?: FormFieldGroup;
 }
 
 export interface FormFieldGroup {

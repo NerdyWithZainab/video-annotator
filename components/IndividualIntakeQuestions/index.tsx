@@ -15,7 +15,7 @@ const IndividualIntakeQuestions: React.FC<{
   setCollection: (collection: any) => void;
   formFieldGroup: FormFieldGroup;
 }> = ({ collection, setCollection, formFieldGroup }) => {
-  const [intakeQuestions, setIntakeQuestions] = useState<
+  const [individualIntakeQuestions, setIndividualIntakeQuestions] = useState<
     SingleFormField[] | undefined
   >(undefined);
   const [error, setError] = useState<string>("");
@@ -35,24 +35,27 @@ const IndividualIntakeQuestions: React.FC<{
 
   useEffect(() => {
     setCollection((prevState: any) => {
-      return { ...prevState, intakeQuestions: intakeQuestions };
+      return {
+        ...prevState,
+        individualIntakeQuestions: individualIntakeQuestions,
+      };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
+  }, [individualIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
 
   const deleteIntakeQuestion: (questionIdx: number) => void = (questionIdx) => {
-    setIntakeQuestions((prevState) => {
-      const newIntakeQuestions: SingleFormField[] =
+    setIndividualIntakeQuestions((prevState) => {
+      const newIndividualIntakeQuestions: SingleFormField[] =
         prevState?.filter((_entry, idx) => {
           return idx !== questionIdx;
         }) || [];
-      return newIntakeQuestions;
+      return newIndividualIntakeQuestions;
     });
   };
 
   const createNewIntakeQuestion: () => void = () => {
     try {
-      setIntakeQuestions((prevState: any) => {
+      setIndividualIntakeQuestions((prevState: any) => {
         if (prevState) {
           return [...prevState, newQuestion];
         } else {
@@ -65,10 +68,10 @@ const IndividualIntakeQuestions: React.FC<{
   };
 
   const intakeQuestionElements = map(
-    collection?.intakeQuestions || [],
+    collection?.individualIntakeQuestions || [],
     (intakeQuestion, intakeQuestionIdx) => {
       const intakeQuesionsInvalid: {} =
-        collection?.intakeQuestionsformFieldGroup?.isInvalids || {};
+        collection?.individualQuestionsFormFieldGroup?.isInvalids || {};
       return map(
         intakeQuestion,
         (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
@@ -120,7 +123,7 @@ const IndividualIntakeQuestions: React.FC<{
       styleOverrides={{ maxHeight: 1000 }}
     >
       <Grid container>
-        {collection?.intakeQuestions && intakeQuestionElements}
+        {collection?.individualIntakeQuestions && intakeQuestionElements}
         <Grid item lg={12} sm={12}>
           <Button
             style={{ marginBottom: 10 }}

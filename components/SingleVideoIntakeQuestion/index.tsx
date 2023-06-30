@@ -104,8 +104,10 @@ const SingleVideoIntakeQuestion: React.FC<{
       collection,
       setCollection,
       intakeQuestionIdx,
-      transformedQuestion
-    );
+      transformedQuestion,
+      collection?.videoIntakeQuestions || [],
+      "videoIntakeQuestions"
+    ); // @TODO LEFT OFF HERE REPLACING INTAKEQUESTIONS GLOBALLY AND ALSO FIGURING OUT HOW TO HIDE FORMFIELD GROUPS FROM THE COLLECTION DETAILS
   };
 
   const handleChange: (event: any) => void = (event: any) => {

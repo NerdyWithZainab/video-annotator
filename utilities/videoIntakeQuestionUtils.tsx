@@ -94,10 +94,11 @@ export function updateSingleQuestionInCollection(
   collection: Collection,
   setCollection: (input: any) => void,
   questionIdx: number,
-  newQuestion: SingleFormField
+  newQuestion: SingleFormField,
+  intakeQuestions: SingleFormField[],
+  whichIntakeQuestion: string
 ) {
-  const modifiedQuestionSet: SingleFormField[] =
-    collection?.intakeQuestions || [];
+  const modifiedQuestionSet: SingleFormField[] = intakeQuestions || [];
   modifiedQuestionSet[questionIdx] = newQuestion;
   setCollection((prevState: any) => {
     return { ...prevState, intakeQuestions: modifiedQuestionSet };

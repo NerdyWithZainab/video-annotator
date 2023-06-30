@@ -10,34 +10,61 @@ import IndividualIntakeQuestions from "../../components/IndividualIntakeQuestion
 import IndividualIntakePreview from "../../components/IndividualIntakePreview";
 
 const SingleCollection: React.FC = () => {
-  const [formValues, setFormValues] = useState<{}>({});
-  const [areFormValuesInvalid, setAreFormValuesInvalid] = useState<{}>({});
+  const [videoQuestionFormValues, setVideoQuestionFormValues] = useState<{}>(
+    {}
+  );
+  const [individualQuestionFormValues, setIndividualQuestionFormValues] =
+    useState<{}>({});
+  const [
+    arevideoQuestionFormValuesInvalid,
+    setArevideoQuestionFormValuesInvalid,
+  ] = useState<{}>({});
+  const [
+    areindividualQuestionFormValuesInvalid,
+    setAreindividualQuestionFormValuesInvalid,
+  ] = useState<{}>({});
   const [collection, setCollection] = useState<Collection>();
   const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
     useState<boolean>(false);
 
   useEffect(() => {
     const initialCollection = { ...shamCollection };
-    initialCollection.formFieldGroup = formFieldGroup;
+    initialCollection.videoQuestionsFormFieldGroup =
+      videoQuestionsFormFieldGroup;
+    initialCollection.individualQuestionsFormFieldGroup =
+      individualQuestionsFormFieldGroup;
     setCollection(initialCollection);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const formFieldGroup: FormFieldGroup = useMemo(() => {
+  const videoQuestionsFormFieldGroup: FormFieldGroup = useMemo(() => {
     return {
       title: "FormFieldGroupForTheWholeDummyCollection",
-      setValues: setFormValues,
-      actualValues: formValues,
-      isInvalids: areFormValuesInvalid,
-      setIsInvalids: setAreFormValuesInvalid,
+      setValues: setVideoQuestionFormValues,
+      actualValues: videoQuestionFormValues,
+      isInvalids: arevideoQuestionFormValuesInvalid,
+      setIsInvalids: setArevideoQuestionFormValuesInvalid,
     };
-  }, [areFormValuesInvalid, formValues]);
+  }, [arevideoQuestionFormValuesInvalid, videoQuestionFormValues]);
+
+  const individualQuestionsFormFieldGroup: FormFieldGroup = useMemo(() => {
+    return {
+      title: "FormFieldGroupForTheWholeDummyCollection",
+      setValues: setIndividualQuestionFormValues,
+      actualValues: individualQuestionFormValues,
+      isInvalids: areindividualQuestionFormValuesInvalid,
+      setIsInvalids: setAreindividualQuestionFormValuesInvalid,
+    };
+  }, [areindividualQuestionFormValuesInvalid, individualQuestionFormValues]);
 
   useEffect(() => {
     setCollection((prevState: any) => {
-      return { ...prevState, formFieldGroup: formFieldGroup };
+      return { ...prevState, formFieldGroup: videoQuestionsFormFieldGroup };
     });
-  }, [formFieldGroup, formFieldGroup?.actualValues]);
+  }, [
+    videoQuestionsFormFieldGroup,
+    videoQuestionsFormFieldGroup?.actualValues,
+  ]);
 
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
@@ -61,11 +88,11 @@ const SingleCollection: React.FC = () => {
             )}
           </Grid>
           <Grid item sm={12} md={4}>
-            {collection && formFieldGroup && (
+            {collection && videoQuestionsFormFieldGroup && (
               <VideoIntakeQuestions
                 collection={collection}
                 setCollection={setCollection}
-                formFieldGroup={formFieldGroup}
+                formFieldGroup={videoQuestionsFormFieldGroup}
               />
             )}
           </Grid>
@@ -73,11 +100,11 @@ const SingleCollection: React.FC = () => {
             {collection && <VideoIntakePreview collection={collection} />}
           </Grid>
           <Grid item sm={12} md={4}>
-            {collection && formFieldGroup && (
+            {collection && videoQuestionsFormFieldGroup && (
               <IndividualIntakeQuestions
                 collection={collection}
                 setCollection={setCollection}
-                formFieldGroup={formFieldGroup}
+                formFieldGroup={individualQuestionsFormFieldGroup}
               />
             )}
           </Grid>
