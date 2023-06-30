@@ -108,5 +108,8 @@
   "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT": "Can video annotators in this collection add their own options?",
   "ADD_ANOTHER_OPTION": "Add another option",
   "DELETE": "Delete",
-  "REMOVE_QUESTION": "Remove this question"
+  "REMOVE_QUESTION": "Remove this question",
+  "INDIVIDUAL_INTAKE_QUESTIONS": "Individual Intake Questions",
+  "INDIVIDUAL_INTAKE_PREVIEW": "Individual Intake Preview",
+  "INDIVIDUAL_INTAKE_PREVIEW_DETAILS": "Individuals are usually featured in videos. Contributors to your collection will see the following questions when they create or edit new individuals in the collection."
 }

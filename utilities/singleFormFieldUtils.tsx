@@ -81,10 +81,8 @@ export function updateFormFieldStates(
   ); // || defaultValidValue; // @TODO if the map value evaluates to false, will the default give us what we expect?
   const currentFormIsInvalid: boolean =
     validCounter < (currentValidatorMethods?.length || 0);
-  // ? !question.validatorMethod(currentVal)
-  // : defaultValidValue;
 
-  // @TODO LEFT OFF HERE DECIDING WHETHER YOU WANTED TO SUBFUNCTIONALIZE THE VALIDATION STATE UPDATES
+  // @TODO DECIDE WHETHER YOU WANTED TO SUBFUNCTIONALIZE THE VALIDATION STATE UPDATES
 
   const validationStateAndLabelExist: boolean = Boolean(
     formFieldGroup?.isInvalids && question?.label
@@ -102,7 +100,6 @@ export function clearAllOptionFields(
   preExistingVals: {},
   optionQueryStr: string
 ) {
-  // const preExistingActualVals = get(optionFormFieldGroup, ["actualValues"]);
   const purgedActualVals = reduce(
     preExistingVals,
     (memo, currentVal, currentKey) => {
@@ -115,9 +112,6 @@ export function clearAllOptionFields(
     {}
   );
   return purgedActualVals;
-  // optionFormFieldGroup?.setValues
-  //   ? optionFormFieldGroup.setValues(purgedActualVals)
-  //   : undefined;
 }
 
 export function updateOptionFormFieldGroupWithOptionList(
@@ -132,30 +126,14 @@ export function updateOptionFormFieldGroupWithOptionList(
   if (optionFormFieldGroup.setValues) {
     optionFormFieldGroup.setValues(cleanedActualVals);
   }
-  console.log("deleteMe options are: ");
-  console.log(options);
   forEach(options, (option, optionIdx) => {
-    console.log("deleteMe option and optionIndex going into the loop are: ");
-    console.log(option);
-    console.log(optionIdx);
     const newActualValue: {} = { ["Option " + (optionIdx + 1)]: option }; // @TODO somehow shunt part of this to en.json
-    console.log("deleteMe newActualValue is: ");
-    console.log(newActualValue);
     if (optionFormFieldGroup.setValues) {
-      console.log("deleteMe got here setValues exists");
       optionFormFieldGroup.setValues((prevState: {}) => {
         const returnVal = { ...prevState, ...newActualValue };
-        console.log("deleteMe returnVal is: ");
-        console.log(returnVal);
-        // return { ...prevState, ...newActualValue };
         return returnVal;
       });
     }
-    // optionFormFieldGroup?.setValues
-    //   ? optionFormFieldGroup.setValues((prevState: {}) => {
-    //       return { ...prevState, ...newActualValue };
-    //     })
-    //   : undefined;
   });
 }
 
@@ -365,13 +343,13 @@ export function updateCheckboxGeneral(
       };
     }
     const modifiedIsInvalids: any = {
-      ...collection?.formFieldGroup?.isInvalids,
+      ...collection?.intakeQuestionsformFieldGroup?.isInvalids,
       ...formFieldGroup?.isInvalids,
       ...firstTimeIsCustomOptionsUncheckedInvalid,
     };
 
     const modifiedFormFieldGroup: any = {
-      ...collection?.formFieldGroup,
+      ...collection?.intakeQuestionsformFieldGroup,
       isInvalids: modifiedIsInvalids,
     };
 

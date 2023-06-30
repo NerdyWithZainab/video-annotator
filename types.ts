@@ -6,7 +6,8 @@ export interface Collection {
   language: string;
   intakeQuestions?: SingleFormField[];
   excludeFromDetailList: string[];
-  formFieldGroup?: FormFieldGroup;
+  intakeQuestionsformFieldGroup?: FormFieldGroup;
+  individualsFormFieldGroup?: FormFieldGroup;
 }
 
 export interface FormFieldGroup {

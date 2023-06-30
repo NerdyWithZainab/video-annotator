@@ -15,7 +15,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { filter, get, reduce } from "lodash-es";
 import dayjs from "dayjs";
 
-// import DeleteAutocompleteOption from "../DeleteAutocompleteOption";
 import { FormFieldGroup, SingleFormField } from "../../types";
 import {
   updateFormFieldStates,
@@ -26,10 +25,12 @@ const SingleFormField: React.FC<{
   question: SingleFormField;
   formFieldGroup: FormFieldGroup | undefined;
   areAutocompleteOptionsDeletable?: boolean;
+  stringForAutocompleteOptions?: string;
 }> = ({
   question,
   formFieldGroup,
   areAutocompleteOptionsDeletable = false,
+  stringForAutocompleteOptions = "Option",
 }) => {
   const intl: IntlShape = useIntl();
   const [localVal, setLocalVal] = useState<string | null>(null);
@@ -88,6 +89,7 @@ const SingleFormField: React.FC<{
   const autocompleteExtras: {} = question?.autocompleteExtras || {};
 
   const handleDeleteClick: () => void = () => {
+    // @TODO maybe experiment with putting this in some kind of utility file now that other complexities have been resolved... look for async issues when deleting middle options from autocomplete in VideoIntakeQuestions for instance if you try this
     const currentActualValues = get(formFieldGroup, ["actualValues"]);
     const filteredAcutalValues = reduce(
       currentActualValues,
@@ -106,7 +108,7 @@ const SingleFormField: React.FC<{
     const autoCompleteVals: string[] = filter(
       filteredAcutalValues || {},
       (_optionFormFieldGroupValue, optionFormFieldGroupKey) => {
-        return optionFormFieldGroupKey.startsWith("Option"); // @TODO prevent the collection owner from making labels that start with Option??? Or at least test for wonky behavior
+        return optionFormFieldGroupKey.startsWith(stringForAutocompleteOptions);
       }
     );
     if (formFieldGroup) {
@@ -114,16 +116,6 @@ const SingleFormField: React.FC<{
         autoCompleteVals,
         formFieldGroup
       );
-      // console.log("deleteMe autoCompleteVals are: ");
-      // console.log(autoCompleteVals);
-      // console.log("deleteMe question is: ");
-      // console.log(question);
-
-      // const targetAutoCompleteValsIdx: number =
-      //   (Number(question?.label?.replace("Option ", "")) || 0) - 1;
-      // setLocalVal(autoCompleteVals[targetAutoCompleteValsIdx]);
-
-      // @TODO you have to setLocalVal(currentVal); somehow
     }
   };
 
@@ -193,7 +185,6 @@ const SingleFormField: React.FC<{
             }
             style={{ marginBottom: 10, maxWidth: 400 }}
             onChange={handleTextChange}
-            // value={localVal}
             value={get(formFieldGroup, ["actualValues", question?.label], "")}
           ></TextField>
           {areAutocompleteOptionsDeletable && formFieldGroup && (

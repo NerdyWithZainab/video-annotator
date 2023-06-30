@@ -6,6 +6,8 @@ import VideoIntakePreview from "../../components/VideoIntakePreview";
 import VideoIntakeQuestions from "../../components/VideoIntakeQuestions";
 import { Collection, FormFieldGroup } from "../../types";
 import { shamCollection } from "../../dummy_data/dummyCollection";
+import IndividualIntakeQuestions from "../../components/IndividualIntakeQuestions";
+import IndividualIntakePreview from "../../components/IndividualIntakePreview";
 
 const SingleCollection: React.FC = () => {
   const [formValues, setFormValues] = useState<{}>({});
@@ -69,6 +71,18 @@ const SingleCollection: React.FC = () => {
           </Grid>
           <Grid item sm={12} md={8}>
             {collection && <VideoIntakePreview collection={collection} />}
+          </Grid>
+          <Grid item sm={12} md={4}>
+            {collection && formFieldGroup && (
+              <IndividualIntakeQuestions
+                collection={collection}
+                setCollection={setCollection}
+                formFieldGroup={formFieldGroup}
+              />
+            )}
+          </Grid>
+          <Grid item sm={12} md={8}>
+            {collection && <IndividualIntakePreview collection={collection} />}
           </Grid>
         </>
       )}

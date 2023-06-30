@@ -6,24 +6,24 @@ import InfoPanel from "../InfoPanel";
 import InfoPanelBody from "../InfoPanel/InfoPanelBody";
 import SingleFormField from "../SingleFormField";
 
-const VideoIntakePreview: React.FC<{
+const IndividualIntakePreview: React.FC<{
   collection: Collection;
 }> = ({ collection }) => {
   const formFieldGroup: FormFieldGroup | undefined = get(
     collection,
-    "formFieldGroup"
+    "intakeQuestionsformFieldGroup"
   );
 
   return (
     <InfoPanel
-      titleId="VIDEO_INTAKE_PREVIEW"
-      titleDefault="Video Intake Preview"
+      titleId="INDIVIDUAL_INTAKE_PREVIEW"
+      titleDefault="Individual Intake Preview"
       textOverrides={{ textAlign: "center" }}
       styleOverrides={{ maxHeight: 1000 }}
     >
       <InfoPanelBody
-        bodyId="INTAKE_PREVIEW_DETAILS"
-        bodyDefault="Contributors to your collection will see the following questions when they submit new videos to the collection: "
+        bodyId="INDIVIDUAL_INTAKE_PREVIEW_DETAILS"
+        bodyDefault="Contributors to your collection will see the following questions when they create or edit new individuals in the collection: "
       />
       <Grid container>
         {map(collection?.intakeQuestions, (intakeQuestion) => {
@@ -49,4 +49,4 @@ const VideoIntakePreview: React.FC<{
     </InfoPanel>
   );
 };
-export default VideoIntakePreview;
+export default IndividualIntakePreview;

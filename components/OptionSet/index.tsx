@@ -128,6 +128,7 @@ const OptionSet: React.FC<{
           question={optionFormField}
           areAutocompleteOptionsDeletable={true}
           formFieldGroup={optionFormFieldGroup}
+          stringForAutocompleteOptions={"Option"}
         />
       </>
     );

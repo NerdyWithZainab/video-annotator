@@ -10,7 +10,7 @@ import InfoPanel from "../InfoPanel";
 import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
 import { defaultDoNotDisplays } from "../../dummy_data/dummyCollection";
 
-const VideoIntakeQuestions: React.FC<{
+const IndividualIntakeQuestions: React.FC<{
   collection: Collection;
   setCollection: (collection: any) => void;
   formFieldGroup: FormFieldGroup;
@@ -114,8 +114,8 @@ const VideoIntakeQuestions: React.FC<{
 
   return (
     <InfoPanel
-      titleId="VIDEO_INTAKE_QUESTIONS"
-      titleDefault="Video Intake Questions"
+      titleId="INDIVIDUAL_INTAKE_QUESTIONS"
+      titleDefault="Individual Intake Questions"
       textOverrides={{ textAlign: "center" }}
       styleOverrides={{ maxHeight: 1000 }}
     >
@@ -139,4 +139,4 @@ const VideoIntakeQuestions: React.FC<{
     </InfoPanel>
   );
 };
-export default VideoIntakeQuestions;
+export default IndividualIntakeQuestions;
