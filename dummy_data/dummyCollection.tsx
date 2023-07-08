@@ -104,6 +104,137 @@ const seventhQuestion: SingleFormField = {
   shouldBeCheckboxes: ["isRequired"],
 };
 
+const lastNameIndividualQuestion: SingleFormField = {
+  label: "Last Name",
+  type: "Text",
+  language: "English",
+  isRequired: true,
+  testId: "url",
+  doNotDisplay: defaultDoNotDisplays,
+  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  validatorMethods: [isNonEmptyString],
+  shouldBeCheckboxes: ["isRequired"],
+};
+
+const firstNameIndividualQuestion: SingleFormField = {
+  label: "First Name",
+  type: "Text",
+  language: "English",
+  isRequired: true,
+  testId: "url",
+  doNotDisplay: defaultDoNotDisplays,
+  invalidInputMessage: "FIELD_CANNOT_BE_BLANK",
+  validatorMethods: [isNonEmptyString],
+  shouldBeCheckboxes: ["isRequired"],
+};
+
+const genderIndividualQuestion: SingleFormField = {
+  label: "Gender",
+  type: "Autocomplete",
+  language: "English",
+  isRequired: false,
+  testId: "gender",
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
+  shouldBeCheckboxes: ["isRequired"],
+  validatorMethods: [isNonEmptyString],
+  invalidInputMessage: "INPUT_INVALID",
+  autocompleteOptions: [
+    "Male",
+    "Female",
+    "Trans Male",
+    "Trans Female",
+    "Non-binary",
+  ],
+  usersCanAddCustomOptions: false,
+};
+
+const giRankIndividualQuestion: SingleFormField = {
+  label: "Gi Rank",
+  type: "Autocomplete",
+  language: "English",
+  isRequired: false,
+  testId: "giRank",
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
+  shouldBeCheckboxes: ["isRequired"],
+  validatorMethods: [isNonEmptyString],
+  invalidInputMessage: "INPUT_INVALID",
+  autocompleteOptions: ["White", "Blue", "Purple", "Brown", "Black"],
+  usersCanAddCustomOptions: true,
+};
+
+const noGiRankIndividualQuestion: SingleFormField = {
+  label: "No Gi Rank",
+  type: "Autocomplete",
+  language: "English",
+  isRequired: false,
+  testId: "noGiRank",
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
+  shouldBeCheckboxes: ["isRequired"],
+  validatorMethods: [isNonEmptyString],
+  invalidInputMessage: "INPUT_INVALID",
+  autocompleteOptions: ["Novice", "Intermediate", "Advanced", "Elite"],
+  usersCanAddCustomOptions: true,
+};
+
+const weightClassIndividualQuestion: SingleFormField = {
+  label: "Weight Class",
+  type: "Autocomplete",
+  language: "English",
+  isRequired: false,
+  testId: "weightClass",
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
+  shouldBeCheckboxes: ["isRequired"],
+  validatorMethods: [isNonEmptyString],
+  invalidInputMessage: "INPUT_INVALID",
+  autocompleteOptions: [
+    "+60 kg",
+    "+99 kg",
+    "-60 kg",
+    "-66 kg",
+    "-88 kg",
+    "-99 kg",
+    "Absolute; Open Class",
+    "Bantam",
+    "Catchweight",
+    "Feather",
+    "Heavy",
+    "Light",
+    "Light-feather",
+    "Medium-heavy",
+    "Middle",
+    "Rooster",
+    "Welterweight",
+    "Unknown",
+  ],
+  usersCanAddCustomOptions: true,
+};
+
+const ageClassIndividualQuestion: SingleFormField = {
+  label: "Age Class",
+  type: "Autocomplete",
+  language: "English",
+  isRequired: false,
+  testId: "ageClass",
+  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
+  shouldBeCheckboxes: ["isRequired"],
+  validatorMethods: [isNonEmptyString],
+  invalidInputMessage: "INPUT_INVALID",
+  autocompleteOptions: [
+    "Adult",
+    "Juvenile 1",
+    "Juvenile 2",
+    "Master 1",
+    "Master 2",
+    "Master 3",
+    "Master 4",
+    "Master 5",
+    "Master 6",
+    "Unknown",
+    "Youth",
+  ],
+  usersCanAddCustomOptions: true,
+};
+
 export const shamCollection: Collection = {
   name: "Brazilian Jiu Jitsu",
   nameOfVideo: "Match",
@@ -118,6 +249,15 @@ export const shamCollection: Collection = {
     // fifthQuestion,
     sixthQuestion,
     seventhQuestion,
+  ],
+  individualIntakeQuestions: [
+    lastNameIndividualQuestion,
+    firstNameIndividualQuestion,
+    genderIndividualQuestion,
+    giRankIndividualQuestion,
+    noGiRankIndividualQuestion,
+    weightClassIndividualQuestion,
+    ageClassIndividualQuestion,
   ],
   excludeFromDetailList: [
     "videoIntakeQuestions",
