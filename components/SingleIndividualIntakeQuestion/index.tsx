@@ -8,34 +8,24 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { filter, get, map } from "lodash-es";
+import { get, map } from "lodash-es";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import {
-  Collection,
-  FormFieldGroup,
-  // QuestionValidity,
-  SingleFormField,
-} from "../../types";
+import { Collection, FormFieldGroup, SingleFormField } from "../../types";
 import { convertCamelCaseToCapitalCase } from "../../utilities/textUtils";
 import formFieldConfig from "../../formFieldConfig.json";
 import {
   calculateCurrentAttributesToDisplay,
   updateCollection,
-  updateFormFieldStates,
   updateIsRequiredChecked,
   updateIsRequiredUnchecked,
-  updateUsersCanAddCustomOptionsChecked,
-  updateUsersCanAddCustomOptionsUnchecked,
 } from "../../utilities/singleFormFieldUtils";
 import OptionSet from "../OptionSet";
-import { isNonEmptyString } from "../../utilities/validators";
 import {
-  deleteSingleQuestionInCollection,
   transformQuestion,
   updateSingleQuestionInCollection,
 } from "../../utilities/videoIntakeQuestionUtils";
 
-const SingleVideoIntakeQuestion: React.FC<{
+const SingleIndividualIntakeQuestion: React.FC<{
   intakeQuestionEl: any;
   intakeQuestionKey: string;
   wholeQuestion: SingleFormField;
@@ -105,8 +95,8 @@ const SingleVideoIntakeQuestion: React.FC<{
       setCollection,
       intakeQuestionIdx,
       transformedQuestion,
-      collection?.videoIntakeQuestions || [],
-      "videoIntakeQuestions"
+      collection?.individualIntakeQuestions || [],
+      "individualIntakeQuestions"
     ); // @TODO LEFT OFF HERE REPLACING INTAKEQUESTIONS GLOBALLY AND ALSO FIGURING OUT HOW TO HIDE FORMFIELD GROUPS FROM THE COLLECTION DETAILS
   };
 
@@ -125,7 +115,7 @@ const SingleVideoIntakeQuestion: React.FC<{
       intakeQuestionKey,
       currentVal,
       setCollection,
-      "videoIntakeQuestions"
+      "individualIntakeQuestions"
     );
   };
 
@@ -134,14 +124,14 @@ const SingleVideoIntakeQuestion: React.FC<{
       // isRequired is being set to false. This means that we need to remove the isNonEmptyString method from the validationMethods array for this question
       updateIsRequiredUnchecked(
         formFieldGroup,
-        "videoQuestionsFormFieldGroup",
+        "individualQuestionsFormFieldGroup",
         wholeQuestion,
         collection,
         intakeQuestionIdx,
         intakeQuestionKey,
         intakeQuestionEl,
         setCollection,
-        "videoIntakeQuestions"
+        "individualIntakeQuestions"
       );
     } else if (
       intakeQuestionKey === "isRequired" &&
@@ -149,14 +139,14 @@ const SingleVideoIntakeQuestion: React.FC<{
     ) {
       updateIsRequiredChecked(
         formFieldGroup,
-        "videoQuestionsFormFieldGroup",
+        "individualQuestionsFormFieldGroup",
         wholeQuestion,
         collection,
         intakeQuestionIdx,
         intakeQuestionKey,
         intakeQuestionEl,
         setCollection,
-        "videoIntakeQuestions"
+        "individualIntakeQuestions"
       );
     } else {
       updateCollection(
@@ -165,7 +155,7 @@ const SingleVideoIntakeQuestion: React.FC<{
         intakeQuestionKey,
         !intakeQuestionEl,
         setCollection,
-        "videoIntakeQuestions"
+        "individualIntakeQuestions"
       );
     }
   };
@@ -187,11 +177,11 @@ const SingleVideoIntakeQuestion: React.FC<{
           <OptionSet
             key={intakeQuestionIdx}
             formField={wholeQuestion}
-            formFieldGroupString={"videoQuestionsFormFieldGroup"}
+            formFieldGroupString={"individualQuestionsFormFieldGroup"}
             collection={collection}
             targetFormFieldIdx={intakeQuestionIdx}
             setCollection={setCollection}
-            whichIntakeQuestions={"videoIntakeQuestions"}
+            whichIntakeQuestions={"individualIntakeQuestions"}
           />
         )}
         {shouldBeTextField && (
@@ -254,4 +244,4 @@ const SingleVideoIntakeQuestion: React.FC<{
   );
 };
 
-export default SingleVideoIntakeQuestion;
+export default SingleIndividualIntakeQuestion;

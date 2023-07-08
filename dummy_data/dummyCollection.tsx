@@ -112,10 +112,10 @@ export const shamCollection: Collection = {
   language: "English",
   videoIntakeQuestions: [
     firstQuestion,
-    secondQuestion,
+    // secondQuestion,
     thirdQuestion,
     fourthQuestion,
-    fifthQuestion,
+    // fifthQuestion,
     sixthQuestion,
     seventhQuestion,
   ],

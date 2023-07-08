@@ -13,6 +13,8 @@ const CollectionDetailsView: React.FC<{
   collection: Collection;
   setIsCollectionDetailsInEditMode: (val: boolean) => void;
 }> = ({ collection, setIsCollectionDetailsInEditMode }) => {
+  // console.log("deleteMe collection in CollectionDetailsView is currently");
+  // console.log(collection);
   return (
     <InfoPanel
       titleId="COLLECTION_DETAILS"

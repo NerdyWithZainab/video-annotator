@@ -10,6 +10,7 @@ import IndividualIntakeQuestions from "../../components/IndividualIntakeQuestion
 import IndividualIntakePreview from "../../components/IndividualIntakePreview";
 
 const SingleCollection: React.FC = () => {
+  console.log("deleteMe main collection page re-renders");
   const [videoQuestionFormValues, setVideoQuestionFormValues] = useState<{}>(
     {}
   );
@@ -29,6 +30,8 @@ const SingleCollection: React.FC = () => {
 
   useEffect(() => {
     const initialCollection = { ...shamCollection };
+    // console.log("deleteMe initialCollection is: ");
+    // console.log(initialCollection);
     initialCollection.videoQuestionsFormFieldGroup =
       videoQuestionsFormFieldGroup;
     initialCollection.individualQuestionsFormFieldGroup =
@@ -59,6 +62,8 @@ const SingleCollection: React.FC = () => {
 
   useEffect(() => {
     setCollection((prevState: any) => {
+      console.log("deleteMe prevState in the useEffect is: ");
+      console.log(prevState);
       return {
         ...prevState,
         videoQuestionsFormFieldGroup: videoQuestionsFormFieldGroup,

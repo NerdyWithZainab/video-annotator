@@ -7,7 +7,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomError from "../Error";
 import InfoPanel from "../InfoPanel";
-import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
+import SingleIndividualIntakeQuestion from "../SingleIndividualIntakeQuestion";
 import { defaultDoNotDisplays } from "../../dummy_data/dummyCollection";
 
 const IndividualIntakeQuestions: React.FC<{
@@ -17,7 +17,7 @@ const IndividualIntakeQuestions: React.FC<{
 }> = ({ collection, setCollection, formFieldGroup }) => {
   const [individualIntakeQuestions, setIndividualIntakeQuestions] = useState<
     SingleFormField[] | undefined
-  >(undefined);
+  >(get(collection, ["individualIntakeQuestions"]));
   const [error, setError] = useState<string>("");
 
   const newQuestion: SingleFormField = useMemo(() => {
@@ -97,7 +97,7 @@ const IndividualIntakeQuestions: React.FC<{
                   </Button>
                 </>
               )}
-              <SingleVideoIntakeQuestion
+              <SingleIndividualIntakeQuestion
                 key={intakeQuestionKey}
                 intakeQuestionEl={intakeQuestionEl}
                 intakeQuestionKey={intakeQuestionKey}

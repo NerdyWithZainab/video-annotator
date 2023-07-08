@@ -9,9 +9,11 @@ import SingleFormField from "../SingleFormField";
 const VideoIntakePreview: React.FC<{
   collection: Collection;
 }> = ({ collection }) => {
+  // console.log("deleteMe collection in VideoIntakePreview is: ");
+  // console.log(collection);
   const formFieldGroup: FormFieldGroup | undefined = get(
     collection,
-    "formFieldGroup"
+    "videoQuestionsFormFieldGroup"
   );
 
   return (
@@ -26,25 +28,31 @@ const VideoIntakePreview: React.FC<{
         bodyDefault="Contributors to your collection will see the following questions when they submit new videos to the collection: "
       />
       <Grid container>
-        {map(collection?.videoIntakeQuestions, (intakeQuestion) => {
-          return (
-            <Grid item lg={12} sm={12} key={intakeQuestion?.label}>
-              <SingleFormField
-                question={intakeQuestion}
-                formFieldGroup={formFieldGroup}
-                key={intakeQuestion?.label}
+        {map(
+          collection?.videoIntakeQuestions,
+          (intakeQuestion, intakeQuestionIdx) => {
+            if (intakeQuestion) {
+              return (
+                <Grid item lg={12} sm={12} key={intakeQuestionIdx}>
+                  <SingleFormField
+                    question={intakeQuestion}
+                    formFieldGroup={formFieldGroup}
+                    key={intakeQuestionIdx}
+                  />
+                </Grid>
+              );
+            }
+          }
+        )}
+        {collection?.videoQuestionsFormFieldGroup &&
+          collection?.videoIntakeQuestions && (
+            <Grid item lg={12} sm={12}>
+              <ComposedFormSubmissionButton
+                questions={collection?.videoIntakeQuestions || []}
+                formFieldGroup={collection?.videoQuestionsFormFieldGroup}
               />
             </Grid>
-          );
-        })}
-        {collection?.videoQuestionsFormFieldGroup && (
-          <Grid item lg={12} sm={12}>
-            <ComposedFormSubmissionButton
-              questions={collection?.videoIntakeQuestions || []}
-              formFieldGroup={collection?.videoQuestionsFormFieldGroup}
-            />
-          </Grid>
-        )}
+          )}
       </Grid>
     </InfoPanel>
   );

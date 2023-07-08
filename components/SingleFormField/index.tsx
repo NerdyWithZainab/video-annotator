@@ -22,7 +22,7 @@ import {
 } from "../../utilities/singleFormFieldUtils";
 
 const SingleFormField: React.FC<{
-  question: SingleFormField;
+  question: SingleFormField | undefined;
   formFieldGroup: FormFieldGroup | undefined;
   areAutocompleteOptionsDeletable?: boolean;
   stringForAutocompleteOptions?: string;
@@ -36,7 +36,7 @@ const SingleFormField: React.FC<{
   const [localVal, setLocalVal] = useState<string | null>(null);
   const currentIsInvalid: boolean = get(
     formFieldGroup,
-    ["isInvalids", question?.label],
+    ["isInvalids", get(question, ["label"])],
     false
   );
 
@@ -70,20 +70,26 @@ const SingleFormField: React.FC<{
     event: SyntheticEvent<Element, Event>,
     newValue: any
   ) => void = (_event: SyntheticEvent<Element, Event>, newValue: any) => {
-    if (newValue) {
-      updateFormFieldStates(newValue, false, formFieldGroup, question);
-    } else {
-      updateFormFieldStates("", false, formFieldGroup, question); // otherwise, there is an error
+    if (question) {
+      if (newValue) {
+        updateFormFieldStates(newValue, false, formFieldGroup, question);
+      } else {
+        updateFormFieldStates("", false, formFieldGroup, question); // otherwise, there is an error
+      }
     }
   };
 
   const handleCheckChange: (event: any) => void = (event: any) => {
     const currentVal: any = event?.target?.checked;
-    updateFormFieldStates(currentVal, false, formFieldGroup, question);
+    if (question) {
+      updateFormFieldStates(currentVal, false, formFieldGroup, question);
+    }
   };
 
   const handleDateChange: (newValue: {}) => void = (newValue: {}) => {
-    updateFormFieldStates(newValue, false, formFieldGroup, question);
+    if (question) {
+      updateFormFieldStates(newValue, false, formFieldGroup, question);
+    }
   };
 
   const autocompleteExtras: {} = question?.autocompleteExtras || {};

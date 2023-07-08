@@ -17,11 +17,12 @@ const VideoIntakeQuestions: React.FC<{
 }> = ({ collection, setCollection, formFieldGroup }) => {
   const [videoIntakeQuestions, setVideoIntakeQuestions] = useState<
     SingleFormField[] | undefined
-  >(undefined);
+  >(get(collection, ["videoIntakeQuestions"]));
   const [error, setError] = useState<string>("");
 
   const newQuestion: SingleFormField = useMemo(() => {
     return {
+      key: get(collection, ["videoIntakeQuestions"], []).length + 1,
       label: "Change Me",
       type: "Text",
       language: "English",
@@ -31,12 +32,17 @@ const VideoIntakeQuestions: React.FC<{
       validatorMethods: [],
       shouldBeCheckboxes: ["isRequired"],
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    // if (videoIntakeQuestions) {
     setCollection((prevState: any) => {
+      console.log("deleteMe videoIntakeQuestions are: ");
+      console.log(videoIntakeQuestions);
       return { ...prevState, videoIntakeQuestions: videoIntakeQuestions };
     });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
 

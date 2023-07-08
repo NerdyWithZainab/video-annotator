@@ -23,17 +23,20 @@ import SingleFormFieldComponent from "../SingleFormField";
 
 const OptionSet: React.FC<{
   formField: SingleFormField;
+  formFieldGroupString: string;
   collection: Collection;
   targetFormFieldIdx: number;
   setCollection: (collection: Collection) => void;
   whichIntakeQuestions: string;
 }> = ({
   formField,
+  formFieldGroupString,
   collection,
   targetFormFieldIdx,
   setCollection,
   whichIntakeQuestions,
 }) => {
+  console.log("deleteMe got here a1");
   const intl: IntlShape = useIntl();
   const checkBoxLabel: string = intl.formatMessage({
     id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",
@@ -159,22 +162,26 @@ const OptionSet: React.FC<{
     if (!canAddOptions === true) {
       updateUsersCanAddCustomOptionsChecked(
         optionFormFieldGroup,
+        formFieldGroupString,
         formField,
         collection,
         targetFormFieldIdx,
         "usersCanAddCustomOptions",
         !canAddOptions,
-        setCollection
+        setCollection,
+        whichIntakeQuestions
       );
     } else if (!canAddOptions === false) {
       updateUsersCanAddCustomOptionsUnchecked(
         optionFormFieldGroup,
+        formFieldGroupString,
         formField,
         collection,
         targetFormFieldIdx,
         "usersCanAddCustomOptions",
         !canAddOptions,
-        setCollection
+        setCollection,
+        whichIntakeQuestions
       );
     }
   };

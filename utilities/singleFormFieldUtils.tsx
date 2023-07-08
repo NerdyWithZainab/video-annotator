@@ -42,7 +42,8 @@ export function updateCollection(
   newIntakeQuestionSet[questionIdx] = modifiedQuestion;
 
   setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: newIntakeQuestionSet };
+    console.log("deleteMe");
+    return { ...prevState, [whichIntakeQuestions]: newIntakeQuestionSet };
   });
 }
 
@@ -167,6 +168,7 @@ export function calculateWhetherCustomOptionValuesArePermitted(
 
 export function updateIsRequiredUnchecked(
   formFieldGroup: FormFieldGroup,
+  formFieldGroupString: string,
   wholeQuestion: SingleFormField,
   collection: Collection,
   intakeQuestionIdx: number,
@@ -177,6 +179,7 @@ export function updateIsRequiredUnchecked(
 ) {
   updateCheckboxGeneral(
     formFieldGroup,
+    formFieldGroupString,
     wholeQuestion,
     collection,
     intakeQuestionIdx,
@@ -191,6 +194,7 @@ export function updateIsRequiredUnchecked(
 
 export function updateIsRequiredChecked(
   formFieldGroup: FormFieldGroup,
+  formFieldGroupString: string,
   wholeQuestion: SingleFormField,
   collection: Collection,
   intakeQuestionIdx: number,
@@ -201,6 +205,7 @@ export function updateIsRequiredChecked(
 ) {
   updateCheckboxGeneral(
     formFieldGroup,
+    formFieldGroupString,
     wholeQuestion,
     collection,
     intakeQuestionIdx,
@@ -215,15 +220,18 @@ export function updateIsRequiredChecked(
 
 export function updateUsersCanAddCustomOptionsUnchecked(
   formFieldGroup: FormFieldGroup,
+  formFieldGroupString: string,
   wholeQuestion: SingleFormField,
   collection: Collection,
   intakeQuestionIdx: number,
   intakeQuestionKey: string,
   intakeQuestionEl: any,
-  setCollection: (collection: any) => void
+  setCollection: (collection: any) => void,
+  whichIntakeQuestions: string
 ) {
   updateCheckboxGeneral(
     formFieldGroup,
+    formFieldGroupString,
     wholeQuestion,
     collection,
     intakeQuestionIdx,
@@ -231,21 +239,25 @@ export function updateUsersCanAddCustomOptionsUnchecked(
     intakeQuestionEl,
     setCollection,
     true,
-    isValidOption
+    isValidOption,
+    whichIntakeQuestions
   );
 }
 
 export function updateUsersCanAddCustomOptionsChecked(
   formFieldGroup: FormFieldGroup,
+  formFieldGroupString: string,
   wholeQuestion: SingleFormField,
   collection: Collection,
   intakeQuestionIdx: number,
   intakeQuestionKey: string,
   intakeQuestionEl: any,
-  setCollection: (collection: any) => void
+  setCollection: (collection: any) => void,
+  whichIntakeQuestions: string
 ) {
   updateCheckboxGeneral(
     formFieldGroup,
+    formFieldGroupString,
     wholeQuestion,
     collection,
     intakeQuestionIdx,
@@ -253,7 +265,8 @@ export function updateUsersCanAddCustomOptionsChecked(
     intakeQuestionEl,
     setCollection,
     false,
-    isValidOption
+    isValidOption,
+    whichIntakeQuestions
   );
 }
 

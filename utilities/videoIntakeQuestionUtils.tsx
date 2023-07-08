@@ -101,7 +101,7 @@ export function updateSingleQuestionInCollection(
   const modifiedQuestionSet: SingleFormField[] = intakeQuestions || [];
   modifiedQuestionSet[questionIdx] = newQuestion;
   setCollection((prevState: any) => {
-    return { ...prevState, intakeQuestions: modifiedQuestionSet };
+    return { ...prevState, [whichIntakeQuestion]: modifiedQuestionSet };
   });
 }
 
