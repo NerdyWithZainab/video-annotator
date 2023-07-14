@@ -37,11 +37,11 @@ const EventIntakeQuestions: React.FC<{
     setCollection((prevState: any) => {
       return {
         ...prevState,
-        EventIntakeQuestions: EventIntakeQuestions,
+        eventIntakeQuestions: eventIntakeQuestions,
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [EventIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
+  }, [eventIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
 
   const deleteIntakeQuestion: (questionIdx: number) => void = (questionIdx) => {
     setEventIntakeQuestions((prevState) => {

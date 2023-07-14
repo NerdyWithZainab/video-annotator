@@ -262,9 +262,11 @@ export const shamCollection: Collection = {
   excludeFromDetailList: [
     "videoIntakeQuestions",
     "individualIntakeQuestions",
+    "eventIntakeQuestions",
     "excludeFromDetailList",
     "videoQuestionsFormFieldGroup",
     "individualQuestionsFormFieldGroup",
+    "eventQuestionsFormFieldGroup",
   ],
   // formFieldGroup: shamFormFieldGroup // gets populated elsewhere now because passing useStates through different components was silly
 };

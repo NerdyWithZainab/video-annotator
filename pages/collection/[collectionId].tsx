@@ -9,6 +9,8 @@ import { shamCollection } from "../../dummy_data/dummyCollection";
 import IndividualIntakeQuestions from "../../components/IndividualIntakeQuestions";
 import IndividualIntakePreview from "../../components/IndividualIntakePreview";
 import { get } from "lodash-es";
+import EventIntakeQuestions from "../../components/EventIntakeQuestions";
+import EventIntakePreview from "../../components/EventIntakePreview";
 
 const SingleCollection: React.FC = () => {
   // console.log("deleteMe main collection page re-renders");
@@ -17,14 +19,23 @@ const SingleCollection: React.FC = () => {
   );
   const [individualQuestionFormValues, setIndividualQuestionFormValues] =
     useState<{}>({});
+  const [eventQuestionFormValues, setEventQuestionFormValues] = useState<{}>(
+    {}
+  );
+
   const [
     arevideoQuestionFormValuesInvalid,
     setArevideoQuestionFormValuesInvalid,
   ] = useState<{}>({});
   const [
-    areindividualQuestionFormValuesInvalid,
-    setAreindividualQuestionFormValuesInvalid,
+    areIndividualQuestionFormValuesInvalid,
+    setAreIndividualQuestionFormValuesInvalid,
   ] = useState<{}>({});
+  const [
+    areEventQuestionFormValuesInvalid,
+    setAreEventQuestionFormValuesInvalid,
+  ] = useState<{}>({});
+
   const [collection, setCollection] = useState<Collection>();
   const [isCollectionDetailsInEditMode, setIsCollectionDetailsInEditMode] =
     useState<boolean>(false);
@@ -37,6 +48,8 @@ const SingleCollection: React.FC = () => {
       videoQuestionsFormFieldGroup;
     initialCollection.individualQuestionsFormFieldGroup =
       individualQuestionsFormFieldGroup;
+    initialCollection.eventQuestionsFormFieldGroup =
+      eventQuestionsFormFieldGroup;
     setCollection(initialCollection);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -56,10 +69,20 @@ const SingleCollection: React.FC = () => {
       title: "IndividualFormFieldGroupForTheWholeDummyCollection",
       setValues: setIndividualQuestionFormValues,
       actualValues: individualQuestionFormValues,
-      isInvalids: areindividualQuestionFormValuesInvalid,
-      setIsInvalids: setAreindividualQuestionFormValuesInvalid,
+      isInvalids: areIndividualQuestionFormValuesInvalid,
+      setIsInvalids: setAreIndividualQuestionFormValuesInvalid,
     };
-  }, [areindividualQuestionFormValuesInvalid, individualQuestionFormValues]);
+  }, [areIndividualQuestionFormValuesInvalid, individualQuestionFormValues]);
+
+  const eventQuestionsFormFieldGroup: FormFieldGroup = useMemo(() => {
+    return {
+      title: "EventFormFieldGroupForTheWholeDummyCollection",
+      setValues: setEventQuestionFormValues,
+      actualValues: eventQuestionFormValues,
+      isInvalids: areEventQuestionFormValuesInvalid,
+      setIsInvalids: setAreEventQuestionFormValuesInvalid,
+    };
+  }, [areEventQuestionFormValuesInvalid, eventQuestionFormValues]);
 
   useEffect(() => {
     setCollection((prevState: any) => {
@@ -69,6 +92,7 @@ const SingleCollection: React.FC = () => {
         ...prevState,
         videoQuestionsFormFieldGroup: videoQuestionsFormFieldGroup,
         individualQuestionsFormFieldGroup: individualQuestionsFormFieldGroup,
+        eventQuestionsFormFieldGroup: eventQuestionsFormFieldGroup,
       };
     });
   }, [
@@ -76,6 +100,8 @@ const SingleCollection: React.FC = () => {
     videoQuestionsFormFieldGroup?.actualValues,
     individualQuestionsFormFieldGroup,
     individualQuestionsFormFieldGroup?.actualValues,
+    eventQuestionsFormFieldGroup,
+    eventQuestionsFormFieldGroup?.actualValues,
   ]);
 
   const videoPreviewRef = useRef(null);
@@ -143,7 +169,7 @@ const SingleCollection: React.FC = () => {
             )}
           </Grid>
           <Grid item sm={12} md={4}>
-            {collection && intakeQuestionsFormFieldGroup && (
+            {collection && individualQuestionsFormFieldGroup && (
               <IndividualIntakeQuestions
                 collection={collection}
                 setCollection={setCollection}
