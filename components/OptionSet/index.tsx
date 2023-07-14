@@ -36,7 +36,7 @@ const OptionSet: React.FC<{
   setCollection,
   whichIntakeQuestions,
 }) => {
-  console.log("deleteMe got here a1");
+  // console.log("deleteMe got here a1");
   const intl: IntlShape = useIntl();
   const checkBoxLabel: string = intl.formatMessage({
     id: "CAN_END_USER_ADD_CUSTOM_OPTIONS_SHORT",

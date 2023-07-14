@@ -6,9 +6,11 @@ export interface Collection {
   language: string;
   videoIntakeQuestions?: SingleFormField[];
   individualIntakeQuestions?: SingleFormField[];
+  eventIntakeQuestions?: SingleFormField[];
   excludeFromDetailList: string[];
   videoQuestionsFormFieldGroup?: FormFieldGroup;
   individualQuestionsFormFieldGroup?: FormFieldGroup;
+  eventQuestionsFormFieldGroup?: FormFieldGroup;
 }
 
 export interface FormFieldGroup {

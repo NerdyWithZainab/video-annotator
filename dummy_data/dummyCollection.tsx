@@ -61,24 +61,24 @@ const fourthQuestion: SingleFormField = {
   shouldBeCheckboxes: ["isRequired"],
 };
 
-const fifthQuestion: SingleFormField = {
-  label: "Name of Athlete on the Left",
-  type: "Autocomplete",
-  language: "English",
-  isRequired: true,
-  testId: "athleteLeftName",
-  doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
-  shouldBeCheckboxes: ["isRequired"],
-  validatorMethods: [isNonEmptyString],
-  invalidInputMessage: "INPUT_INVALID",
-  autocompleteOptions: [
-    "Fisher, Mark",
-    "Deodara, Dirt",
-    "Ziegler, Eddie",
-    "Diggins, John",
-  ],
-  usersCanAddCustomOptions: true,
-};
+// const fifthQuestion: SingleFormField = { // deprecated. Individuals are getting attached to each video directly as a separate step in video intake.
+//   label: "Name of Athlete on the Left",
+//   type: "Autocomplete",
+//   language: "English",
+//   isRequired: true,
+//   testId: "athleteLeftName",
+//   doNotDisplay: [...defaultDoNotDisplays, "autocompleteOptions"],
+//   shouldBeCheckboxes: ["isRequired"],
+//   validatorMethods: [isNonEmptyString],
+//   invalidInputMessage: "INPUT_INVALID",
+//   autocompleteOptions: [
+//     "Fisher, Mark",
+//     "Deodara, Dirt",
+//     "Ziegler, Eddie",
+//     "Diggins, John",
+//   ],
+//   usersCanAddCustomOptions: true,
+// };
 
 const sixthQuestion: SingleFormField = {
   label: "Age",
@@ -243,12 +243,12 @@ export const shamCollection: Collection = {
   language: "English",
   videoIntakeQuestions: [
     firstQuestion,
-    // secondQuestion,
+    secondQuestion,
     thirdQuestion,
     fourthQuestion,
     // fifthQuestion,
     sixthQuestion,
-    seventhQuestion,
+    // seventhQuestion,
   ],
   individualIntakeQuestions: [
     lastNameIndividualQuestion,

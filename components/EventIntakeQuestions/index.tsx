@@ -7,23 +7,21 @@ import { Button, Grid, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomError from "../Error";
 import InfoPanel from "../InfoPanel";
-import SingleVideoIntakeQuestion from "../SingleVideoIntakeQuestion";
+import SingleEventIntakeQuestion from "../SingleEventIntakeQuestion";
 import { defaultDoNotDisplays } from "../../dummy_data/dummyCollection";
 
-const VideoIntakeQuestions: React.FC<{
+const EventIntakeQuestions: React.FC<{
   collection: Collection;
   setCollection: (collection: any) => void;
   formFieldGroup: FormFieldGroup;
-  // ref?: any; // @TODO find type
-}> = ({ collection, setCollection, formFieldGroup, ref }) => {
-  const [videoIntakeQuestions, setVideoIntakeQuestions] = useState<
+}> = ({ collection, setCollection, formFieldGroup }) => {
+  const [eventIntakeQuestions, setEventIntakeQuestions] = useState<
     SingleFormField[] | undefined
-  >(get(collection, ["videoIntakeQuestions"]));
+  >(get(collection, ["eventIntakeQuestions"]));
   const [error, setError] = useState<string>("");
 
   const newQuestion: SingleFormField = useMemo(() => {
     return {
-      key: get(collection, ["videoIntakeQuestions"], []).length + 1,
       label: "Change Me",
       type: "Text",
       language: "English",
@@ -33,33 +31,31 @@ const VideoIntakeQuestions: React.FC<{
       validatorMethods: [],
       shouldBeCheckboxes: ["isRequired"],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // if (videoIntakeQuestions) {
     setCollection((prevState: any) => {
-      // console.log("deleteMe videoIntakeQuestions are: ");
-      // console.log(videoIntakeQuestions);
-      return { ...prevState, videoIntakeQuestions: videoIntakeQuestions };
+      return {
+        ...prevState,
+        EventIntakeQuestions: EventIntakeQuestions,
+      };
     });
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
+  }, [EventIntakeQuestions]); // I was having trouble with async updating the collection's intakeQuestion array. It seems to have been resolved if I use a local state and then call off to setCollection every time that local thing updates.
 
   const deleteIntakeQuestion: (questionIdx: number) => void = (questionIdx) => {
-    setVideoIntakeQuestions((prevState) => {
-      const newVideoIntakeQuestions: SingleFormField[] =
+    setEventIntakeQuestions((prevState) => {
+      const newEventIntakeQuestions: SingleFormField[] =
         prevState?.filter((_entry, idx) => {
           return idx !== questionIdx;
         }) || [];
-      return newVideoIntakeQuestions;
+      return newEventIntakeQuestions;
     });
   };
 
   const createNewIntakeQuestion: () => void = () => {
     try {
-      setVideoIntakeQuestions((prevState: any) => {
+      setEventIntakeQuestions((prevState: any) => {
         if (prevState) {
           return [...prevState, newQuestion];
         } else {
@@ -72,10 +68,10 @@ const VideoIntakeQuestions: React.FC<{
   };
 
   const intakeQuestionElements = map(
-    collection?.videoIntakeQuestions || [],
+    collection?.eventIntakeQuestions || [],
     (intakeQuestion, intakeQuestionIdx) => {
       const intakeQuesionsInvalid: {} =
-        collection?.videoQuestionsFormFieldGroup?.isInvalids || {};
+        collection?.eventQuestionsFormFieldGroup?.isInvalids || {};
       return map(
         intakeQuestion,
         (intakeQuestionEl, intakeQuestionKey, wholeQuestion) => {
@@ -101,7 +97,7 @@ const VideoIntakeQuestions: React.FC<{
                   </Button>
                 </>
               )}
-              <SingleVideoIntakeQuestion
+              <SingleEventIntakeQuestion
                 key={intakeQuestionKey}
                 intakeQuestionEl={intakeQuestionEl}
                 intakeQuestionKey={intakeQuestionKey}
@@ -121,14 +117,13 @@ const VideoIntakeQuestions: React.FC<{
 
   return (
     <InfoPanel
-      titleId="VIDEO_INTAKE_QUESTIONS"
-      titleDefault="Video Intake Questions"
+      titleId="EVENT_INTAKE_QUESTIONS"
+      titleDefault="Event Intake Questions"
       textOverrides={{ textAlign: "center" }}
       styleOverrides={{ maxHeight: 1000 }}
-      // ref={ref}
     >
       <Grid container>
-        {collection?.videoIntakeQuestions && intakeQuestionElements}
+        {collection?.eventIntakeQuestions && intakeQuestionElements}
         <Grid item lg={12} sm={12}>
           <Button
             style={{ marginBottom: 10 }}
@@ -147,4 +142,4 @@ const VideoIntakeQuestions: React.FC<{
     </InfoPanel>
   );
 };
-export default VideoIntakeQuestions;
+export default EventIntakeQuestions;

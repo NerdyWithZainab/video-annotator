@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Grid } from "@mui/material";
 import CollectionDetailsEdit from "../../components/CollectionDetailsEdit";
 import CollectionDetailsView from "../../components/CollectionDetailsView";
@@ -8,9 +8,10 @@ import { Collection, FormFieldGroup } from "../../types";
 import { shamCollection } from "../../dummy_data/dummyCollection";
 import IndividualIntakeQuestions from "../../components/IndividualIntakeQuestions";
 import IndividualIntakePreview from "../../components/IndividualIntakePreview";
+import { get } from "lodash-es";
 
 const SingleCollection: React.FC = () => {
-  console.log("deleteMe main collection page re-renders");
+  // console.log("deleteMe main collection page re-renders");
   const [videoQuestionFormValues, setVideoQuestionFormValues] = useState<{}>(
     {}
   );
@@ -62,8 +63,8 @@ const SingleCollection: React.FC = () => {
 
   useEffect(() => {
     setCollection((prevState: any) => {
-      console.log("deleteMe prevState in the useEffect is: ");
-      console.log(prevState);
+      // console.log("deleteMe prevState in the useEffect is: ");
+      // console.log(prevState);
       return {
         ...prevState,
         videoQuestionsFormFieldGroup: videoQuestionsFormFieldGroup,
@@ -76,6 +77,31 @@ const SingleCollection: React.FC = () => {
     individualQuestionsFormFieldGroup,
     individualQuestionsFormFieldGroup?.actualValues,
   ]);
+
+  const videoPreviewRef = useRef(null);
+  const videoIntakeRef = useRef(null);
+
+  // useEffect(() => {
+  //   console.log("deleteMe videoPreviewRef is: ");
+  //   console.log(videoPreviewRef);
+  //   // if (videoIntakeRef?.current) {
+  //   //   videoIntakeRef.current.style.maxHeight = "100px";
+  //   // }
+  //   console.log("deleteMe videoIntakeRef is: ");
+  //   console.log(videoIntakeRef);
+  //   // const videoPreviewHeight = get(videoPreviewRef, [
+  //   //   "current",
+  //   //   "offsetHeight",
+  //   // ]);
+
+  //   // console.log(videoIntakeRef.current.classList);
+  //   // videoIntakeRef.current.style.maxHeight = `500px`;
+  //   // const videoIntakeRefStyle: any = get(videoIntakeRef, ["current", "style"]);
+  //   // videoIntakeRefStyle.maxHeight = `500px`;
+  //   // if (videoPreviewHeight && Boolean(videoIntakeRefStyle)) {
+  //   //   videoIntakeRefStyle.maxHeight = `${videoPreviewHeight}px`;
+  //   // }
+  // }, [videoPreviewRef, videoIntakeRef]);
 
   return (
     <Grid container spacing={2} style={{ marginTop: "1vh" }}>
@@ -101,6 +127,7 @@ const SingleCollection: React.FC = () => {
           <Grid item sm={12} md={4}>
             {collection && videoQuestionsFormFieldGroup && (
               <VideoIntakeQuestions
+                // ref={videoIntakeRef}
                 collection={collection}
                 setCollection={setCollection}
                 formFieldGroup={videoQuestionsFormFieldGroup}
@@ -108,10 +135,15 @@ const SingleCollection: React.FC = () => {
             )}
           </Grid>
           <Grid item sm={12} md={8}>
-            {collection && <VideoIntakePreview collection={collection} />}
+            {collection && (
+              <VideoIntakePreview
+                // ref={videoPreviewRef}
+                collection={collection}
+              />
+            )}
           </Grid>
           <Grid item sm={12} md={4}>
-            {collection && videoQuestionsFormFieldGroup && (
+            {collection && intakeQuestionsFormFieldGroup && (
               <IndividualIntakeQuestions
                 collection={collection}
                 setCollection={setCollection}
@@ -121,6 +153,18 @@ const SingleCollection: React.FC = () => {
           </Grid>
           <Grid item sm={12} md={8}>
             {collection && <IndividualIntakePreview collection={collection} />}
+          </Grid>
+          <Grid item sm={12} md={4}>
+            {collection && eventQuestionsFormFieldGroup && (
+              <EventIntakeQuestions
+                collection={collection}
+                setCollection={setCollection}
+                formFieldGroup={eventQuestionsFormFieldGroup}
+              />
+            )}
+          </Grid>
+          <Grid item sm={12} md={8}>
+            {collection && <EventIntakePreview collection={collection} />}
           </Grid>
         </>
       )}
